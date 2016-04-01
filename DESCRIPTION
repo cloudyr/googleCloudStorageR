@@ -1,0 +1,18 @@
+Package: googleCloudStorageR
+Type: Package
+Version: 0.0.9000
+Title: R interface with Google Cloud Storage
+Description: Interact with Google Cloud Storage API in R.
+Authors@R: c(person("Mark", "Edmondson",email = "m@sunholo.com",
+                  role = c("aut", "cre")))
+URL: https://github.com/MarkEdmondson1234/googleCloudStorageR
+BugReports: https://github.com/MarkEdmondson1234/googleCloudStorageR/issues
+Depends:
+    R (>= 3.2.0)
+Imports:
+    googleAuthR (>= 0.2.0)
+License: MIT + file LICENSE
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
+
