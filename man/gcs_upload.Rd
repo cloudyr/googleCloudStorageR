@@ -4,12 +4,14 @@
 \alias{gcs_upload}
 \title{Upload a file or arbitary type}
 \usage{
-gcs_upload(file, bucket, name = NULL)
+gcs_upload(file, bucket, type = NULL, name = "myObject")
 }
 \arguments{
 \item{file}{filepath to what you are uploading}
 
 \item{bucket}{bucketname you are uploading to}
+
+\item{type}{MIME type, guessed if NULL}
 
 \item{name}{What to call the file once uploaded. Default is "myObject"}
 }
