@@ -1,5 +1,5 @@
 library(shiny)
-library(googleAuthR)
+library(googleAuthR) ## > 0.2.0.9000
 library(googleCloudStorageR)
 options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
 
