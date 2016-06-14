@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Googlecloudstorager by MarkEdmondson1234</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Googlecloudstorager</h1>
+        <p>Google Cloud Storage API to R</p>
+
+        <p class="view"><a href="https://github.com/MarkEdmondson1234/googleCloudStorageR">View the Project on GitHub <small>MarkEdmondson1234/googleCloudStorageR</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/MarkEdmondson1234/googleCloudStorageR/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/MarkEdmondson1234/googleCloudStorageR/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/MarkEdmondson1234/googleCloudStorageR">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="googlecloudstorager" class="anchor" href="#googlecloudstorager" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>googleCloudStorageR</h1>
+
+<p>R library for interacting with google cloud storage</p>
+
+<h2>
+<a id="demo-running-it-in-shiny" class="anchor" href="#demo-running-it-in-shiny" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo running it in Shiny</h2>
+
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">shiny</span>)
+library(<span class="pl-smi">googleAuthR</span>)
+library(<span class="pl-smi">googleCloudStorageR</span>)
+options(<span class="pl-v">googleAuthR.scopes.selected</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>https://www.googleapis.com/auth/devstorage.full_control<span class="pl-pds">"</span></span>)
+
+<span class="pl-c">## you need to start Shiny app on port 1221</span>
+<span class="pl-c">## as thats what the default googleAuthR project expects for OAuth2 authentication</span>
+
+<span class="pl-c">## options(shiny.port = 1221)</span>
+<span class="pl-c">## print(source('shiny_test.R')$value) or push the "Run App" button in RStudio</span>
+
+shinyApp(
+  <span class="pl-v">ui</span> <span class="pl-k">=</span> shinyUI(
+      fluidPage(
+        <span class="pl-e">googleAuthR</span><span class="pl-k">::</span>loginOutput(<span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>),
+        fileInput(<span class="pl-s"><span class="pl-pds">"</span>picture<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>picture<span class="pl-pds">"</span></span>),
+        textInput(<span class="pl-s"><span class="pl-pds">"</span>filename<span class="pl-pds">"</span></span>, <span class="pl-v">label</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Name on Google Cloud Storage<span class="pl-pds">"</span></span>,<span class="pl-v">value</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>myObject<span class="pl-pds">"</span></span>),
+        actionButton(<span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span>),
+        textOutput(<span class="pl-s"><span class="pl-pds">"</span>meta_file<span class="pl-pds">"</span></span>)
+      )
+  ),
+  <span class="pl-v">server</span> <span class="pl-k">=</span> shinyServer(<span class="pl-k">function</span>(<span class="pl-smi">input</span>, <span class="pl-smi">output</span>, <span class="pl-smi">session</span>){
+
+    <span class="pl-smi">access_token</span> <span class="pl-k">&lt;-</span> reactiveAccessToken(<span class="pl-smi">session</span>)
+
+    <span class="pl-smi">output</span><span class="pl-k">$</span><span class="pl-smi">login</span> <span class="pl-k">&lt;-</span> <span class="pl-e">googleAuthR</span><span class="pl-k">::</span>renderLogin(<span class="pl-smi">session</span>, access_token())
+
+    <span class="pl-smi">meta</span> <span class="pl-k">&lt;-</span> eventReactive(<span class="pl-smi">input</span><span class="pl-k">$</span><span class="pl-smi">submit</span>, {
+
+      message(<span class="pl-s"><span class="pl-pds">"</span>Uploading to Google Cloud Storage<span class="pl-pds">"</span></span>)
+      with_shiny(<span class="pl-smi">gcs_upload</span>,  <span class="pl-c"># from googleCloudStorageR</span>
+                 <span class="pl-v">file</span> <span class="pl-k">=</span> <span class="pl-smi">input</span><span class="pl-k">$</span><span class="pl-smi">picture</span><span class="pl-k">$</span><span class="pl-smi">datapath</span>,
+                 <span class="pl-v">bucket</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>gogauth-test<span class="pl-pds">"</span></span>,  <span class="pl-c"># enter your bucket name here</span>
+                 <span class="pl-v">type</span> <span class="pl-k">=</span> <span class="pl-smi">input</span><span class="pl-k">$</span><span class="pl-smi">picture</span><span class="pl-k">$</span><span class="pl-smi">type</span>,
+                 <span class="pl-v">name</span> <span class="pl-k">=</span> <span class="pl-smi">input</span><span class="pl-k">$</span><span class="pl-smi">filename</span>,
+                 <span class="pl-v">shiny_access_token</span> <span class="pl-k">=</span> access_token())
+
+    })
+
+    <span class="pl-smi">output</span><span class="pl-k">$</span><span class="pl-smi">meta_file</span> <span class="pl-k">&lt;-</span> renderText({
+      validate(
+        need(meta(), <span class="pl-s"><span class="pl-pds">"</span>Upload file<span class="pl-pds">"</span></span>)
+      )
+
+      str(meta())
+
+      paste(<span class="pl-s"><span class="pl-pds">"</span>Uploaded: <span class="pl-pds">"</span></span>, meta()<span class="pl-k">$</span><span class="pl-smi">name</span>)
+
+    })
+
+  })
+)</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/MarkEdmondson1234">MarkEdmondson1234</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
