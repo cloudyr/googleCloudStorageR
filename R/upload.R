@@ -9,6 +9,7 @@
 #' @param name What to call the file once uploaded. Default is "myObject"
 #'
 #' @return If successful, a metadata object
+#' @import httr
 #' @export
 gcs_upload <- function(file, bucket, type = NULL, name = "myObject"){
 

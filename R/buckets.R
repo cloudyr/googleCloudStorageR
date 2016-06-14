@@ -160,6 +160,7 @@ gcs_create_bucket <-
 #'
 #' todo: acl, cors, lifecycle, logging, versioning, website
 #'
+#' @import testthat
 #' @export
 gcs_update_bucket <-
   function(bucket,
