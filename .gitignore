@@ -2,7 +2,7 @@
 .Rproj
 .Rhistory
 .RData
-
+drat.sh
 .httr-oauth
 .httr-oauth-SUSPENDED
 .Rbuildignore
