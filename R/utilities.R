@@ -42,6 +42,7 @@ error.message <- function(test_me){
 #' @param level The severity
 #'
 #' @details 0 = everything, 1 = debug, 2=normal, 3=important
+#' @keywords internal
 myMessage <- function(..., level = 1){
 
 
@@ -61,6 +62,7 @@ myMessage <- function(..., level = 1){
 #' A random code to ensure no repeats
 #'
 #' @return A random 15 digit hash
+#' @keywords internal
 idempotency <- function(){
   paste(sample(c(LETTERS, letters, 0:9), 15, TRUE),collapse="")
 }
