@@ -2,7 +2,42 @@
 
 R library for interacting with google cloud storage
 
-## Demo downloading objects from Google CLoud storage
+## Setup
+
+As Google CLoud Storage charges you for storage (at a nominal fee) and the default project has no credit card, to use you will need your own Google Project with a credit card added.  This can be done in the [Google API Console](https://console.developers.google.com)
+
+For local use
+
+1. Click 'Create a new Client ID', and choose "Installed Application".
+2. Note your Client ID and secret.
+3. Modify these options after googleAuthR has been loaded:
+
+        options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
+        options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
+
+For Shiny use
+
+1. Click 'Create a new Client ID', and choose "Web Application".
+2. Note your Client ID and secret.
+3. Add the URL of where your Shiny app will run, with no port number. e.g. `https://mark.shinyapps.io/searchConsoleRDemo/`
+4. And/Or also put in localhost or 127.0.0.1 with a port number for local testing. Remember the port number you use as you will need it later to launch the app e.g. `http://127.0.0.1:1221`
+5. In your Shiny script modify these options:
+
+        options("googleAuthR.webapp.client_id" = "YOUR_CLIENT_ID")
+        options("googleAuthR.webapp.client_secret" = "YOUR_CLIENT_SECRET")
+
+6. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
+7. Running on your Shiny Server will work only for the URL from step 3.
+
+### Activate API
+
+1. Click on "APIs"
+2. Select and activate the Cloud Storage JSON API 
+3. Set the `googleAuthR`option for Google Cloud storage scope:
+
+        options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+
+## Demo downloading objects from Google Cloud storage
 
 ```r
 library(googleCloudStorageR)
