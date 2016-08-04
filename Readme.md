@@ -4,7 +4,7 @@ R library for interacting with google cloud storage
 
 ## Setup
 
-As Google CLoud Storage charges you for storage (at a nominal fee) and the default project has no credit card, to use you will need your own Google Project with a credit card added.  This can be done in the [Google API Console](https://console.developers.google.com)
+As Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing) and the default project has no credit card, to use you will need your own Google Project with a credit card added.  This can be done in the [Google API Console](https://console.developers.google.com)
 
 For local use
 
