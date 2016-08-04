@@ -6,7 +6,7 @@ R library for interacting with google cloud storage
 
 As Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing) and the default project has no credit card, to use you will need your own Google Project with a credit card added.  This can be done in the [Google API Console](https://console.developers.google.com)
 
-For local use
+### For local use
 
 1. Click 'Create a new Client ID', and choose "Installed Application".
 2. Note your Client ID and secret.
@@ -15,7 +15,7 @@ For local use
         options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
         options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
 
-For Shiny use
+### For Shiny use
 
 1. Click 'Create a new Client ID', and choose "Web Application".
 2. Note your Client ID and secret.
