@@ -42,6 +42,8 @@ As Google Cloud Storage charges you for storage [(prices here)](https://cloud.go
 ```r
 library(googleCloudStorageR)
 options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
+options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
 googleAuthR::gar_auth()
 
 proj <- "your-project"
@@ -62,6 +64,8 @@ library("shiny")
 library("googleAuthR")
 library("googleCloudStorageR")
 options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+options("googleAuthR.webapp.client_id" = "YOUR_CLIENT_ID")
+options("googleAuthR.webapp.client_secret" = "YOUR_CLIENT_SECRET")
 
 ## you need to start Shiny app on port 1221
 ## as thats what the default googleAuthR project expects for OAuth2 authentication
