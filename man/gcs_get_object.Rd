@@ -19,7 +19,7 @@ gcs_get_object(object_name, bucket, meta = FALSE, saveToDisk = NULL,
 \item{parseObject}{If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}}
 }
 \value{
-The object or TRUE is sucessfully saved to disk.
+The object, or TRUE if sucessfully saved to disk.
 }
 \description{
 This retrieves an object directly.

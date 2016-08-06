@@ -35,18 +35,21 @@ bucket_info <- gcs_get_bucket(bucket)
 ## get object info
 objects <- gcs_list_objects(bucket)
 
-## save to a file in your working directory
-gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
-
-## or save directly to an R object (warning, don't run out of RAM if its a big object)
+## save directly to an R object (warning, don't run out of RAM if its a big object)
 ## the download type is guessed into an appropriate R object
-parsed_download <- gcs_get_object(objects$name[[1]], bucket, saveToDisk = NULL)
+parsed_download <- gcs_get_object(objects$name[[1]], bucket)
 
 ## if you want to do your own parsing, set parseObject to FALSE
+## use httr::content() to parse afterwards
 raw_download <- gcs_get_object(objects$name[[1]], 
                                bucket, 
-                               saveToDisk = NULL, 
                                parseObject = FALSE)
+
+## save directly to a file in your working directory
+## parseObject has no effect, it is a httr::content(req, "raw") download
+gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
+
+
                                
 ```
 

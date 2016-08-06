@@ -33,7 +33,7 @@ gcs_list_objects <- function(bucket){
 #' @param saveToDisk Specify a filename to save directly to disk.
 #' @param parseObject If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}
 #'
-#' @return The object or TRUE is sucessfully saved to disk.
+#' @return The object, or TRUE if sucessfully saved to disk.
 #'
 #' @family object functions
 #' @export
@@ -63,7 +63,8 @@ gcs_get_object <- function(object_name,
   options(googleAuthR.rawResponse = FALSE)
 
   if(req$status_code == 404){
-    stop("File not found. Check object_name and if you have read permissions. Looked for ", object_name)
+    stop("File not found. Check object_name and if you have read permissions.
+         Looked for ", object_name)
   }
 
   if(!is.null(saveToDisk)){
