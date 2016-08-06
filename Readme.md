@@ -1,10 +1,119 @@
 # googleCloudStorageR
 
-R library for interacting with google cloud storage
+R library for interacting with the Google Cloud Storage JSON API ([api docs](https://cloud.google.com/storage/docs/json_api/)).
 
 ## Setup
 
-As Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing) and the default project has no credit card, to use you will need your own Google Project with a credit card added.  This can be done in the [Google API Console](https://console.developers.google.com)
+Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing).
+
+You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the [Google API Console](https://console.developers.google.com)
+
+## Examples
+
+### Downloading objects from Google Cloud storage
+
+Once you have a Google project and created a bucket with an object in it, you can download it as below:
+
+```r
+library(googleCloudStorageR)
+options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+
+## optional, if you want to use your own Google project
+# options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
+# options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
+
+googleAuthR::gar_auth()
+
+## get your project name from the API console
+proj <- "your-project"
+
+## get bucket info
+buckets <- gcs_list_buckets(proj)
+bucket <- "your-bucket"
+bucket_info <- gcs_get_bucket(bucket)
+
+## get object info
+objects <- gcs_list_objects(bucket)
+
+## save to a file in your working directory
+gcs_get_object(bucket, objects$name[[1]], saveToDisk = "csv_downloaded.csv")
+
+## or save directly to an R object (warning, don't run out of RAM if its a big object)
+raw_download <- gcs_get_object(bucket, objects$name[[1]], saveToDisk = NULL)
+
+## you will need to parse the downloaded object via httr::content()
+downloaded_raw_parsed <- httr::content(raw_download)
+```
+
+### Uploading via a Shiny app
+
+The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and download their own data.  
+
+An example of that is shown below:
+
+```r
+library("shiny")
+library("googleAuthR")
+library("googleCloudStorageR")
+options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+## optional, if you want to use your own Google project
+# options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
+# options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
+
+## you need to start Shiny app on port 1221
+## as thats what the default googleAuthR project expects for OAuth2 authentication
+
+## options(shiny.port = 1221)
+## print(source('shiny_test.R')$value) or push the "Run App" button in RStudio
+
+shinyApp(
+  ui = shinyUI(
+      fluidPage(
+        googleAuthR::googleAuthUI("login"),
+        fileInput("picture", "picture"),
+        textInput("filename", label = "Name on Google Cloud Storage",value = "myObject"),
+        actionButton("submit", "submit"),
+        textOutput("meta_file")
+      )
+  ),
+  server = shinyServer(function(input, output, session){
+
+    access_token <- shiny::callModule(googleAuth, "login")
+
+    meta <- eventReactive(input$submit, {
+
+      message("Uploading to Google Cloud Storage")
+      
+      # from googleCloudStorageR
+      with_shiny(gcs_upload,  
+                 file = input$picture$datapath,
+                 # enter your bucket name here
+                 bucket = "gogauth-test",  
+                 type = input$picture$type,
+                 name = input$filename,
+                 shiny_access_token = access_token())
+
+    })
+
+    output$meta_file <- renderText({
+      
+      req(meta())
+
+      str(meta())
+
+      paste("Uploaded: ", meta()$name)
+
+    })
+
+  })
+)
+```
+
+## Explanation of Google Project access
+
+`googleCloudStorageR` has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.  
+
+No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets) - this is outlined below:
 
 ### For local use
 
@@ -36,86 +145,6 @@ As Google Cloud Storage charges you for storage [(prices here)](https://cloud.go
 3. Set the `googleAuthR`option for Google Cloud storage scope:
 
         options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
-
-## Demo downloading objects from Google Cloud storage
-
-```r
-library(googleCloudStorageR)
-options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
-options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
-options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
-googleAuthR::gar_auth()
-
-proj <- "your-project"
-bucket <- "your-bucket"
-
-buckets <- gcs_list_buckets(proj)
-bucket_info <- gcs_get_bucket(bucket)
-
-objects <- gcs_list_objects(bucket)
-
-gcs_get_object(bucket, objects$name[[1]], saveToDisk = "csv_downloaded.csv")
-```
-
-## Demo uploading via Shiny
-
-```r
-library("shiny")
-library("googleAuthR")
-library("googleCloudStorageR")
-options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
-options("googleAuthR.webapp.client_id" = "YOUR_CLIENT_ID")
-options("googleAuthR.webapp.client_secret" = "YOUR_CLIENT_SECRET")
-
-## you need to start Shiny app on port 1221
-## as thats what the default googleAuthR project expects for OAuth2 authentication
-
-## options(shiny.port = 1221)
-## print(source('shiny_test.R')$value) or push the "Run App" button in RStudio
-
-shinyApp(
-  ui = shinyUI(
-      fluidPage(
-        googleAuthR::loginOutput("login"),
-        fileInput("picture", "picture"),
-        textInput("filename", label = "Name on Google Cloud Storage",value = "myObject"),
-        actionButton("submit", "submit"),
-        textOutput("meta_file")
-      )
-  ),
-  server = shinyServer(function(input, output, session){
-
-    access_token <- reactiveAccessToken(session)
-
-    output$login <- googleAuthR::renderLogin(session, access_token())
-
-    meta <- eventReactive(input$submit, {
-
-      message("Uploading to Google Cloud Storage")
-      with_shiny(gcs_upload,  # from googleCloudStorageR
-                 file = input$picture$datapath,
-                 bucket = "gogauth-test",  # enter your bucket name here
-                 type = input$picture$type,
-                 name = input$filename,
-                 shiny_access_token = access_token())
-
-    })
-
-    output$meta_file <- renderText({
-      validate(
-        need(meta(), "Upload file")
-      )
-
-      str(meta())
-
-      paste("Uploaded: ", meta()$name)
-
-    })
-
-  })
-)
-```
-
 
 ## Installation ##
 

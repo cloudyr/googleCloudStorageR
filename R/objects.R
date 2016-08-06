@@ -22,7 +22,7 @@ gcs_list_objects <- function(bucket){
 
 #' Get an object in a bucket directly
 #'
-#' This retrieves an object directly.  Differs from via a download link.
+#' This retrieves an object directly.  This differs from providing downloads via a download link as you can do via \link{gcs_download_url}
 #'
 #' The object is returned in raw format, which you need to parse yourself to use in R
 #'   using \code{httr}'s \link[httr]{content}
