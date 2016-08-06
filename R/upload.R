@@ -5,10 +5,12 @@
 #' @param file data.frame, list or filepath character to what you are uploading
 #' @param bucket bucketname you are uploading to
 #' @param type MIME type, guessed from file extension if NULL
-#' @param name What to call the file once uploaded. Default is the filepath
+#' @param name What to call the file once uploaded. Default is the filepath.
 #'
-#' Will turn data.frames into .csv for upload via write.csv(x)
-#' Will turn lists into .json via \link[jsonlite]{toJSON}
+#' @details
+#'
+#' Will turn data.frames into \code{.csv} for upload via \link[utils]{write.csv}
+#' Will turn lists into \code{.json} via \link[jsonlite]{toJSON}
 #'
 #' @section scopes:
 #'

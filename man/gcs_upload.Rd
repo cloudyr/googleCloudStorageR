@@ -13,16 +13,17 @@ gcs_upload(file, bucket, type = NULL, name = file)
 
 \item{type}{MIME type, guessed from file extension if NULL}
 
-\item{name}{What to call the file once uploaded. Default is the filepath
-
-Will turn data.frames into .csv for upload via write.csv(x, stringsAsFactors = FALSE)
-Will turn lists into .json via \link[jsonlite]{toJSON}}
+\item{name}{What to call the file once uploaded. Default is the filepath.}
 }
 \value{
 If successful, a metadata object
 }
 \description{
-Upload a file to Google Cloud Storage
+Simple Upload - for files up to 5MB to Google Cloud Storage
+}
+\details{
+Will turn data.frames into \code{.csv} for upload via \link[utils]{write.csv}
+Will turn lists into \code{.json} via \link[jsonlite]{toJSON}
 }
 \section{scopes}{
 
