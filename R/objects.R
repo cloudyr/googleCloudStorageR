@@ -1,16 +1,16 @@
 #' List objects in a bucket
-#' 
+#'
 #' @param bucket bucket containing the objects
-#' 
+#'
 #' @return A data.frame of the objects
-#' 
+#'
 #' @family object functions
 #' @export
 gcs_list_objects <- function(bucket){
-  
+
   testthat::expect_type(bucket, "character")
   testthat::expect_length(bucket, 1)
-  
+
   lo <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                       path_args = list(b = bucket,
                                                        o = ""))
@@ -21,33 +21,33 @@ gcs_list_objects <- function(bucket){
 }
 
 #' Get an object in a bucket directly
-#' 
+#'
 #' This retrieves an object directly.  Differs from via a download link.
-#' 
+#'
 #' The object is returned in raw format, which you need to parse yourself to use in R
 #'   using \code{httr}'s \link[httr]{content}
-#' 
+#'
 #' @param bucket bucket containing the objects
 #' @param object_name name of object in the bucket
 #' @param meta If TRUE then get info about the object, not the object itself
 #' @param saveToDisk Specify a filename to save directly to disk.
-#' 
+#'
 #' @return The object or TRUE is sucessfully saved to disk.
-#' 
+#'
 #' @family object functions
 #' @export
-gcs_get_object <- function(bucket, 
-                           object_name, 
+gcs_get_object <- function(bucket,
+                           object_name,
                            meta = FALSE,
                            saveToDisk = NULL){
-  
+
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
   testthat::expect_length(bucket, 1)
-  testthat::expect_length(object_name, 1)  
-  
+  testthat::expect_length(object_name, 1)
+
   if(meta){
-    alt = "" 
+    alt = ""
   } else {
     options(googleAuthR.rawResponse = TRUE)
     alt = "media"
@@ -59,19 +59,23 @@ gcs_get_object <- function(bucket,
                                        pars_args = list(alt = alt))
   req <- ob()
   options(googleAuthR.rawResponse = FALSE)
-  
+
+  if(req$status_code == 404){
+    stop("File not found. Check object_name and if you have read permissions. Looked for ", object_name)
+  }
+
   if(!is.null(saveToDisk)){
-    
+
     bin <- httr::content(req, "raw")
     writeBin(bin, saveToDisk)
     message("Saved ", object_name, " to ", saveToDisk)
     out <- TRUE
-    
+
   } else {
     message("Downloaded ", object_name)
     out <- req
   }
-  
+
   out
-  
+
 }
