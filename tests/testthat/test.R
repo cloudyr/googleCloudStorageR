@@ -13,17 +13,36 @@ test_that("We can login", {
 
 context("Uploading")
 
-upload_test <- function(){
+upload_test <- function(filename){
 
   googleAuthR::gar_auth()
-  filename <- "test_mtcars.csv"
-  write.csv(mtcars, file = "test_mtcars.csv")
+  write.csv(mtcars, file = filename)
   gcs_upload(filename, "mark-edmondson-public-files")
+}
+
+upload_obj <- function(obj){
+
+  googleAuthR::gar_auth()
+  gcs_upload(obj, "mark-edmondson-public-files")
 }
 
 test_that("We can upload a file", {
 
-  upload <- upload_test()
+  upload <- upload_test("test_mtcars.csv")
+  expect_equal(upload$kind, "storage#object")
+
+})
+
+test_that("We can upload an data.frame", {
+
+  upload <- upload_obj(mtcars)
+  expect_equal(upload$kind, "storage#object")
+
+})
+
+test_that("We can upload an list", {
+
+  upload <- upload_obj(list(a = 1, b = 3, c = list(a = 3, g = 5)))
   expect_equal(upload$kind, "storage#object")
 
 })

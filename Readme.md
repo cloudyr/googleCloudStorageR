@@ -48,9 +48,24 @@ raw_download <- gcs_get_object(objects$name[[1]],
 ## save directly to a file in your working directory
 ## parseObject has no effect, it is a httr::content(req, "raw") download
 gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
+```
 
+## Uploading objects
 
-                               
+Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  Data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+
+```r
+googleAuthR::gar_auth()
+
+## upload a file - type will be guessed from file extension or supply type  
+write.csv(mtcars, file = filename)
+gcs_upload(filename, "your-bucket")
+
+## upload an R data.frame directly - will be converted to csv via write.csv
+gcs_upload(mtcars, "your-bucket")
+
+## upload an R list - will be converted to json via jsonlite::toJSON
+gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)), "your-bucket")
 ```
 
 ### Uploading via a Shiny app

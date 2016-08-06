@@ -8,3 +8,4 @@ test_signedurls.RData
 ^CONTRIBUTING\.md$
 ^Readme\.md$
 
+tests/testthat/.httr-oauth

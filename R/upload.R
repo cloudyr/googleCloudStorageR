@@ -1,11 +1,14 @@
 #' Upload a file of arbitary type
 #'
-#' Upload a file to Google Cloud Storage
+#' Simple Upload - for files up to 5MB to Google Cloud Storage
 #'
-#' @param file filepath to what you are uploading
+#' @param file data.frame, list or filepath character to what you are uploading
 #' @param bucket bucketname you are uploading to
 #' @param type MIME type, guessed from file extension if NULL
 #' @param name What to call the file once uploaded. Default is the filepath
+#'
+#' Will turn data.frames into .csv for upload via write.csv(x)
+#' Will turn lists into .json via \link[jsonlite]{toJSON}
 #'
 #' @section scopes:
 #'
@@ -17,6 +20,30 @@
 #' @export
 gcs_upload <- function(file, bucket, type = NULL, name = file){
 
+  upload_limit <- 5000000
+
+  if(inherits(file, "character")){
+    # a filepath
+    if(file.size(file) > upload_limit) stop("File size too large, over 5MB")
+
+    bb <- httr::upload_file(file, type = type)
+  } else if(inherits(file, "data.frame")){
+    temp <- tempfile(fileext = ".csv")
+    on.exit(unlink(temp))
+    write.csv(file, file = temp)
+    if(file.size(temp) > upload_limit) stop("File size too large, over 5MB")
+    bb <- httr::upload_file(temp)
+    name <- paste0(deparse(substitute(file)),".csv")
+  } else if(inherits(file, "list")){
+    temp <- tempfile(fileext = ".json")
+    on.exit(unlink(temp))
+    write(jsonlite::toJSON(file), temp)
+    if(file.size(temp) > upload_limit) stop("File size too large, over 5MB")
+    bb <- httr::upload_file(temp)
+    name <- paste0(deparse(substitute(file)),".json")
+  } else {
+    stop("Unsupported object type passed in argument file.")
+  }
 
   ## simple upload <5MB
   up <-
@@ -29,7 +56,7 @@ gcs_upload <- function(file, bucket, type = NULL, name = file){
 
   req <- up(path_arguments = list(b = bucket),
             pars_arguments = list(name = name),
-            the_body = httr::upload_file(file, type = type))
+            the_body = bb)
 
   req$content
 }
