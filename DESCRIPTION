@@ -14,9 +14,9 @@ Imports:
     testthat,
     httr
 Suggests:
-    knitr
+    knitr,
+    covr
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
-
