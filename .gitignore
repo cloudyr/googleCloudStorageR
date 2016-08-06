@@ -5,7 +5,6 @@
 drat.sh
 .httr-oauth
 .httr-oauth-SUSPENDED
-.Rbuildignore
 inst/doc
 
 *.Rproj

@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.httr-oauth$
+cran-comments\.md
+\.travis\.yml
+test_signedurls.RData
+^codecov\.yml$
+^CONTRIBUTING\.md$
+^Readme\.md$
+
