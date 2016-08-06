@@ -36,13 +36,18 @@ bucket_info <- gcs_get_bucket(bucket)
 objects <- gcs_list_objects(bucket)
 
 ## save to a file in your working directory
-gcs_get_object(bucket, objects$name[[1]], saveToDisk = "csv_downloaded.csv")
+gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
 
 ## or save directly to an R object (warning, don't run out of RAM if its a big object)
-raw_download <- gcs_get_object(bucket, objects$name[[1]], saveToDisk = NULL)
+## the download type is guessed into an appropriate R object
+parsed_download <- gcs_get_object(objects$name[[1]], bucket, saveToDisk = NULL)
 
-## you will need to parse the downloaded object via httr::content()
-downloaded_raw_parsed <- httr::content(raw_download)
+## if you want to do your own parsing, set parseObject to FALSE
+raw_download <- gcs_get_object(objects$name[[1]], 
+                               bucket, 
+                               saveToDisk = NULL, 
+                               parseObject = FALSE)
+                               
 ```
 
 ### Uploading via a Shiny app

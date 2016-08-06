@@ -21,4 +21,7 @@ You may need to update access for your email to get access via \link{gcs_update_
 \description{
 Create the download URL for objects in buckets
 }
+\seealso{
+Other download.functions: \code{\link{gcs_parse_download}}
+}
 

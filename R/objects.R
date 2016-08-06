@@ -22,24 +22,26 @@ gcs_list_objects <- function(bucket){
 
 #' Get an object in a bucket directly
 #'
-#' This retrieves an object directly.  This differs from providing downloads via a download link as you can do via \link{gcs_download_url}
+#' This retrieves an object directly.
+#' This differs from providing downloads via a download link as you can
+#'   do via \link{gcs_download_url}
 #'
-#' The object is returned in raw format, which you need to parse yourself to use in R
-#'   using \code{httr}'s \link[httr]{content}
 #'
-#' @param bucket bucket containing the objects
 #' @param object_name name of object in the bucket
+#' @param bucket bucket containing the objects
 #' @param meta If TRUE then get info about the object, not the object itself
 #' @param saveToDisk Specify a filename to save directly to disk.
+#' @param parseObject If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}
 #'
 #' @return The object or TRUE is sucessfully saved to disk.
 #'
 #' @family object functions
 #' @export
-gcs_get_object <- function(bucket,
-                           object_name,
+gcs_get_object <- function(object_name,
+                           bucket,
                            meta = FALSE,
-                           saveToDisk = NULL){
+                           saveToDisk = NULL,
+                           parseObject = TRUE){
 
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
@@ -73,7 +75,12 @@ gcs_get_object <- function(bucket,
 
   } else {
     message("Downloaded ", object_name)
-    out <- req
+
+    if(parseObject){
+      out <- gcs_parse_download(req)
+    } else {
+      out <- req
+    }
   }
 
   out

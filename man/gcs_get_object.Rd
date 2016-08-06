@@ -4,28 +4,29 @@
 \alias{gcs_get_object}
 \title{Get an object in a bucket directly}
 \usage{
-gcs_get_object(bucket, object_name, meta = FALSE, saveToDisk = NULL)
+gcs_get_object(object_name, bucket, meta = FALSE, saveToDisk = NULL,
+  parseObject = TRUE)
 }
 \arguments{
-\item{bucket}{bucket containing the objects}
-
 \item{object_name}{name of object in the bucket}
+
+\item{bucket}{bucket containing the objects}
 
 \item{meta}{If TRUE then get info about the object, not the object itself}
 
 \item{saveToDisk}{Specify a filename to save directly to disk.}
+
+\item{parseObject}{If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}}
 }
 \value{
 The object or TRUE is sucessfully saved to disk.
 }
 \description{
-This retrieves an object directly.  Differs from via a download link.
-}
-\details{
-The object is returned in raw format, which you need to parse yourself to use in R
-  using \code{httr}'s \link[httr]{content}
+This retrieves an object directly.
+This differs from providing downloads via a download link as you can
+  do via \link{gcs_download_url}
 }
 \seealso{
-Other object functions: \code{\link{gcs_list_objects}}
+Other object.functions: \code{\link{gcs_list_objects}}
 }
 

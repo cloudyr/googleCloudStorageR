@@ -2,24 +2,29 @@
 % Please edit documentation in R/upload.R
 \name{gcs_upload}
 \alias{gcs_upload}
-\title{Upload a file or arbitary type}
+\title{Upload a file of arbitary type}
 \usage{
-gcs_upload(file, bucket, type = NULL, name = "myObject")
+gcs_upload(file, bucket, type = NULL, name = file)
 }
 \arguments{
 \item{file}{filepath to what you are uploading}
 
 \item{bucket}{bucketname you are uploading to}
 
-\item{type}{MIME type, guessed if NULL}
+\item{type}{MIME type, guessed from file extension if NULL}
 
-\item{name}{What to call the file once uploaded. Default is "myObject"}
+\item{name}{What to call the file once uploaded. Default is the filepath}
 }
 \value{
 If successful, a metadata object
 }
 \description{
-Requires scopes https://www.googleapis.com/auth/devstorage.read_write
-  or https://www.googleapis.com/auth/devstorage.full_control
+Upload a file to Google Cloud Storage
+}
+\section{scopes}{
+
+
+Requires scopes \code{https://www.googleapis.com/auth/devstorage.read_write}
+  or \code{https://www.googleapis.com/auth/devstorage.full_control}
 }
 
