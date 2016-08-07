@@ -8,7 +8,7 @@ gcs_get_object(object_name, bucket, meta = FALSE, saveToDisk = NULL,
   parseObject = TRUE)
 }
 \arguments{
-\item{object_name}{name of object in the bucket}
+\item{object_name}{name of object in the bucket. URL encoded.}
 
 \item{bucket}{bucket containing the objects}
 
