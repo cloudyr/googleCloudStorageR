@@ -2,10 +2,10 @@ Package: googleCloudStorageR
 Type: Package
 Version: 0.0.9000
 Title: R Interface with Google Cloud Storage
-Description: Interact with Google Cloud Storage API in R.
-Authors@R: c(person("Mark", "Edmondson",email = "m@sunholo.com",
+Description: Interact with Google Cloud Storage API in R. Part of the cloudyR project.
+Authors@R: c(person("Mark", "Edmondson",email = "r@sunholo.com",
                   role = c("aut", "cre")))
-URL: https://github.com/cloudyr/googleCloudStorageR
+URL: http://code.markedmondson.me/googleCloudStorageR/
 BugReports: https://github.com/cloudyr/googleCloudStorageR/issues
 Depends:
     R (>= 3.2.0)
