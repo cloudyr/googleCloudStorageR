@@ -118,7 +118,7 @@ download_url
 
 ## Uploading via a Shiny app
 
-The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and download their own data.  
+The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.  
 
 An example of that is shown below:
 
