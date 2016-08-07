@@ -16,7 +16,8 @@ Imports:
     jsonlite (>= 1.0)
 Suggests:
     knitr,
-    covr
+    covr,
+    rmarkdown
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
