@@ -15,8 +15,6 @@ gcs_save(..., list = ls(all.names = TRUE, envir = parent.frame()), bucket,
 \item{bucket}{Bucket to store objects in}
 
 \item{folder}{The namespace for the files to be stored in the cloud}
-
-\item{keepCache}{Whether to also keep the files locally}
 }
 \value{
 TRUE if successful
@@ -28,6 +26,8 @@ If objects to be saved are for use with only R consider using this
 \details{
 \code{gcs_save(bucket = "your_bucket")} will save all objects in the workspace
   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
+
+Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 
 If multiple objects, they will be uploaded separately in a folder within the bucket
   using \code{.rds} format.

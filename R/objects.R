@@ -27,7 +27,7 @@ gcs_list_objects <- function(bucket){
 #'   do via \link{gcs_download_url}
 #'
 #'
-#' @param object_name name of object in the bucket
+#' @param object_name name of object in the bucket. URL encoded.
 #' @param bucket bucket containing the objects
 #' @param meta If TRUE then get info about the object, not the object itself
 #' @param saveToDisk Specify a filename to save directly to disk.
@@ -48,10 +48,13 @@ gcs_get_object <- function(object_name,
   testthat::expect_length(bucket, 1)
   testthat::expect_length(object_name, 1)
 
+  object_name <- URLencode(object_name, reserved = TRUE)
+
   if(meta){
     alt = ""
   } else {
     options(googleAuthR.rawResponse = TRUE)
+    on.exit(options(googleAuthR.rawResponse = FALSE))
     alt = "media"
   }
 
@@ -61,9 +64,8 @@ gcs_get_object <- function(object_name,
                                        pars_args = list(alt = alt))
   req <- ob()
 
-  if(!meta){
-    options(googleAuthR.rawResponse = FALSE)
 
+  if(!meta){
     if(req$status_code == 404){
       stop("File not found. Check object_name and if you have read permissions.
            Looked for ", object_name)
