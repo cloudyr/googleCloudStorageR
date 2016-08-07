@@ -11,8 +11,9 @@ Depends:
     R (>= 3.2.0)
 Imports:
     googleAuthR (>= 0.2.0.9000),
-    testthat,
-    httr
+    testthat(>= 1.0.2),
+    httr (>= 1.2.1),
+    jsonlite (>= 1.0)
 Suggests:
     knitr,
     covr

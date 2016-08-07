@@ -55,8 +55,6 @@ gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
 Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  Data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
 
 ```r
-googleAuthR::gar_auth()
-
 ## upload a file - type will be guessed from file extension or supply type  
 write.csv(mtcars, file = filename)
 gcs_upload(filename, "your-bucket")
