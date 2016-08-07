@@ -78,7 +78,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>Google Cloud Storage charges you for storage <a href="https://cloud.google.com/storage/pricing">(prices here)</a>.</p>
-<p>You can use your own Google Project with a credit card added to create buckets, where the charges will apply. This can be done in the <a href="https://console.developers.google.com">Google API Console</a></p>
+<p>You can use your own Google Project with a credit card added to create buckets, where the charges will apply. This can be done in the Google API Console after login here: <code>https://console.developers.google.com</code>.</p>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
@@ -175,7 +175,7 @@ download_url
 </div>
 <div id="uploading-via-a-shiny-app" class="section level2">
 <h2>Uploading via a Shiny app</h2>
-<p>The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and download their own data.</p>
+<p>The library is also compatible with Shiny authentication flows, so for example you can create Shiny apps that lets users log in and upload their own data.</p>
 <p>An example of that is shown below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;shiny&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;googleAuthR&quot;</span>)
@@ -251,7 +251,7 @@ download_url
 <div id="explanation-of-google-project-access" class="section level2">
 <h2>Explanation of Google Project access</h2>
 <p><code>googleCloudStorageR</code> has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.</p>
-<p>No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets) - this is outlined below:</p>
+<p>No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets). The instructions below are for when you visit the Google API console (<code>https://console.developers.google.com/apis/</code>)</p>
 <div id="for-local-use" class="section level3">
 <h3>For local use</h3>
 <ol style="list-style-type: decimal">
