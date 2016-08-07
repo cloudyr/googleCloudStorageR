@@ -60,29 +60,36 @@ gcs_get_object <- function(object_name,
                                                         o = object_name),
                                        pars_args = list(alt = alt))
   req <- ob()
-  options(googleAuthR.rawResponse = FALSE)
 
-  if(req$status_code == 404){
-    stop("File not found. Check object_name and if you have read permissions.
-         Looked for ", object_name)
-  }
+  if(!meta){
+    options(googleAuthR.rawResponse = FALSE)
 
-  if(!is.null(saveToDisk)){
+    if(req$status_code == 404){
+      stop("File not found. Check object_name and if you have read permissions.
+           Looked for ", object_name)
+    }
 
-    bin <- httr::content(req, "raw")
-    writeBin(bin, saveToDisk)
-    message("Saved ", object_name, " to ", saveToDisk)
-    out <- TRUE
+    if(!is.null(saveToDisk)){
+
+      bin <- httr::content(req, "raw")
+      writeBin(bin, saveToDisk)
+      message("Saved ", object_name, " to ", saveToDisk)
+      out <- TRUE
+
+    } else {
+      message("Downloaded ", object_name)
+
+      if(parseObject){
+        out <- gcs_parse_download(req)
+      } else {
+        out <- req
+      }
+    }
 
   } else {
-    message("Downloaded ", object_name)
-
-    if(parseObject){
-      out <- gcs_parse_download(req)
-    } else {
-      out <- req
-    }
+    out <- req$content
   }
+
 
   out
 

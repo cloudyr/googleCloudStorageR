@@ -4,12 +4,12 @@
 \alias{gcs_download_url}
 \title{Get the download URL}
 \usage{
-gcs_download_url(bucket, object_name)
+gcs_download_url(object_name, bucket)
 }
 \arguments{
-\item{bucket}{A vector of bucket names}
+\item{object_name}{A vector of object names}
 
-\item{object_name}{A vector of object names
+\item{bucket}{A vector of bucket names
 
 bucket names should be length 1 or same length as object_name}
 }
@@ -22,6 +22,6 @@ You may need to update access for your email to get access via \link{gcs_update_
 Create the download URL for objects in buckets
 }
 \seealso{
-Other download.functions: \code{\link{gcs_parse_download}}
+Other download functions: \code{\link{gcs_parse_download}}
 }
 

@@ -16,7 +16,15 @@ gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
 
 \item{maxResults}{Max number of results}
 }
+\value{
+data.frame of buckets
+}
 \description{
-List buckets
+List the buckets your projectId has access to
+}
+\seealso{
+Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_get_bucket}},
+  \code{\link{gcs_update_bucket}}
 }
 

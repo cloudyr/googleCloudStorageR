@@ -1,10 +1,15 @@
 #' List buckets
 #'
+#' List the buckets your projectId has access to
+#'
 #' @param projectId Project containing buckets to list
 #' @param prefix Filter results to names begnning with this prefix
 #' @param projection Properties to return. Default noAcl omits acl properties
 #' @param maxResults Max number of results
 #'
+#' @return data.frame of buckets
+#'
+#' @family bucket functions
 #' @export
 gcs_list_buckets <- function(projectId,
                              prefix = "",
@@ -32,12 +37,15 @@ gcs_list_buckets <- function(projectId,
 
 #' Get bucket info
 #'
+#' Meta data about the bucket
+#'
 #' @param bucket Name of a bucket
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
 #' @param projection Properties to return. Default noAcl omits acl properties
 #'
 #' @return A bucket resource object
+#' @family bucket functions
 #' @export
 gcs_get_bucket <- function(bucket,
                            ifMetagenerationMatch = NULL,
@@ -67,6 +75,8 @@ gcs_get_bucket <- function(bucket,
 
 #' Create a new bucket
 #'
+#' Create a new bucket in your project
+#'
 #' @param name Globally unique name of bucket to create
 #' @param projectId A valid Google project id
 #' @param location Location of bucket. See details
@@ -80,6 +90,7 @@ gcs_get_bucket <- function(bucket,
 #'
 #' todo: acl, cors, lifecycle, logging, versioning, website
 #'
+#' @family bucket functions
 #' @export
 gcs_create_bucket <-
   function(name,
@@ -145,6 +156,8 @@ gcs_create_bucket <-
 
 #' Update a bucket
 #'
+#' Update a buckets metadata
+#'
 #' @param bucket Name of the bucket
 #' @param new_name Globally unique name of bucket
 #' @param ifMetagenerationMatch Return only if metageneration matches
@@ -161,6 +174,7 @@ gcs_create_bucket <-
 #' todo: acl, cors, lifecycle, logging, versioning, website
 #'
 #' @import testthat
+#' @family bucket functions
 #' @export
 gcs_update_bucket <-
   function(bucket,

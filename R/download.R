@@ -2,8 +2,8 @@
 #'
 #' Create the download URL for objects in buckets
 #'
-#' @param bucket A vector of bucket names
 #' @param object_name A vector of object names
+#' @param bucket A vector of bucket names
 #'
 #' bucket names should be length 1 or same length as object_name
 #'
@@ -13,7 +13,7 @@
 #'
 #' @family download functions
 #' @export
-gcs_download_url <- function(bucket, object_name){
+gcs_download_url <- function(object_name, bucket){
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
 

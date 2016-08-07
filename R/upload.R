@@ -18,7 +18,7 @@
 #'   or \code{https://www.googleapis.com/auth/devstorage.full_control}
 #'
 #' @return If successful, a metadata object
-#' @import httr
+#' @import httr utils
 #' @export
 gcs_upload <- function(file, bucket, type = NULL, name = file){
 

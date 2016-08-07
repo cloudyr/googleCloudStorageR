@@ -20,6 +20,11 @@ gcs_get_bucket(bucket, ifMetagenerationMatch = NULL,
 A bucket resource object
 }
 \description{
-Get bucket info
+Meta data about the bucket
+}
+\seealso{
+Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_list_buckets}},
+  \code{\link{gcs_update_bucket}}
 }
 

@@ -2,16 +2,16 @@
 % Please edit documentation in R/acl.R
 \name{gcs_update_acl}
 \alias{gcs_update_acl}
-\title{Update Google Cloud Storage ObjectAccessControls}
+\title{Change access to an object in a bucket}
 \usage{
-gcs_update_acl(bucket, object, entity, entity_type = c("user", "group",
-  "domian", "project", "allUsers", "allAuthenticatedUsers"),
+gcs_update_acl(object_name, bucket, entity = "", entity_type = c("user",
+  "group", "domain", "project", "allUsers", "allAuthenticatedUsers"),
   role = c("READER", "OWNER"))
 }
 \arguments{
-\item{bucket}{Google Cloud Storage bucket}
+\item{object_name}{Object to update}
 
-\item{object}{Object to update}
+\item{bucket}{Google Cloud Storage bucket}
 
 \item{entity}{entity to update or add, such as an email}
 
@@ -23,11 +23,29 @@ gcs_update_acl(bucket, object, entity, entity_type = c("user", "group",
 TRUE if successful
 }
 \description{
-Requires scopes
-  https://www.googleapis.com/auth/devstorage.full_control
-  https://www.googleapis.com/auth/cloud-platform
+Updates Google Cloud Storage ObjectAccessControls
+}
+\details{
+An \code{entity} is an identifier for the \code{entity_type}.
+
+\itemize{
+  \item \code{entity="user"} may have \code{userId} or \code{email}
+  \item \code{entity="group"} may have \code{groupId} or \code{email}
+  \item \code{entity="domain"} may have \code{domain}
+  \item \code{entity="project"} may have \code{team-projectId}
+ }
+
+For example:
+
+\itemize{
+  \item \code{entity="user"} could be \code{jane@doe.com}
+  \item \code{entity="group"} could be \code{example@googlegroups.com}
+  \item \code{entity="domain"} could be \code{example.com} which is a Google Apps for Business domain.
+ }
 }
 \seealso{
 \href{https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/insert}{objectAccessControls on Google API reference}
+
+Other Access control functions: \code{\link{gcs_get_object_access}}
 }
 

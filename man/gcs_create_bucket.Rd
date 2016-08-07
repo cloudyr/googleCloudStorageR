@@ -28,11 +28,16 @@ gcs_create_bucket(name, projectId, location = "US",
 \item{projection}{Properties to return. Default noAcl omits acl properties}
 }
 \description{
-Create a new bucket
+Create a new bucket in your project
 }
 \details{
 \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
 
 todo: acl, cors, lifecycle, logging, versioning, website
+}
+\seealso{
+Other bucket functions: \code{\link{gcs_get_bucket}},
+  \code{\link{gcs_list_buckets}},
+  \code{\link{gcs_update_bucket}}
 }
 

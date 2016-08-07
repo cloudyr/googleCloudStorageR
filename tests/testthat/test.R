@@ -16,7 +16,7 @@ context("Uploading")
 upload_test <- function(filename){
 
   googleAuthR::gar_auth()
-  write.csv(mtcars, file = filename)
+  # write.csv(mtcars, file = filename)
   gcs_upload(filename, "mark-edmondson-public-files")
 }
 
@@ -66,6 +66,56 @@ test_that("We can download a file to disk", {
 test_that("We can download a file directly", {
 
   dl <- download_test()
-  testthat::expect_s3_class(dl, "data.frame")
+  expect_s3_class(dl, "data.frame")
 
+})
+
+context("Access Control")
+
+test_that("We can set access control level for user", {
+
+  acl <- gcs_update_acl("test_mtcars.csv", "mark-edmondson-public-files", "joe@blogs.com")
+  expect_true(acl)
+
+})
+
+test_that("We can set access control level for public", {
+
+  acl <- gcs_update_acl("test_mtcars.csv", "mark-edmondson-public-files", entity_type = "allUsers")
+  expect_true(acl)
+
+})
+
+test_that("We can create a download URL", {
+
+  durl <- gcs_download_url("test_mtcars.csv", "mark-edmondson-public-files")
+  expect_equal(durl,
+               "https://storage.cloud.google.com/mark-edmondson-public-files/test_mtcars.csv")
+
+})
+
+test_that("We can see access control for allUsers,", {
+
+  acl <- gcs_get_object_access("test_mtcars.csv", "mark-edmondson-public-files",
+                               entity_type = "allUsers")
+  expect_equal(acl$kind, "storage#objectAccessControl")
+  expect_equal(acl$role, "READER")
+  expect_equal(acl$entity, "allUsers")
+})
+
+test_that("We can see access control for single test user,", {
+
+  acl <- gcs_get_object_access("test_mtcars.csv", "mark-edmondson-public-files",
+                               entity = "joe@blogs.com")
+  expect_equal(acl$kind, "storage#objectAccessControl")
+  expect_equal(acl$role, "READER")
+  expect_equal(acl$entity, "user-joe@blogs.com")
+})
+
+context("Meta data")
+
+test_that("We can see object meta data", {
+
+  meta_obj <- gcs_get_object("test_mtcars.csv", "mark-edmondson-public-files", meta = TRUE)
+  expect_equal(meta_obj$kind, "storage#object")
 })

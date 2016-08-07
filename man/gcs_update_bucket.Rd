@@ -33,11 +33,16 @@ gcs_update_bucket(bucket, new_name = NULL, ifMetagenerationMatch = NULL,
 \item{projection}{Properties to return. Default noAcl omits acl properties}
 }
 \description{
-Update a bucket
+Update a buckets metadata
 }
 \details{
 \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
 
 todo: acl, cors, lifecycle, logging, versioning, website
+}
+\seealso{
+Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_get_bucket}},
+  \code{\link{gcs_list_buckets}}
 }
 
