@@ -15,7 +15,7 @@ R library for interacting with the Google Cloud Storage JSON API ([api docs](htt
 
 Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing).
 
-You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the [Google API Console](https://console.developers.google.com)
+You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the Google API Console after login here: `https://console.developers.google.com`.
 
 ## Examples
 
