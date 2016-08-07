@@ -201,7 +201,7 @@ gcs_get_object("your-object", "your-bucket", meta = TRUE)
 
 `googleCloudStorageR` has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.  
 
-No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets) - this is outlined below:
+No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
 
 ### For local use
 
