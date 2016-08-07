@@ -4,7 +4,7 @@
 \alias{gcs_upload}
 \title{Upload a file of arbitary type}
 \usage{
-gcs_upload(file, bucket, type = NULL, name = file)
+gcs_upload(file, bucket, type = NULL, name = deparse(substitute(file)))
 }
 \arguments{
 \item{file}{data.frame, list or filepath character to what you are uploading}
@@ -24,6 +24,10 @@ Simple Upload - for files up to 5MB to Google Cloud Storage
 \details{
 Will turn data.frames into \code{.csv} for upload via \link[utils]{write.csv}
 Will turn lists into \code{.json} via \link[jsonlite]{toJSON}
+
+If \code{file} or \code{name} argument contains folders e.g. \code{/data/file.csv} then
+  the file will be uploaded with the same folder structure e.g. in a \code{/data/} folder.
+Use \code{name} to override this.
 }
 \section{scopes}{
 

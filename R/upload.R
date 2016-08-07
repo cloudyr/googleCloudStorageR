@@ -12,6 +12,10 @@
 #' Will turn data.frames into \code{.csv} for upload via \link[utils]{write.csv}
 #' Will turn lists into \code{.json} via \link[jsonlite]{toJSON}
 #'
+#' If \code{file} or \code{name} argument contains folders e.g. \code{/data/file.csv} then
+#'   the file will be uploaded with the same folder structure e.g. in a \code{/data/} folder.
+#' Use \code{name} to override this.
+#'
 #' @section scopes:
 #'
 #' Requires scopes \code{https://www.googleapis.com/auth/devstorage.read_write}
@@ -20,29 +24,37 @@
 #' @return If successful, a metadata object
 #' @import httr utils
 #' @export
-gcs_upload <- function(file, bucket, type = NULL, name = file){
+gcs_upload <- function(file, bucket, type = NULL, name = deparse(substitute(file))){
 
   upload_limit <- 5000000
+
+  ## no leading slashes
+  name <- gsub("^/","",name)
 
   if(inherits(file, "character")){
     # a filepath
     if(file.size(file) > upload_limit) stop("File size too large, over 5MB")
 
     bb <- httr::upload_file(file, type = type)
+
   } else if(inherits(file, "data.frame")){
+
     temp <- tempfile(fileext = ".csv")
     on.exit(unlink(temp))
     write.csv(file, file = temp)
     if(file.size(temp) > upload_limit) stop("File size too large, over 5MB")
     bb <- httr::upload_file(temp)
-    name <- paste0(deparse(substitute(file)),".csv")
+    name <- if(!grepl("\\.csv$", name)) paste0(name,".csv") else name
+
   } else if(inherits(file, "list")){
+
     temp <- tempfile(fileext = ".json")
     on.exit(unlink(temp))
     write(jsonlite::toJSON(file), temp)
     if(file.size(temp) > upload_limit) stop("File size too large, over 5MB")
     bb <- httr::upload_file(temp)
-    name <- paste0(deparse(substitute(file)),".json")
+    name <- if(!grepl("\\.json$", name)) paste0(name,".json") else name
+
   } else {
     stop("Unsupported object type passed in argument file.")
   }

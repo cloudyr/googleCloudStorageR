@@ -1,3 +1,7 @@
+# 0.1.0.9000
+
+* Fix bug where you can't rename objects via name in `gcs_upload`
+
 # googleCloudStorageR 0.1.0
 
 Initial release
