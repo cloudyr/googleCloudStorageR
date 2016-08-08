@@ -5,7 +5,7 @@
 \title{Save an R session to the Google Cloud}
 \usage{
 gcs_save(..., list = ls(all.names = TRUE, envir = parent.frame()),
-  bucket = gcs_get_global_bucket(), folder = ".RData", keepCache = FALSE)
+  bucket = gcs_get_global_bucket(), folder = ".RData")
 }
 \arguments{
 \item{...}{Names of objects to be saved (as symbols or character strings)}

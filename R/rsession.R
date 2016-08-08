@@ -26,8 +26,7 @@
 gcs_save <- function(...,
                      list = ls(all.names = TRUE, envir = parent.frame()),
                      bucket = gcs_get_global_bucket(),
-                     folder = ".RData",
-                     keepCache = FALSE){
+                     folder = ".RData"){
 
   ## from save()
   names <- as.character(substitute(list(...)))[-1L]
