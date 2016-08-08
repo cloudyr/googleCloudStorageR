@@ -6,7 +6,7 @@
 #'
 #' @family object functions
 #' @export
-gcs_list_objects <- function(bucket){
+gcs_list_objects <- function(bucket = gcs_get_global_bucket()){
 
   testthat::expect_type(bucket, "character")
   testthat::expect_length(bucket, 1)
@@ -38,7 +38,7 @@ gcs_list_objects <- function(bucket){
 #' @family object functions
 #' @export
 gcs_get_object <- function(object_name,
-                           bucket,
+                           bucket = gcs_get_global_bucket(),
                            meta = FALSE,
                            saveToDisk = NULL,
                            parseObject = TRUE){

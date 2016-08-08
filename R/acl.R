@@ -35,7 +35,7 @@
 #' @family Access control functions
 #' @export
 gcs_update_acl <- function(object_name,
-                           bucket,
+                           bucket = gcs_get_global_bucket(),
                            entity = "",
                            entity_type = c("user",
                                            "group",
@@ -96,7 +96,7 @@ gcs_update_acl <- function(object_name,
 #' @family Access control functions
 #' @export
 gcs_get_object_access <- function(object_name,
-                                  bucket,
+                                  bucket = gcs_get_global_bucket(),
                                   entity = "",
                                   entity_type = c("user",
                                                   "group",

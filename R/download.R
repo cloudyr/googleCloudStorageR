@@ -13,7 +13,7 @@
 #'
 #' @family download functions
 #' @export
-gcs_download_url <- function(object_name, bucket){
+gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket()){
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
 

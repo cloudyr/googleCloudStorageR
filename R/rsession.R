@@ -15,17 +15,17 @@
 #'
 #' Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 #'
-#' If multiple objects, they will be uploaded separately in a folder within the bucket
+#' Objects will be uploaded separately in a folder within the bucket
 #'   using \code{.rds} format.
 #'
-#' Bear in mind this will overwrite any data with the same name in folder.
+#' This will overwrite any data with the same name in folder.
 #'
 #' @family R session data functions
 #' @return TRUE if successful
 #' @export
 gcs_save <- function(...,
                      list = ls(all.names = TRUE, envir = parent.frame()),
-                     bucket,
+                     bucket = gcs_get_global_bucket(),
                      folder = ".RData",
                      keepCache = FALSE){
 
@@ -63,7 +63,7 @@ gcs_save <- function(...,
 #' @family R session data functions
 #' @return TRUE if successful
 #' @export
-gcs_load <- function(bucket, folder = ".RData"){
+gcs_load <- function(bucket = gcs_get_global_bucket(), folder = ".RData"){
 
   objs <- gcs_list_objects(bucket)
   session_objs <- objs$name[grepl(paste0("^\\",folder),objs$name)]

@@ -4,8 +4,8 @@
 \alias{gcs_save}
 \title{Save an R session to the Google Cloud}
 \usage{
-gcs_save(..., list = ls(all.names = TRUE, envir = parent.frame()), bucket,
-  folder = ".RData", keepCache = FALSE)
+gcs_save(..., list = ls(all.names = TRUE, envir = parent.frame()),
+  bucket = gcs_get_global_bucket(), folder = ".RData", keepCache = FALSE)
 }
 \arguments{
 \item{...}{Names of objects to be saved (as symbols or character strings)}
@@ -29,10 +29,10 @@ If objects to be saved are for use with only R consider using this
 
 Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 
-If multiple objects, they will be uploaded separately in a folder within the bucket
+Objects will be uploaded separately in a folder within the bucket
   using \code{.rds} format.
 
-Bear in mind this will overwrite any data with the same name in folder.
+This will overwrite any data with the same name in folder.
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}}

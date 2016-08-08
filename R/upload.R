@@ -24,7 +24,10 @@
 #' @return If successful, a metadata object
 #' @import httr utils
 #' @export
-gcs_upload <- function(file, bucket, type = NULL, name = deparse(substitute(file))){
+gcs_upload <- function(file,
+                       bucket = gcs_get_global_bucket(),
+                       type = NULL,
+                       name = deparse(substitute(file))){
 
   upload_limit <- 5000000
 

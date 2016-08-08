@@ -25,6 +25,8 @@ List the buckets your projectId has access to
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
   \code{\link{gcs_get_bucket}},
+  \code{\link{gcs_get_global_bucket}},
+  \code{\link{gcs_global_bucket}},
   \code{\link{gcs_update_bucket}}
 }
 

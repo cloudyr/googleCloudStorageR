@@ -4,7 +4,7 @@
 \alias{gcs_download_url}
 \title{Get the download URL}
 \usage{
-gcs_download_url(object_name, bucket)
+gcs_download_url(object_name, bucket = gcs_get_global_bucket())
 }
 \arguments{
 \item{object_name}{A vector of object names}

@@ -11,19 +11,25 @@ test_that("We can login", {
 
 })
 
+test_that("We can set global bucket names", {
+
+  bucket <- gcs_global_bucket("mark-edmondson-public-files")
+  expect_true(bucket == "mark-edmondson-public-files")
+})
+
 context("Uploading")
 
 upload_test <- function(filename){
 
   googleAuthR::gar_auth()
   # write.csv(mtcars, file = filename)
-  gcs_upload(filename, "mark-edmondson-public-files")
+  gcs_upload(filename)
 }
 
 upload_obj <- function(obj){
 
   googleAuthR::gar_auth()
-  gcs_upload(obj, "mark-edmondson-public-files")
+  gcs_upload(obj)
 }
 
 test_that("We can upload a file", {
@@ -53,7 +59,7 @@ download_test <- function(direct = NULL){
 
   googleAuthR::gar_auth()
   filename <- "test_mtcars.csv"
-  gcs_get_object(filename, "mark-edmondson-public-files", saveToDisk = direct)
+  gcs_get_object(filename, saveToDisk = direct)
 }
 
 test_that("We can download a file to disk", {
@@ -74,21 +80,21 @@ context("Access Control")
 
 test_that("We can set access control level for user", {
 
-  acl <- gcs_update_acl("test_mtcars.csv", "mark-edmondson-public-files", "joe@blogs.com")
+  acl <- gcs_update_acl("test_mtcars.csv", entity = "joe@blogs.com")
   expect_true(acl)
 
 })
 
 test_that("We can set access control level for public", {
 
-  acl <- gcs_update_acl("test_mtcars.csv", "mark-edmondson-public-files", entity_type = "allUsers")
+  acl <- gcs_update_acl("test_mtcars.csv", entity_type = "allUsers")
   expect_true(acl)
 
 })
 
 test_that("We can create a download URL", {
 
-  durl <- gcs_download_url("test_mtcars.csv", "mark-edmondson-public-files")
+  durl <- gcs_download_url("test_mtcars.csv")
   expect_equal(durl,
                "https://storage.cloud.google.com/mark-edmondson-public-files/test_mtcars.csv")
 
@@ -96,7 +102,7 @@ test_that("We can create a download URL", {
 
 test_that("We can see access control for allUsers,", {
 
-  acl <- gcs_get_object_access("test_mtcars.csv", "mark-edmondson-public-files",
+  acl <- gcs_get_object_access("test_mtcars.csv",
                                entity_type = "allUsers")
   expect_equal(acl$kind, "storage#objectAccessControl")
   expect_equal(acl$role, "READER")
@@ -105,7 +111,7 @@ test_that("We can see access control for allUsers,", {
 
 test_that("We can see access control for single test user,", {
 
-  acl <- gcs_get_object_access("test_mtcars.csv", "mark-edmondson-public-files",
+  acl <- gcs_get_object_access("test_mtcars.csv",
                                entity = "joe@blogs.com")
   expect_equal(acl$kind, "storage#objectAccessControl")
   expect_equal(acl$role, "READER")
@@ -116,6 +122,6 @@ context("Meta data")
 
 test_that("We can see object meta data", {
 
-  meta_obj <- gcs_get_object("test_mtcars.csv", "mark-edmondson-public-files", meta = TRUE)
+  meta_obj <- gcs_get_object("test_mtcars.csv", meta = TRUE)
   expect_equal(meta_obj$kind, "storage#object")
 })
