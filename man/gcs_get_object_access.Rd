@@ -4,9 +4,9 @@
 \alias{gcs_get_object_access}
 \title{Check the access control settings for an object for one entity}
 \usage{
-gcs_get_object_access(object_name, bucket, entity = "",
-  entity_type = c("user", "group", "domain", "project", "allUsers",
-  "allAuthenticatedUsers"), generation = NULL)
+gcs_get_object_access(object_name, bucket = gcs_get_global_bucket(),
+  entity = "", entity_type = c("user", "group", "domain", "project",
+  "allUsers", "allAuthenticatedUsers"), generation = NULL)
 }
 \arguments{
 \item{object_name}{Name of the object}

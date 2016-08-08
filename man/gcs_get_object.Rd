@@ -4,8 +4,8 @@
 \alias{gcs_get_object}
 \title{Get an object in a bucket directly}
 \usage{
-gcs_get_object(object_name, bucket, meta = FALSE, saveToDisk = NULL,
-  parseObject = TRUE)
+gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
+  saveToDisk = NULL, parseObject = TRUE)
 }
 \arguments{
 \item{object_name}{name of object in the bucket. URL encoded.}

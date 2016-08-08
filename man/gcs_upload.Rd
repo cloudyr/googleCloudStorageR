@@ -4,7 +4,8 @@
 \alias{gcs_upload}
 \title{Upload a file of arbitary type}
 \usage{
-gcs_upload(file, bucket, type = NULL, name = deparse(substitute(file)))
+gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
+  name = deparse(substitute(file)))
 }
 \arguments{
 \item{file}{data.frame, list or filepath character to what you are uploading}

@@ -4,7 +4,7 @@
 \alias{gcs_list_objects}
 \title{List objects in a bucket}
 \usage{
-gcs_list_objects(bucket)
+gcs_list_objects(bucket = gcs_get_global_bucket())
 }
 \arguments{
 \item{bucket}{bucket containing the objects}

@@ -1,3 +1,52 @@
+## store bucket name
+.gcs_env <- new.env(parent = emptyenv())
+
+#' Set global bucket name
+#'
+#' Set a bucket name used for this R session
+#'
+#' @param bucket bucket name you want this session to use by default
+#'
+#' @details
+#'   This sets a bucket to a global environment value so you don't need to
+#' supply the bucket argument to other API calls.
+#'
+#' @return The bucket name (invisibly)
+#'
+#' @family bucket functions
+#' @export
+gcs_global_bucket <- function(bucket){
+  stopifnot(inherits(bucket, "character"),
+            length(bucket) == 1)
+
+  .gcs_env$bucket <- bucket
+  message("Set default bucket name to '", bucket,"'")
+  return(invisible(.gcs_env$bucket))
+
+}
+
+#' Get global bucket name
+#'
+#' Bucket name set this session to use by default
+#'
+#' @return Bucket name
+#'
+#' @details
+#'   Set the bucket name via \link{gcs_global_bucket}
+#'
+#' @family bucket functions
+#' @export
+gcs_get_global_bucket <- function(){
+
+  if(!exists("bucket", envir = .gcs_env)){
+    stop("Bucket is NULL and couldn't find global bucket name.
+         Set it via gcs_global_bucket")
+  }
+
+  .gcs_env$bucket
+
+}
+
 #' List buckets
 #'
 #' List the buckets your projectId has access to
@@ -47,7 +96,7 @@ gcs_list_buckets <- function(projectId,
 #' @return A bucket resource object
 #' @family bucket functions
 #' @export
-gcs_get_bucket <- function(bucket,
+gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
                            ifMetagenerationMatch = NULL,
                            ifMetagenerationNotMatch = NULL,
                            projection = c("noAcl","full")){
@@ -177,7 +226,7 @@ gcs_create_bucket <-
 #' @family bucket functions
 #' @export
 gcs_update_bucket <-
-  function(bucket,
+  function(bucket = gcs_get_global_bucket(),
            new_name = NULL,
            ifMetagenerationMatch = NULL,
            ifMetagenerationNotMatch = NULL,

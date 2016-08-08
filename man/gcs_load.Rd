@@ -4,7 +4,7 @@
 \alias{gcs_load}
 \title{Load an R session from the Google Cloud}
 \usage{
-gcs_load(bucket, folder = ".RData")
+gcs_load(bucket = gcs_get_global_bucket(), folder = ".RData")
 }
 \arguments{
 \item{bucket}{Bucket the stored objects are in}

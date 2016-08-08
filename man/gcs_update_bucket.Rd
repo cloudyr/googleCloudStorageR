@@ -4,11 +4,11 @@
 \alias{gcs_update_bucket}
 \title{Update a bucket}
 \usage{
-gcs_update_bucket(bucket, new_name = NULL, ifMetagenerationMatch = NULL,
-  ifMetagenerationNotMatch = NULL, location = NULL,
-  storageClass = c("STANDARD", "NEARLINE", "DURABLE_REDUCED_AVAILABILITY"),
-  predefinedAcl = c("authenticatedRead", "private", "projectPrivate",
-  "publicRead", "publicReadWrite"),
+gcs_update_bucket(bucket = gcs_get_global_bucket(), new_name = NULL,
+  ifMetagenerationMatch = NULL, ifMetagenerationNotMatch = NULL,
+  location = NULL, storageClass = c("STANDARD", "NEARLINE",
+  "DURABLE_REDUCED_AVAILABILITY"), predefinedAcl = c("authenticatedRead",
+  "private", "projectPrivate", "publicRead", "publicReadWrite"),
   predefinedDefaultObjectAcl = c("authenticatedRead", "private",
   "projectPrivate", "publicRead", "publicReadWrite"), projection = c("noAcl",
   "full"))
@@ -43,6 +43,8 @@ todo: acl, cors, lifecycle, logging, versioning, website
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
   \code{\link{gcs_get_bucket}},
+  \code{\link{gcs_get_global_bucket}},
+  \code{\link{gcs_global_bucket}},
   \code{\link{gcs_list_buckets}}
 }
 
