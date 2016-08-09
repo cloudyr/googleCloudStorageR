@@ -23,6 +23,7 @@ options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorag
 # options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
 
 googleAuthR::gar_auth()
+## or googleAuthR::gar_auth_service("your_json.json")
 
 ## get your project name from the API console
 proj <- "your-project"
