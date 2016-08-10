@@ -32,7 +32,7 @@ gcs_upload <- function(file,
   upload_limit <- 5000000
 
   ## no leading slashes
-  name <- gsub("^/","",name)
+  name <- gsub("^/","", utils::URLencode(name, reserved = TRUE))
 
   if(inherits(file, "character")){
     # a filepath

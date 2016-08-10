@@ -4,7 +4,7 @@
 * Add `gcs_save` to store R session data in cloud
 * Add `gcs_load` to restore session data stored with `gcs_save`
 * Fix resetting of `options(googleAuthR.rawResponse = TRUE)` when using `gcs_get_object`
-* Add URLencoding to `object_name` in `gcs_get_object`
+* Add URLencoding to `object_name` in `gcs_get_object` etc.
 * `gcs_global_bucket` and `gcs_get_global_bucket` to set global bucket name
 
 # googleCloudStorageR 0.1.0
