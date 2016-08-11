@@ -47,7 +47,7 @@ gcs_update_acl <- function(object_name,
 
   entity_type <- match.arg(entity_type)
   role <- match.arg(role)
-  
+
   object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
 
   stopifnot(inherits(bucket, "character"),
@@ -110,7 +110,7 @@ gcs_get_object_access <- function(object_name,
 
   entity_type <- match.arg(entity_type)
   entity <- build_entity(entity, entity_type)
-  
+
   ## no leading slashes
   object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
 
@@ -126,7 +126,9 @@ gcs_get_object_access <- function(object_name,
   f <- gar_api_generator(url, "GET",
                          pars_args = pa,
                          data_parse_function = function(x) x)
-  f()
+  req <- f()
+
+  structure(req, class = "gcs_object_access")
 
 }
 

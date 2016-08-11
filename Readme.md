@@ -47,6 +47,18 @@ proj <- "your-project"
 buckets <- gcs_list_buckets(proj)
 bucket <- "your-bucket"
 bucket_info <- gcs_get_bucket(bucket)
+bucket_info
+
+==Google Cloud Storage Bucket==
+Bucket:          your-bucket 
+Project Number:  1123123123 
+Location:        EU 
+Class:           STANDARD 
+Created:         2016-04-28 11:39:06 
+Updated:         2016-04-28 11:39:06 
+Meta-generation: 1 
+eTag:            Cxx=
+
 
 ## get object info in the default bucket
 objects <- gcs_list_objects()
