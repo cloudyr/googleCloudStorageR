@@ -1,4 +1,5 @@
 library(googleAuthR)
+library(testthat)
 options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
 library(googleCloudStorageR)
 
@@ -125,3 +126,4 @@ test_that("We can see object meta data", {
   meta_obj <- gcs_get_object("test_mtcars.csv", meta = TRUE)
   expect_equal(meta_obj$kind, "storage#object")
 })
+
