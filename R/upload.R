@@ -75,5 +75,5 @@ gcs_upload <- function(file,
             pars_arguments = list(name = name),
             the_body = bb)
 
-  req$content
+  structure(req$content, class = "gcs_objectmeta")
 }

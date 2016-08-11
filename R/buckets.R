@@ -80,7 +80,7 @@ gcs_list_buckets <- function(projectId,
                                                     projection=projection))
   req <- lb()
 
-  req$content$items
+  structure(req$content$items, class = "gcs_bucketlist")
 
 }
 
@@ -118,8 +118,7 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
                                    pars_args = pars_args)
   req <- bb()
 
-  req$content
-
+  structure(req$content, class = "gcs_bucket")
 }
 
 #' Create a new bucket
@@ -193,7 +192,7 @@ gcs_create_bucket <-
 
   if(req$status_code == 200){
     myMessage("Bucket created successfully:", name, " in ", location, level = 3)
-    out <- req$content
+    out <- structure(req$content, class = "gcs_bucket")
   } else {
     myMessage("Bucket creation failed:", name, " in ", location, level = 3)
     out <- FALSE
@@ -280,7 +279,7 @@ gcs_update_bucket <-
 
     if(req$status_code == 200){
       myMessage("Bucket update successfully", level = 3)
-      out <- req$content
+      out <- structure(req$content, class = "gcs_bucket")
     } else {
       myMessage("Bucket update failed", level = 3)
       out <- FALSE

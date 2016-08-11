@@ -89,7 +89,7 @@ gcs_get_object <- function(object_name,
     }
 
   } else {
-    out <- req$content
+    out <- structure(req$content, class = "gcs_objectmeta")
   }
 
 
