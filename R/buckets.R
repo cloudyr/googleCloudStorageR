@@ -72,15 +72,24 @@ gcs_list_buckets <- function(projectId,
   testthat::expect_is(projection, "character")
   testthat::expect_is(maxResults, "numeric")
 
+  parse_lb <- function(x){
+    x <- x$items
+    x$kind <- NULL
+    x$timeCreated <- timestamp_to_r(x$timeCreated)
+    x$updated <- timestamp_to_r(x$updated)
+
+    x
+  }
+
   lb <-
     googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/b",
                                    "GET",
                                    pars_args = list(project=projectId,
                                                     prefix=prefix,
-                                                    projection=projection))
-  req <- lb()
+                                                    projection=projection),
+                                   data_parse_function = parse_lb)
 
-  structure(req$content$items, class = "gcs_bucketlist")
+  lb()
 
 }
 

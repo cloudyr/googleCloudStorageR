@@ -1,3 +1,10 @@
+#' Timestamp to R date
+#' @keywords internal
+timestamp_to_r <- function(t){
+  as.POSIXct(t, format = "%Y-%m-%dT%H:%M:%S")
+}
+
+
 #' A helper function that tests whether an object is either NULL _or_
 #' a list of NULLs
 #'

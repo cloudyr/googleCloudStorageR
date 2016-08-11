@@ -11,12 +11,22 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket()){
   testthat::expect_type(bucket, "character")
   testthat::expect_length(bucket, 1)
 
+  parse_lo <- function(x){
+    x <- x$items
+    x$timeCreated <- timestamp_to_r(x$timeCreated)
+    x$updated <- timestamp_to_r(x$updated)
+    x$kind <- NULL
+    x$size <- vapply(as.numeric(x$size), function(x) utils:::format.object_size(x, "auto"), character(1))
+    x
+  }
+
   lo <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                       path_args = list(b = bucket,
-                                                       o = ""))
+                                                       o = ""),
+                                      data_parse_function = parse_lo)
   req <- lo()
 
-  req$content$items
+  req
 
 }
 
