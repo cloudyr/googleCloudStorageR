@@ -28,8 +28,8 @@
   }
 
   if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
-    .gcs_env$bucket <- bucket
-    packageStartupMessage("Set default bucket name to '", bucket,"'")
+    .gcs_env$bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
+    packageStartupMessage("Set default bucket name to '", Sys.getenv("GCS_DEFAULT_BUCKET"),"'")
   }
 
   invisible()
