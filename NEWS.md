@@ -6,6 +6,7 @@
 * Fix resetting of `options(googleAuthR.rawResponse = TRUE)` when using `gcs_get_object`
 * Add URLencoding to `object_name` in `gcs_get_object` etc.
 * `gcs_global_bucket` and `gcs_get_global_bucket` to set global bucket name
+* Add options to set environment variables for API keys, default buckets etc.
 
 # googleCloudStorageR 0.1.0
 
