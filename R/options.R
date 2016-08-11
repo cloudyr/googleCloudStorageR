@@ -2,7 +2,7 @@
 
   scopes <- getOption("googleAuthR.scopes.selected")
   if(!("https://www.googleapis.com/auth/devstorage.full_control" %in% scopes)){
-    packageStartupMessage("Adding https://www.googleapis.com/auth/devstorage.full_control scope")
+    # packageStartupMessage("Adding https://www.googleapis.com/auth/devstorage.full_control scope")
     new_scopes <- c(getOption("googleAuthR.scopes.selected"),
                     "https://www.googleapis.com/auth/devstorage.full_control")
   } else {
@@ -29,7 +29,7 @@
 
   if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
     .gcs_env$bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
-    packageStartupMessage("Set default bucket name to '", Sys.getenv("GCS_DEFAULT_BUCKET"),"'")
+    # packageStartupMessage("Set default bucket name to '", Sys.getenv("GCS_DEFAULT_BUCKET"),"'")
   }
 
   invisible()

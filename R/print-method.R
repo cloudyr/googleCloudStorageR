@@ -16,7 +16,7 @@ print.gcs_objectmeta <- function(x, ...){
   cat("==Google Cloud Storage Object==\n")
   cat("Name:           ", x$name, "\n")
   cat("Type:           ", x$contentType, "\n")
-  cat("Size:           ", utils:::format.object_size(as.numeric(x$size), "auto"), "\n")
+  cat("Size:           ", format_object_size(as.numeric(x$size), "auto"), "\n")
   cat("Media URL       ", x$mediaLink, "\n")
   cat("Bucket:         ", x$bucket, "\n")
   cat("ID:             ", x$id, "\n")
