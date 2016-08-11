@@ -16,7 +16,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket()){
     x$timeCreated <- timestamp_to_r(x$timeCreated)
     x$updated <- timestamp_to_r(x$updated)
     x$kind <- NULL
-    x$size <- vapply(as.numeric(x$size), function(x) utils:::format.object_size(x, "auto"), character(1))
+    x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
     x
   }
 
