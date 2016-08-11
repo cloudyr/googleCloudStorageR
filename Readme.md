@@ -23,6 +23,7 @@ options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorag
 # options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
 
 googleAuthR::gar_auth()
+## or googleAuthR::gar_auth_service("your_json.json")
 
 ## get your project name from the API console
 proj <- "your-project"
@@ -248,11 +249,11 @@ No other user, including the owner of the Google Cloud Storage API project has a
 [![Build Status](https://travis-ci.org/cloudyr/googleCloudStorageR.png?branch=master)](https://travis-ci.org/cloudyr/googleCloudStorageR)
 [![codecov.io](http://codecov.io/github/cloudyr/googleCloudStorageR/coverage.svg?branch=master)](http://codecov.io/github/cloudyr/googleCloudStorageR?branch=master)
 
-This package is not yet on CRAN. To install the latest development version you can install from the cloudyr drat repository:
+This package is on CRAN.
 
 ```R
 # latest stable version
-install.packages("googleCloudStorageR", repos = c(getOption("repos"), "http://cloudyr.github.io/drat"))
+install.packages("googleCloudStorageR")
 ```
 
 Or, to pull a potentially unstable version directly from GitHub:
