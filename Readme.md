@@ -10,17 +10,32 @@ You can use your own Google Project with a credit card added to create buckets, 
 
 ## Examples
 
+### Setting a default Bucket
+
+To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function `gcs_global_bucket()`.  See the `Setting environment variables` section below for more details.
+
+```r
+## set bucket via environment
+Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket")
+
+library(googleCloudStorageR)
+
+## check what the default bucket is
+gcs_get_global_bucket()
+[1] "my-default-bucket"
+
+## you can also set a default bucket after loading the library for that session
+gcs_global_bucket("your-default-bucket-2")
+gcs_get_global_bucket()
+[1] "my-default-bucket-2"
+```
+
 ### Downloading objects from Google Cloud storage
 
 Once you have a Google project and created a bucket with an object in it, you can download it as below:
 
 ```r
 library(googleCloudStorageR)
-options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
-
-## optional, if you want to use your own Google project
-# options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
-# options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
 
 googleAuthR::gar_auth()
 ## or googleAuthR::gar_auth_service("your_json.json")
@@ -32,10 +47,6 @@ proj <- "your-project"
 buckets <- gcs_list_buckets(proj)
 bucket <- "your-bucket"
 bucket_info <- gcs_get_bucket(bucket)
-
-## you can set a default bucket so you don't need to specify it in the 
-## functions below
-gcs_global_bucket("your-default-bucket")
 
 ## get object info in the default bucket
 objects <- gcs_list_objects()
@@ -210,13 +221,35 @@ gcs_get_object("your-object", "your-bucket", meta = TRUE)
 
 `googleCloudStorageR` has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.  
 
-No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
+No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  
+
+
+### Setting environment variables
+
+By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket. For example:
+
+```r
+Sys.setenv("GCS_CLIENT_ID" = "mykey",
+           "GCS_CLIENT_SECRET" = "mysecretkey",
+           "GCS_WEB_CLIENT_ID" = "my-shiny-key",
+           "GCS_WEB_CLIENT_SECRET" = "my-shiny-secret-key",
+           "GCS_DEFAULT_BUCKET" = "my-default-bucket")
+```
+
+These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
+
+The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
 
 ### For local use
 
 1. Click 'Create a new Client ID', and choose "Installed Application".
 2. Note your Client ID and secret.
-3. Modify these options after googleAuthR has been loaded:
+3. Add them by modifying your .Renviron file, or under the following entries:
+
+        Sys.setenv("GCS_CLIENT_ID" = "mykey",
+                   "GCS_CLIENT_SECRET" = "mysecretkey")
+
+4. Alternatively, modify these options after googleAuthR has been loaded:
 
         options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
         options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
@@ -227,19 +260,25 @@ No other user, including the owner of the Google Cloud Storage API project has a
 2. Note your Client ID and secret.
 3. Add the URL of where your Shiny app will run, with no port number. e.g. `https://mark.shinyapps.io/searchConsoleRDemo/`
 4. And/Or also put in localhost or 127.0.0.1 with a port number for local testing. Remember the port number you use as you will need it later to launch the app e.g. `http://127.0.0.1:1221`
-5. In your Shiny script modify these options:
+5. Add them by modifying your .Renviron file, or under the following entries:
+
+        Sys.setenv("GCS_WEB_CLIENT_ID" = "mykey",
+                   "GCS_WEB_CLIENT_SECRET" = "mysecretkey")
+                   
+6. Alternatively, in your Shiny script modify these options:
 
         options("googleAuthR.webapp.client_id" = "YOUR_CLIENT_ID")
         options("googleAuthR.webapp.client_secret" = "YOUR_CLIENT_SECRET")
 
-6. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
-7. Running on your Shiny Server will work only for the URL from step 3.
+7. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
+8. Running on your Shiny Server will work only for the URL from step 3.
 
 ### Activate API
 
 1. Click on "APIs"
 2. Select and activate the Cloud Storage JSON API 
-3. Set the `googleAuthR`option for Google Cloud storage scope:
+3. After loading the package via `library(googleCloudStorage)`, it will look to see if `"https://www.googleapis.com/auth/devstorage.full_control"` is set in `getOption("googleAuthR.scopes.selected")` and set it if it is not, adding to the existing scopes.  
+4. Alternativly, set the `googleAuthR` option for Google Cloud storage scope after the library has been loaded but before authentication. 
 
         options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
 
