@@ -79,9 +79,9 @@ gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")
 
 ## Uploading objects < 5MB
 
-Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  Data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  By default, data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
 
-You can pass metadata with an object via the function `gcs_metadata_object()`.
+If you want to use other functions for transforming R objects, for example setting `row.names = FALSE` or using `write.csv2`, pass the function through `object_function`
 
 ```r
 ## upload a file - type will be guessed from file extension or supply type  
@@ -93,7 +93,28 @@ gcs_upload(mtcars)
 
 ## upload an R list - will be converted to json via jsonlite::toJSON
 gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)))
+
+## upload an R data.frame directly, with a custom function
+## safest to supply type too
+gcs_upload(mtcars, 
+           object_function = function(x) write.csv(x, row.names = FALSE),
+           type = "text/csv")
 ```
+
+## Upload metadata
+
+You can pass metadata with an object via the function `gcs_metadata_object()`.
+
+the name you pass to the metadata object will override the name if it is also set elsewhere.
+
+```r
+meta <- gcs_metadata_object("mtcars.csv",
+                             metadata = list(custom1 = 2,
+                                             custom_key = 'dfsdfsdfsfs))
+                                             
+gcs_upload(mtcars, object_metadata = meta)
+```
+
 
 ## Resumable uploads for files > 5MB up to 5TB
 
@@ -139,7 +160,7 @@ File Size:        8.5 Gb
 Upload Byte:      4343
 Upload remaining: 8.1 Gb
 
-## you can retry to uplaod the remaining data using gcs_retry_upload()
+## you can retry to upload the remaining data using gcs_retry_upload()
 try2 <- gcs_retry_upload(upload_try)
 ```
 

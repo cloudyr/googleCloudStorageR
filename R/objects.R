@@ -113,7 +113,6 @@ gcs_get_object <- function(object_name,
 #'
 #' @inheritParams Object
 #' @param object_name Name of the object. GCS uses this version if also set elsewhere.
-#' @param predefinedAcl A predefined access control
 #'
 #' @return Object metadata for uploading of class \code{gar_Object}
 #' @export
