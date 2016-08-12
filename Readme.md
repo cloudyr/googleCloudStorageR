@@ -77,9 +77,11 @@ raw_download <- gcs_get_object(objects$name[[1]],
 gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")
 ```
 
-## Uploading objects
+## Uploading objects < 5MB
 
-Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  Data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  By default, data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+
+If you want to use other functions for transforming R objects, for example setting `row.names = FALSE` or using `write.csv2`, pass the function through `object_function`
 
 ```r
 ## upload a file - type will be guessed from file extension or supply type  
@@ -91,6 +93,75 @@ gcs_upload(mtcars)
 
 ## upload an R list - will be converted to json via jsonlite::toJSON
 gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)))
+
+## upload an R data.frame directly, with a custom function
+## safest to supply type too
+gcs_upload(mtcars, 
+           object_function = function(x) write.csv(x, row.names = FALSE),
+           type = "text/csv")
+```
+
+## Upload metadata
+
+You can pass metadata with an object via the function `gcs_metadata_object()`.
+
+the name you pass to the metadata object will override the name if it is also set elsewhere.
+
+```r
+meta <- gcs_metadata_object("mtcars.csv",
+                             metadata = list(custom1 = 2,
+                                             custom_key = 'dfsdfsdfsfs))
+                                             
+gcs_upload(mtcars, object_metadata = meta)
+```
+
+
+## Resumable uploads for files > 5MB up to 5TB
+
+If the file/object is under 5MB, simple uploads are used.  
+
+For files > 5MB, [resumable uploads](https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resumable) are used.  This allows you to upload up to 5TB.  
+
+If you get an interrupted connection when uploading, `gcs_upload` will retry 3 times, if it fails it will return a Retry object, that you can try again later from where the upload stopped.  Call this via `gcs_retry_upload`
+
+```r
+## write a big object to a file
+big_file <- "big_filename.csv"
+write.csv(big_object, file = big_file)
+
+## attempt upload
+upload_try <- gcs_upload(big_file)
+
+## if successful, upload_try is an object metadata object
+upload_try
+==Google Cloud Storage Object==
+Name:            "big_filename.csv" 
+Size:            8.5 Gb 
+Media URL        https://www.googleapis.com/download/storage/v1/b/xxxx 
+Bucket:          your-bucket 
+ID:              your-bucket/"test.pdf"/xxxx
+MD5 Hash:        rshao1nxxxxxY68JZQ== 
+Class:           STANDARD 
+Created:         2016-08-12 17:33:05 
+Updated:         2016-08-12 17:33:05 
+Generation:      1471023185977000 
+Meta Generation: 1 
+eTag:            CKi90xxxxxEAE= 
+crc32c:          j4i1sQ== 
+
+
+## if unsuccessful after 3 retries, upload_try is a Retry object
+==Google Cloud Storage Upload Retry Object==
+File Location:     big_filename.csv
+Retry Upload URL:  http://xxxx
+Created:           2016-08-12 17:33:05 
+Type:              csv
+File Size:        8.5 Gb
+Upload Byte:      4343
+Upload remaining: 8.1 Gb
+
+## you can retry to upload the remaining data using gcs_retry_upload()
+try2 <- gcs_retry_upload(upload_try)
 ```
 
 ## Updating user access to objects

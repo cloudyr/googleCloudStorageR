@@ -7,7 +7,8 @@
 gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
   name = deparse(substitute(file)), object_function = NULL,
   object_metadata = NULL, predefinedAcl = c("private", "authenticatedRead",
-  "bucketOwnerFullControl", "buckerOwnerRead", "projectPrivate", "publicRead"))
+  "bucketOwnerFullControl", "buckerOwnerRead", "projectPrivate", "publicRead"),
+  upload_type = c("simple", "resumable"))
 }
 \arguments{
 \item{file}{data.frame, list, R object or filepath (character) to upload file}
@@ -23,6 +24,8 @@ gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
 \item{object_metadata}{Optional metadata for object created via \link{gcs_metadata_object}}
 
 \item{predefinedAcl}{Specify user access to object. Default is 'private'}
+
+\item{upload_type}{Override automatic decision on upload type}
 }
 \value{
 If successful, a metadata object
@@ -31,6 +34,9 @@ If successful, a metadata object
 Simple Upload - for files up to 5MB to Google Cloud Storage
 }
 \details{
+By default the \code{upload_type} will be 'simple' if under 5MB, 'resumable' if over 5MB.
+  'Multipart' upload is used if you provide a \code{object_metadata}.
+
 If \code{object_function} is NULL and \code{file} is not a character filepath,
   the defaults are:
 
