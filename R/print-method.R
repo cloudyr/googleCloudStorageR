@@ -1,58 +1,65 @@
 #' @export
 print.gcs_bucket <- function(x, ...){
   cat("==Google Cloud Storage Bucket==\n")
-  cat("Bucket:         ", x$name, "\n")
-  cat("Project Number: ", x$projectNumber, "\n")
-  cat("Location:       ", x$location, "\n")
-  cat("Class:          ", x$storageClass, "\n")
-  cat("Created:        ", as.character(timestamp_to_r(x$timeCreated)), "\n")
-  cat("Updated:        ", as.character(timestamp_to_r(x$updated)), "\n")
-  cat("Meta-generation:", x$metageneration, "\n")
-  cat("eTag:           ", x$etag, "\n")
+  cat0("Bucket:         ", x$name)
+  cat0("Project Number: ", x$projectNumber)
+  cat0("Location:       ", x$location)
+  cat0("Class:          ", x$storageClass)
+  cat0("Created:        ", as.character(timestamp_to_r(x$timeCreated)))
+  cat0("Updated:        ", as.character(timestamp_to_r(x$updated)))
+  cat0("Meta-generation:", x$metageneration)
+  cat0("eTag:           ", x$etag)
 }
 
 #' @export
 print.gcs_objectmeta <- function(x, ...){
   cat("==Google Cloud Storage Object==\n")
-  cat("Name:           ", x$name, "\n")
-  cat("Type:           ", x$contentType, "\n")
-  cat("Size:           ", format_object_size(as.numeric(x$size), "auto"), "\n")
-  cat("Media URL       ", x$mediaLink, "\n")
-  cat("Bucket:         ", x$bucket, "\n")
-  cat("ID:             ", x$id, "\n")
-  cat("MD5 Hash:       ", x$md5Hash, "\n")
-  cat("Class:          ", x$storageClass, "\n")
-  cat("Created:        ", as.character(timestamp_to_r(x$timeCreated)), "\n")
-  cat("Updated:        ", as.character(timestamp_to_r(x$updated)), "\n")
-  cat("Generation:     ", x$generation, "\n")
-  cat("Meta Generation:", x$metageneration, "\n")
-  cat("eTag:           ", x$etag, "\n")
-  cat("crc32c:         ", x$crc32c, "\n")
+  cat0("Name:           ", x$name)
+  cat0("Type:           ", x$contentType)
+  cat0("Size:           ", format_object_size(as.numeric(x$size), "auto"))
+  cat0("Media URL       ", x$mediaLink)
+  cat0("Bucket:         ", x$bucket)
+  cat0("ID:             ", x$id)
+  cat0("MD5 Hash:       ", x$md5Hash)
+  cat0("Class:          ", x$storageClass)
+  cat0("Created:        ", as.character(timestamp_to_r(x$timeCreated)))
+  cat0("Updated:        ", as.character(timestamp_to_r(x$updated)))
+  cat0("Generation:     ", x$generation)
+  cat0("Meta Generation:", x$metageneration)
+  cat0("eTag:           ", x$etag)
+  cat0("crc32c:         ", x$crc32c)
 }
 
 #' @export
 print.gcs_object_access <- function(x, ...){
   cat("==Google Cloud Storage Object Access Control==\n")
-  if(!is.null(x$email)){
-  cat("Email:            ", x$email, "\n")
-  }
-  if(!is.null(x$domain)){
-  cat("Domain:           ", x$domain, "\n")
-  }
-  cat("Object:           ", x$object, "\n")
-  cat("Entity:           ", x$entity, "\n")
-  if(!is.null(x$entityId)){
-  cat("EntityId:         ", x$entityId, "\n")
-  }
-  if(!is.null(x$projectTeam$projectNumber)){
-  cat("Project Number:   ", x$projectTeam$projectNumber, "\n")
-  }
-  if(!is.null(x$projectTeam$team)){
-  cat("Project Team:     ", x$projectTeam$team, "\n")
-  }
-  cat("Role:             ", x$role, "\n")
-  cat("Bucket:           ", x$bucket, "\n")
-  cat("ID:               ", x$id, "\n")
-  cat("Generation:       ", x$generation, "\n")
-  cat("eTag:             ", x$etag, "\n")
+  cat0("Email:            ", x$email)
+  cat0("Domain:           ", x$domain)
+  cat0("Object:           ", x$object)
+  cat0("Entity:           ", x$entity)
+  cat0("EntityId:         ", x$entityId)
+  cat0("Project Number:   ", x$projectTeam$projectNumber)
+  cat0("Project Team:     ", x$projectTeam$team)
+  cat0("Role:             ", x$role)
+  cat0("Bucket:           ", x$bucket)
+  cat0("ID:               ", x$id)
+  cat0("Generation:       ", x$generation)
+  cat0("eTag:             ", x$etag)
 }
+
+#' @export
+print.gar_Object <- function(x, ...){
+  cat("==Google Cloud Storage Object Metadata for Upload==\n")
+  cat0("Name:               ", x$name)
+  cat0("Cache-Control:      ", x$cacheControl)
+  cat0("Content-Disposition:", x$contentDisposition)
+  cat0("Content-Encoding:   ", x$contentEncoding)
+  cat0("crc32c:             ", x$crc32c)
+  cat0("MD5 hash            ", x$md5Hash)
+  cat0("Metadata:           ", vapply(names(x$metadata),
+                                    function(y) paste(y, x$metadata[[y]], collapse = " \n", sep ="="),
+                                    character(1))
+       )
+}
+
+
