@@ -124,14 +124,12 @@ gcs_upload <- function(file,
 
                                      ))
 
-    req <- up(path_arguments = list(b = bucket),
-              pars_arguments = list(name = name),
-              the_body = object_metadata)
+    req <- suppressWarnings(up(path_arguments = list(b = bucket),
+                               pars_arguments = list(name = name),
+                               the_body = object_metadata))
     ## extract the upload URL
     if(req$status_code == 200){
       upload_url <- req$headers$location
-      cat("Resumable upload URL (valid for one week):")
-      cat(upload_url)
     } else {
       stop("Couldn't find upload URL")
     }
@@ -140,7 +138,7 @@ gcs_upload <- function(file,
                      body = httr::upload_file(temp, type = type))
 
     if(up2$status_code %in% c(200,201)){
-      out <- structure(up2$content, class = "gcs_objectmeta")
+      out <- structure(jsonlite::fromJSON(content(up2, as ="text")), class = "gcs_objectmeta")
     } else {
 
       message("File upload failed, trying to resume...")
@@ -158,14 +156,7 @@ gcs_upload <- function(file,
         } else {
           message("All attempts failed.
                   Returning gcs_upload_retry object for you to use in gcs_retry_upload() later.")
-          out <- structure(
-            list(
-              upload_url = upload_url,
-              file = file,
-              type = type
-            ),
-            class = "gcs_upload_retry"
-          )
+          out <- try3
         }
       }
     }
@@ -242,7 +233,7 @@ gcs_upload <- function(file,
 #' The function will first check to see how much has been uploaded already, then try to send up
 #'   the remaining bytes.
 #'
-#' @return If successful, an object metadata object.
+#' @return If successful, an object metadata object, if not an gcs_upload_retry object.
 #' @export
 gcs_retry_upload <- function(upload_url, file, type = NULL){
 
@@ -281,13 +272,17 @@ gcs_retry_upload <- function(upload_url, file, type = NULL){
                            )
     if(up_resume$status_code %in% c(200,201)){
       message("Upload complete")
-      out <- structure(up_resume$content, class = "gcs_objectmeta")
+      out <- structure(jsonlite::fromJSON(content(up_resume, as ="text")), class = "gcs_objectmeta")
     } else {
       out <- structure(
         list(
           upload_url = upload_url,
           file = file,
-          type = type
+          type = type,
+          created = Sys.time(),
+          size = size,
+          remaining = new_byte + 1,
+          content_range = content_range
         ),
         class = "gcs_upload_retry"
       )

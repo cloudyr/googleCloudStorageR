@@ -62,4 +62,14 @@ print.gar_Object <- function(x, ...){
        )
 }
 
-
+#' @export
+print.gcs_upload_retry <- function(x, ...){
+  cat("==Google Cloud Storage Upload Retry Object==\n")
+  cat0("File Location:    ", x$file)
+  cat0("Retry Upload URL: ", x$upload_url)
+  cat0("Created:          ", as.character(x$created))
+  cat0("Type:             ", x$type)
+  cat0("File Size:        ", format_object_size(as.numeric(x$size), "auto"))
+  cat0("Upload Byte:      ", x$remaining)
+  cat0("Upload remaining: ", x$content_range)
+}
