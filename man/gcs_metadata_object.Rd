@@ -9,6 +9,8 @@ gcs_metadata_object(object_name, metadata = NULL, md5Hash = NULL,
   contentDisposition = NULL, cacheControl = NULL)
 }
 \arguments{
+\item{object_name}{Name of the object. GCS uses this version if also set elsewhere.}
+
 \item{metadata}{User-provided metadata, in key/value pairs}
 
 \item{md5Hash}{MD5 hash of the data; encoded using base64}
