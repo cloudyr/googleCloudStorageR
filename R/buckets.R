@@ -297,4 +297,3 @@ gcs_update_bucket <-
     out
 
   }
-

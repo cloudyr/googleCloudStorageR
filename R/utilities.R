@@ -1,3 +1,13 @@
+#' if argument is NULL, no line output
+#'
+#' @keywords internal
+cat0 <- function(prefix = "", x){
+  if(!is.null(x)){
+    cat(prefix, x, "\n")
+  }
+}
+
+
 #' taken from utils:::format.object_size
 #'
 #' @keywords internal

@@ -5,16 +5,24 @@
 \title{Upload a file of arbitary type}
 \usage{
 gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
-  name = deparse(substitute(file)))
+  name = deparse(substitute(file)), object_function = NULL,
+  object_metadata = NULL, predefinedAcl = c("private", "authenticatedRead",
+  "bucketOwnerFullControl", "buckerOwnerRead", "projectPrivate", "publicRead"))
 }
 \arguments{
-\item{file}{data.frame, list or filepath character to what you are uploading}
+\item{file}{data.frame, list, R object or filepath (character) to upload file}
 
 \item{bucket}{bucketname you are uploading to}
 
 \item{type}{MIME type, guessed from file extension if NULL}
 
 \item{name}{What to call the file once uploaded. Default is the filepath.}
+
+\item{object_function}{If not NULL, function to use on file before upload}
+
+\item{object_metadata}{Optional metadata for object created via \link{gcs_metadata_object}}
+
+\item{predefinedAcl}{Specify user access to object. Default is 'private'}
 }
 \value{
 If successful, a metadata object
@@ -23,8 +31,18 @@ If successful, a metadata object
 Simple Upload - for files up to 5MB to Google Cloud Storage
 }
 \details{
-Will turn data.frames into \code{.csv} for upload via \link[utils]{write.csv}
-Will turn lists into \code{.json} via \link[jsonlite]{toJSON}
+If \code{object_function} is NULL and \code{file} is not a character filepath,
+  the defaults are:
+
+\itemize{
+  \item file's class is \code{data.frame} - \link[utils]{write.csv}
+  \item file's class is \code{list} - \link[jsonlite]{toJSON}
+ }
+
+If \code{object_function} is not NULL and \code{file} is not a character filepath,
+  then \code{object_function} will be applied to the R object specified
+  in \code{file} before upload. You may want to also use \code{name} to ensure the correct
+  file extension is used e.g. \code{name = 'myobject.feather'}
 
 If \code{file} or \code{name} argument contains folders e.g. \code{/data/file.csv} then
   the file will be uploaded with the same folder structure e.g. in a \code{/data/} folder.

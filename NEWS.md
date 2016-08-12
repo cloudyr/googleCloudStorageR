@@ -8,6 +8,8 @@
 * `gcs_global_bucket` and `gcs_get_global_bucket` to set global bucket name
 * Add options to set environment variables for API keys, default buckets etc.
 * Add print S3 methods for objects, buckets and ACL
+* Add option to use your own write function for R object file uploads in `gcs_upload`
+* Add option to include object metadata in uploads via `gcs_metadata_object`
 
 # googleCloudStorageR 0.1.0
 
