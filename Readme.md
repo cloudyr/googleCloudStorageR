@@ -95,9 +95,12 @@ gcs_upload(mtcars)
 gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)))
 
 ## upload an R data.frame directly, with a custom function
+## function should have arguments 'input' and 'output'
 ## safest to supply type too
+f <- function(input, output) write.csv(input, row.names = FALSE, file = output)
+
 gcs_upload(mtcars, 
-           object_function = function(x) write.csv(x, row.names = FALSE),
+           object_function = f,
            type = "text/csv")
 ```
 

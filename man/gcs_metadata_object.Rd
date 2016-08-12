@@ -24,8 +24,6 @@ gcs_metadata_object(object_name, metadata = NULL, md5Hash = NULL,
 \item{contentDisposition}{Content-Disposition of the object data}
 
 \item{cacheControl}{Cache-Control directive for the object data}
-
-\item{predefinedAcl}{A predefined access control}
 }
 \value{
 Object metadata for uploading of class \code{gar_Object}
