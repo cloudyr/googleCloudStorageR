@@ -10,6 +10,8 @@
 * Add print S3 methods for objects, buckets and ACL
 * Add option to use your own write function for R object file uploads in `gcs_upload`
 * Add option to include object metadata in uploads via `gcs_metadata_object`
+* Add resumable uploads to `gcs_upload` to allow uploads over 5MB, limit now 5TB
+* Add retry uploads via `gcs_retry_upload`
 
 # googleCloudStorageR 0.1.0
 

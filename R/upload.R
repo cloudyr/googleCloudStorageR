@@ -144,13 +144,13 @@ gcs_upload <- function(file,
       message("File upload failed, trying to resume...")
       message("Try 2 of 3...")
       Sys.sleep(2)
-      try2 <- gcs_retry_upload(upload_url, file = temp, type = type)
+      try2 <- gcs_retry_upload(upload_url = upload_url, file = temp, type = type)
       if(inherits(try2, "gcs_objectmeta")){
         out <- try2
       } else {
         message("Try 3 of 3...")
         Sys.sleep(8)
-        try3 <- gcs_retry_upload(upload_url, file = temp, type = type)
+        try3 <- gcs_retry_upload(try2)
         if(inherits(try3, "gcs_objectmeta")){
           out <- try3
         } else {
@@ -226,16 +226,31 @@ gcs_upload <- function(file,
 #' Used internally in \link{gcs_upload}, you can also use this
 #'   for failed uploads within one week of generating the upload URL
 #'
+#' @param retry_object A object of class \code{gcs_upload_retry}.
 #' @param upload_url As created in a failed upload via \link{gcs_upload}
 #' @param file The file location to upload
 #' @param type The file type, guessed if NULL
+#'
+#' Either supply a retry object, or the upload_url, file and type manually yourself.
 #'
 #' The function will first check to see how much has been uploaded already, then try to send up
 #'   the remaining bytes.
 #'
 #' @return If successful, an object metadata object, if not an gcs_upload_retry object.
 #' @export
-gcs_retry_upload <- function(upload_url, file, type = NULL){
+gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type = NULL){
+
+  if(is.null(retry_object)){
+    if(any(is.null(upload_url), is.null(file), is.null(type))){
+      stop("Must supply either retry_object or all of upload_url, file and type")
+    }
+  } else {
+    stopifnot(inherits(retry_object, "gcs_upload_retry"))
+
+    upload_url <- retry_object$upload_url
+    file <- retry_object$file
+    type <- retry_object$type
+  }
 
   size <- as.numeric(file.size(file))
   upload_status <- httr::PUT(upload_url,
@@ -279,7 +294,7 @@ gcs_retry_upload <- function(upload_url, file, type = NULL){
           upload_url = upload_url,
           file = file,
           type = type,
-          created = Sys.time(),
+          updated = Sys.time(),
           size = size,
           remaining = new_byte + 1,
           content_range = content_range
