@@ -5,13 +5,20 @@
 #' @param file data.frame, list, R object or filepath (character) to upload file
 #' @param bucket bucketname you are uploading to
 #' @param type MIME type, guessed from file extension if NULL
-#' @param name What to call the file once uploaded. Default is the filepath.
-#' @param object_function If not NULL, function to use on file before upload
+#' @param name What to call the file once uploaded. Default is the filepath
+#' @param object_function If not NULL, a \code{function(input, output)}
 #' @param object_metadata Optional metadata for object created via \link{gcs_metadata_object}
 #' @param predefinedAcl Specify user access to object. Default is 'private'
 #' @param upload_type Override automatic decision on upload type
 #'
 #' @details
+#'
+#' When using \code{object_function} it expects a function with two arguments:
+#' \itemize{
+#'   \item \code{input} The object you supply in file to write from
+#'   \item \code{output} The filename you write to
+#'  }
+#'
 #'
 #' By default the \code{upload_type} will be 'simple' if under 5MB, 'resumable' if over 5MB.
 #'   'Multipart' upload is used if you provide a \code{object_metadata}.
@@ -60,6 +67,8 @@ gcs_upload <- function(file,
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type <- match.arg(upload_type)
   upload_limit <- 5000000
+  ## so jsonlite::toJSON works
+  class(object_metadata) <- "list"
 
   ## no leading slashes
   name <- gsub("^/","", utils::URLencode(name, reserved = TRUE))
@@ -72,10 +81,14 @@ gcs_upload <- function(file,
   } else if(!is.null(object_function)){
     # user specified object write function
 
+    if(all(names(formals(object_function)) != c("input","output"))){
+      stop("object_function should carry only two arguments - 'input' and 'output'")
+    }
+
     temp <- tempfile()
     on.exit(unlink(temp))
 
-    write(object_function(file), temp)
+    object_function(input = file, output = temp)
 
     if(!file.exists(temp)){
       stop("Problem writing file using object_function")
@@ -108,7 +121,6 @@ gcs_upload <- function(file,
 
   if(upload_type == "resumable" || file.size(temp) > upload_limit){
     ## resumable upload
-    # stop("File size too large, over 5MB")
 
     up <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
@@ -129,13 +141,16 @@ gcs_upload <- function(file,
                                the_body = object_metadata))
     ## extract the upload URL
     if(req$status_code == 200){
+
       upload_url <- req$headers$location
+      myMessage("Found upload URL: ", upload_url, level = 2)
+
     } else {
       stop("Couldn't find upload URL")
     }
 
-    up2 <- httr::PUT(upload_url,
-                     body = httr::upload_file(temp, type = type))
+    up2 <- PUTme(upload_url,
+                 body = httr::upload_file(temp, type = type))
 
     if(up2$status_code %in% c(200,201)){
       out <- structure(jsonlite::fromJSON(content(up2, as ="text")), class = "gcs_objectmeta")
@@ -167,6 +182,8 @@ gcs_upload <- function(file,
     if(!is.null(object_metadata$name)){
       name <- object_metadata$name
     }
+
+
 
     temp2 <- tempfile()
     on.exit(unlink(temp2))
@@ -253,14 +270,14 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
   }
 
   size <- as.numeric(file.size(file))
-  upload_status <- httr::PUT(upload_url,
-                             httr::add_headers("Content-Range" = paste0("*/",size)))
+  upload_status <- PUTme(upload_url,
+                         httr::add_headers("Content-Range" = paste0("*/",size)))
 
   if(upload_status$status_code %in% c(200,201)){
-    message("Upload complete")
+    myMessage("Upload complete", level = 3)
     return(upload_status$content)
   } else if(upload_status$status_code == 308){
-    message("Upload incomplete")
+    myMessage("Upload incomplete", level = 3)
 
     range <- upload_status$headers$range
     ## split range in format '0-42' to find position of next byte
@@ -280,14 +297,15 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
                             (new_byte + 1),"-",size - 1,
                             "/",size)
 
-    up_resume <- httr::PUT(upload_url,
-                           httr::add_headers("Content-Range" = content_range),
-                           httr::content_type(type),
-                           body = upload_file
-                           )
+    up_resume <- PUTme(upload_url,
+                       httr::add_headers("Content-Range" = content_range),
+                       httr::content_type(type),
+                       body = upload_file)
+
     if(up_resume$status_code %in% c(200,201)){
-      message("Upload complete")
-      out <- structure(jsonlite::fromJSON(content(up_resume, as ="text")), class = "gcs_objectmeta")
+      myMessage("Upload complete", level = 3)
+      out <- structure(jsonlite::fromJSON(content(up_resume, as ="text")),
+                       class = "gcs_objectmeta")
     } else {
       out <- structure(
         list(
@@ -308,4 +326,12 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
   }
 
   out
+}
+
+PUTme <- function(...){
+  if(getOption("googleAuthR.verbose") < 3){
+    httr::PUT(..., httr::verbose())
+  } else {
+    httr::PUT(...)
+  }
 }

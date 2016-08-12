@@ -54,6 +54,32 @@ test_that("We can upload an list", {
 
 })
 
+test_that("We can upload using a custom function", {
+
+  f <- function(input, output) write.csv(input, row.names = FALSE, file = output)
+
+  upload <- gcs_upload(mtcars,
+                       object_function = f,
+                       type = "text/csv")
+  expect_equal(upload$kind, "storage#object")
+  expect_equal(upload$size, "1303")
+})
+
+test_that("We can upload using resumable", {
+
+  upload <- gcs_upload(mtcars, upload_type = "resumable")
+  expect_equal(upload$kind, "storage#object")
+})
+
+test_that("We can upload with metadata", {
+
+  meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list(blah = 1,bo = 2))
+  upload <- gcs_upload(mtcars, object_metadata = meta)
+
+  expect_equal(upload$kind, "storage#object")
+  expect_equal(upload$name, "mtcars_meta.csv")
+})
+
 context("Downloading")
 
 download_test <- function(direct = NULL){

@@ -17,9 +17,9 @@ gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
 
 \item{type}{MIME type, guessed from file extension if NULL}
 
-\item{name}{What to call the file once uploaded. Default is the filepath.}
+\item{name}{What to call the file once uploaded. Default is the filepath}
 
-\item{object_function}{If not NULL, function to use on file before upload}
+\item{object_function}{If not NULL, a \code{function(input, output)}}
 
 \item{object_metadata}{Optional metadata for object created via \link{gcs_metadata_object}}
 
@@ -34,6 +34,13 @@ If successful, a metadata object
 Simple Upload - for files up to 5MB to Google Cloud Storage
 }
 \details{
+When using \code{object_function} it expects a function with two arguments:
+\itemize{
+  \item \code{input} The object you supply in file to write from
+  \item \code{output} The filename you write to
+ }
+
+
 By default the \code{upload_type} will be 'simple' if under 5MB, 'resumable' if over 5MB.
   'Multipart' upload is used if you provide a \code{object_metadata}.
 
