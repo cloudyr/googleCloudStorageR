@@ -8,6 +8,58 @@ Google Cloud Storage charges you for storage [(prices here)](https://cloud.googl
 
 You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the [Google API Console](https://console.developers.google.com)
 
+### Setting environment variables
+
+By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:
+
+```r
+Sys.setenv("GCS_CLIENT_ID" = "mykey",
+           "GCS_CLIENT_SECRET" = "mysecretkey",
+           "GCS_WEB_CLIENT_ID" = "my-shiny-key",
+           "GCS_WEB_CLIENT_SECRET" = "my-shiny-secret-key",
+           "GCS_DEFAULT_BUCKET" = "my-default-bucket",
+           "GCS_AUTH_FILE"" = "/fullpath/to/service-auth.json")
+```
+
+These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
+
+## Authentication
+
+Authentication can be carried out each session via `gcs_auth`.  The first time you run this you will be sent to a Google login prompt in your browser to allow the `googleCloudStorageR` project access (or the Google project you configure). 
+
+Once authenticated a file named `.httr-oauth` is saved to your working directory.  On subsequent authentication this file will hold your authentication details, and you won't need to go via the browser.  Deleting this file, or setting `new_user=TRUE` will start the authentication flow again.
+
+```r
+library(googleCloudStorageR)
+## first time this will send you to the browser to authenticate
+gcs_auth()
+
+## to authenticate with a fresh user, delete .httr-oauth or run with new_user=TRUE
+gcs_auth(new_user = TRUE)
+
+...call functions...etc...
+
+```
+
+Each new R session will need to run `gcs_auth()` to authenticate future API calls.
+
+### Auto-authentication
+
+Alternatively, you can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created `.httr-oauth` token in a system environment:
+
+        Sys.setenv("GCS_AUTH_FILE" = "/fullpath/to/auth.json")
+
+This file will then used for authentication via `gcs_auth()` when you load the library:
+
+```r
+## GCS_AUTH_FILE set so auto-authentication
+library(googleCloudStorageR)
+
+## no need for gcs_auth()
+gcs_get_bucket("your-bucket")
+
+```
+
 ## Examples
 
 ### Setting a default Bucket
@@ -19,6 +71,9 @@ To avoid specifying the bucket in the functions below, you can set the name of y
 Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket")
 
 library(googleCloudStorageR)
+
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
 
 ## check what the default bucket is
 gcs_get_global_bucket()
@@ -37,8 +92,8 @@ Once you have a Google project and created a bucket with an object in it, you ca
 ```r
 library(googleCloudStorageR)
 
-googleAuthR::gar_auth()
-## or googleAuthR::gar_auth_service("your_json.json")
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
 
 ## get your project name from the API console
 proj <- "your-project"
@@ -318,20 +373,7 @@ gcs_get_object("your-object", "your-bucket", meta = TRUE)
 
 No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  
 
-
-### Setting environment variables
-
-By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket. For example:
-
-```r
-Sys.setenv("GCS_CLIENT_ID" = "mykey",
-           "GCS_CLIENT_SECRET" = "mysecretkey",
-           "GCS_WEB_CLIENT_ID" = "my-shiny-key",
-           "GCS_WEB_CLIENT_SECRET" = "my-shiny-secret-key",
-           "GCS_DEFAULT_BUCKET" = "my-default-bucket")
-```
-
-These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
+## Configuring your own Google Project
 
 The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
 

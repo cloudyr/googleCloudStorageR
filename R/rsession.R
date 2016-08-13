@@ -13,6 +13,9 @@
 #' \code{gcs_save(bucket = "your_bucket")} will save all objects in the workspace
 #'   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
 #'
+#' It will not include objects in R's \code{.RData} file, to avoid duplication.
+#' To upload \code{.RData}, rename it.
+#'
 #' Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 #'
 #' Objects will be uploaded separately in a folder within the bucket
@@ -31,8 +34,10 @@ gcs_save <- function(...,
   ## from save()
   names <- as.character(substitute(list(...)))[-1L]
   if (!length(list) && !length(names))
-    stop("nothing specified to be save()d")
+    stop("nothing specified to be gcs_save()d")
   nlist <- c(list, names)
+  ## don't include existing .RData objects
+  nlist <- setdiff(nlist, nlist[grepl("^\\.RData", nlist)])
 
   fold <- tempdir()
   on.exit(unlink(fold))
@@ -41,11 +46,18 @@ gcs_save <- function(...,
   for(i in seq_along(nlist)){
     setTxtProgressBar(pb, i)
     obj_name <- paste0(nlist[[i]],".rds")
+    upload_name <- file.path(".RData",obj_name)
     filepath <- file.path(fold,obj_name)
-    saveRDS(get(nlist[[i]]), file = file.path(fold,obj_name))
-    gcs_upload(filepath, bucket, name = file.path(".RData",obj_name))
+
+    saveRDS(get(nlist[[i]]), file = filepath)
+
+    gcs_upload(filepath,
+               bucket,
+               name = URLencode(upload_name, reserved = TRUE))
+
   }
   close(pb)
+  unlink(fold)
 
   TRUE
 
