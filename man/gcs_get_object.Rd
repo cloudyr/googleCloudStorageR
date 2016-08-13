@@ -27,6 +27,8 @@ This differs from providing downloads via a download link as you can
   do via \link{gcs_download_url}
 }
 \seealso{
-Other object functions: \code{\link{gcs_list_objects}}
+Other object functions: \code{\link{gcs_delete_object}},
+  \code{\link{gcs_list_objects}},
+  \code{\link{gcs_metadata_object}}
 }
 

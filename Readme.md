@@ -194,6 +194,15 @@ gcs_update_acl("your-object.csv",
                role = OWNER)
 ```
 
+## Deleting an object
+
+Delete an object by passing its name (and bucket if not default)
+
+```r
+## returns TRUE is successful, a 404 error if not found
+gcs_delete_object("your-object.csv")
+```
+
 ### Viewing current access level to objects
 
 Use `gcs_get_object_access()` to see what the current access is for an `entity` + `entity_type`.
