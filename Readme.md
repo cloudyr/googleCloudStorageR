@@ -18,7 +18,7 @@ Sys.setenv("GCS_CLIENT_ID" = "mykey",
            "GCS_WEB_CLIENT_ID" = "my-shiny-key",
            "GCS_WEB_CLIENT_SECRET" = "my-shiny-secret-key",
            "GCS_DEFAULT_BUCKET" = "my-default-bucket",
-           "GCS_AUTH_FILE"" = "/fullpath/to/service-auth.json")
+           "GCS_AUTH_FILE" = "/fullpath/to/service-auth.json")
 ```
 
 These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
