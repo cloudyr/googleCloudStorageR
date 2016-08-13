@@ -115,6 +115,7 @@ gcs_get_object <- function(object_name,
 #' @param object_name Name of the object. GCS uses this version if also set elsewhere.
 #'
 #' @return Object metadata for uploading of class \code{gar_Object}
+#' @family object functions
 #' @export
 gcs_metadata_object <- function(object_name,
                                 metadata = NULL,
@@ -138,6 +139,44 @@ gcs_metadata_object <- function(object_name,
 
   out
 
+
+}
+
+#' Delete an object
+#'
+#' Deletes an object from a bucket
+#'
+#' @param object_name Object to be deleted
+#' @param bucket Bucket to delete object from
+#' @param generation If present, deletes a specific version.
+#'
+#' Default if \code{generation} is NULL is to delete the latest version.
+#'
+#' @return If successful, TRUE.
+#' @family object functions
+#' @export
+gcs_delete_object <- function(object_name,
+                              bucket = gcs_get_global_bucket(),
+                              generation = NULL){
+  testthat::expect_type(bucket, "character")
+  testthat::expect_type(object_name, "character")
+  testthat::expect_length(bucket, 1)
+  testthat::expect_length(object_name, 1)
+
+  object_name <- URLencode(object_name, reserved = TRUE)
+
+  pars <- list(generation = generation)
+  pars <- rmNullObs(pars)
+
+  ob <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
+                                       "DELETE",
+                                       path_args = list(b = bucket,
+                                                        o = object_name),
+                                       pars_args = pars)
+  suppressWarnings(ob())
+
+  myMessage("Deleted '", object_name, "' from bucket '", bucket,"'")
+  TRUE
 
 }
 
