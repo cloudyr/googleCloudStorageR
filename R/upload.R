@@ -275,7 +275,8 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
 
   if(upload_status$status_code %in% c(200,201)){
     myMessage("Upload complete", level = 3)
-    return(upload_status$content)
+    return(structure(jsonlite::fromJSON(content(upload_status$content, as ="text")),
+                            class = "gcs_objectmeta"))
   } else if(upload_status$status_code == 308){
     myMessage("Upload incomplete", level = 3)
 

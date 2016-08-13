@@ -149,6 +149,16 @@ test_that("We can see object meta data", {
   expect_equal(meta_obj$kind, "storage#object")
 })
 
+context("R session functions")
+
+test_that("We can save the R session", {
+
+  a <- 1
+  b <- "g"
+  saved <- gcs_save("a","b", list = NULL)
+
+})
+
 context("Deleting")
 
 test_that("We can delete all test files", {
