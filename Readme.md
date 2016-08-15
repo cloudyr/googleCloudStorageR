@@ -286,6 +286,21 @@ download_url
 [1] "https://storage.cloud.google.com/your-project/your-object.csv"
 ```
 
+## R Session helpers
+
+Versions of `save.image()` and `load()` are implemented called `gcs_save()` and `gcs_load()`.  These functions save and load the global R session to the cloud.
+
+```r
+## save the current R session including all objects
+gcs_save()
+
+### wipe environment
+rm(list = ls())
+
+## load up environment again
+gcs_load()
+```
+
 ## Uploading via a Shiny app
 
 The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.  

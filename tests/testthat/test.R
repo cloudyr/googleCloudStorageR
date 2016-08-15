@@ -152,11 +152,26 @@ test_that("We can see object meta data", {
 context("R session functions")
 
 test_that("We can save the R session", {
+  a <- 1
+  b <- "test"
+  saved <- gcs_save()
+  expect_true(saved)
+})
+
+test_that("We can reload the R session", {
 
   a <- 1
-  b <- "g"
-  saved <- gcs_save("a","b", list = NULL)
+  b <- "test"
+  saved <- gcs_save()
+  expect_true(saved)
+  rm(a,b)
 
+  loaded <- gcs_load()
+  expect_true(loaded)
+  a <- get("a")
+  b <- get("b")
+  expect_true(a == 1)
+  expect_true(b == "test")
 })
 
 context("Deleting")
