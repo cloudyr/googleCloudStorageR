@@ -4,36 +4,24 @@
 \alias{gcs_save}
 \title{Save an R session to the Google Cloud}
 \usage{
-gcs_save(..., list = ls(all.names = TRUE, envir = parent.frame()),
-  bucket = gcs_get_global_bucket(), folder = ".RData")
+gcs_save(bucket = gcs_get_global_bucket(), file = ".RData")
 }
 \arguments{
-\item{...}{Names of objects to be saved (as symbols or character strings)}
-
-\item{list}{A character vector containing the names of objects to be saved}
-
 \item{bucket}{Bucket to store objects in}
 
-\item{folder}{The namespace for the files to be stored in the cloud}
+\item{file}{Where to save the file in GCS and locally}
 }
 \value{
 TRUE if successful
 }
 \description{
-If objects to be saved are for use with only R consider using this
-  function which saves in a compressed format.
+Performs \link{save.image} then saves it to Google Cloud Storage.
 }
 \details{
 \code{gcs_save(bucket = "your_bucket")} will save all objects in the workspace
   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
 
-It will not include objects in R's \code{.RData} file, to avoid duplication.
-To upload \code{.RData}, rename it.
-
 Restore the objects using \code{gcs_load(bucket = "your_bucket")}
-
-Objects will be uploaded separately in a folder within the bucket
-  using \code{.rds} format.
 
 This will overwrite any data with the same name in folder.
 }
