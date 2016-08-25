@@ -301,6 +301,21 @@ rm(list = ls())
 gcs_load()
 ```
 
+You can also upload `.R` code files and source them directly using `gcs_source`:
+
+```r
+## make a R source file and upload it
+cat("x <- 'hello world!'\nx", file = "example.R")
+gcs_upload("example.R", name = "example.R")
+
+## source the file to run its code
+gcs_source("example.R")
+
+## the code from the upload file has run
+exists("x")
+TRUE
+```
+
 ## Uploading via a Shiny app
 
 The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.  
