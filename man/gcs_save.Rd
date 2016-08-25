@@ -26,6 +26,7 @@ Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 This will overwrite any data with the same name in folder.
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_load}}
+Other R session data functions: \code{\link{gcs_load}},
+  \code{\link{gcs_source}}
 }
 

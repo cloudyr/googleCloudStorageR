@@ -49,3 +49,25 @@ gcs_load <- function(bucket = gcs_get_global_bucket(),
 
   TRUE
 }
+
+#' Source an R script from the Google Cloud
+#'
+#' Source an R script and run via \link{source}
+#'
+#' @param script The name of the script on GCS
+#' @param bucket Bucket the stored objects are in
+#' @param ... Passed to \link{source}
+#'
+#' @family R session data functions
+#' @return TRUE if successful
+#' @export
+gcs_source <- function(script,
+                       bucket = gcs_get_global_bucket(),
+                       ...){
+
+  file <- tempfile()
+  on.exit(unlink(file))
+
+  suppressMessages(gcs_get_object(script, bucket = bucket, saveToDisk = file))
+  source(file, ...)
+}

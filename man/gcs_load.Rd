@@ -21,6 +21,7 @@ TRUE if successful
 Load R objects that have been saved using \link{gcs_save}
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_save}}
+Other R session data functions: \code{\link{gcs_save}},
+  \code{\link{gcs_source}}
 }
 

@@ -158,15 +158,16 @@ test_that("We can save the R session", {
   expect_true(saved)
 })
 
+## I can't get this test to work...but it works fine locally
 test_that("We can reload the R session", {
 
   a <- 1
   b <- "test"
-  saved <- gcs_save()
+  saved <- gcs_save(file = ".RData")
   expect_true(saved)
   rm(a,b)
 
-  loaded <- gcs_load()
+  loaded <- gcs_load(file = ".RData")
   expect_true(loaded)
   a <- get("a")
   b <- get("b")
@@ -186,3 +187,19 @@ test_that("We can delete all test files", {
 
 })
 
+context("Source files")
+
+test_that("We can upload a source file", {
+
+  cat("x <- 'hello world!'\nx", file = "example.R")
+  up <- gcs_upload("example.R", name = "example.R")
+  expect_true(up$kind == "storage#object")
+
+})
+
+test_that("We can source the uploaded file", {
+
+  gcs_source("example.R")
+  expect_true(exists("x"))
+
+})
