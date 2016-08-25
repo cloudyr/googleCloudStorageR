@@ -175,18 +175,6 @@ test_that("We can reload the R session", {
   expect_true(b == "test")
 })
 
-context("Deleting")
-
-test_that("We can delete all test files", {
-
-  expect_true(gcs_delete_object("obj.json"))
-  expect_true(gcs_delete_object("obj.csv"))
-  expect_true(gcs_delete_object("mtcars"))
-  expect_true(gcs_delete_object("mtcars.csv"))
-  expect_true(gcs_delete_object("mtcars_meta.csv"))
-
-})
-
 context("Source files")
 
 test_that("We can upload a source file", {
@@ -203,3 +191,17 @@ test_that("We can source the uploaded file", {
   expect_true(exists("x"))
 
 })
+
+context("Deleting")
+
+test_that("We can delete all test files", {
+
+  expect_true(gcs_delete_object("obj.json"))
+  expect_true(gcs_delete_object("obj.csv"))
+  expect_true(gcs_delete_object("mtcars"))
+  expect_true(gcs_delete_object("mtcars.csv"))
+  expect_true(gcs_delete_object("mtcars_meta.csv"))
+  expect_true(gcs_delete_object("example.R"))
+})
+
+
