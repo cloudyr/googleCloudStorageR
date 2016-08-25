@@ -76,7 +76,12 @@ gcs_upload <- function(file,
   if(inherits(file, "character")){
     # a filepath
 
+    if(!file.exists(file)){
+      stop("No file found at ", file)
+    }
+
     temp <- file
+    name <- file
 
   } else if(!is.null(object_function)){
     # user specified object write function
