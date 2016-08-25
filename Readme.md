@@ -312,8 +312,8 @@ gcs_upload("example.R", name = "example.R")
 gcs_source("example.R")
 
 ## the code from the upload file has run
-exists("x")
-TRUE
+x
+[1] "hello world!"
 ```
 
 ## Uploading via a Shiny app
