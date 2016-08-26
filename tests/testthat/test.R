@@ -6,7 +6,7 @@ library(googleCloudStorageR)
 context("Auth")
 
 test_that("We can login", {
-
+  skip_on_cran()
   ## requires pre-auth at /tests/testthat/.httr-oauth
   expect_is(gcs_auth(), "Token2.0")
 
@@ -21,21 +21,21 @@ test_that("We can set global bucket names", {
 context("Uploading")
 
 test_that("We can upload a file", {
-
+  skip_on_cran()
   upload <- gcs_upload("test_mtcars.csv")
   expect_equal(upload$kind, "storage#object")
 
 })
 
 test_that("We can upload a data.frame", {
-
+  skip_on_cran()
   upload <- gcs_upload(mtcars)
   expect_equal(upload$kind, "storage#object")
   expect_equal(upload$name, "mtcars.csv")
 })
 
 test_that("We can upload an list", {
-
+  skip_on_cran()
   a_list <- list(a = 1, b = 3, c = list(a = 3, g = 5))
   upload <- gcs_upload(a_list)
   expect_equal(upload$kind, "storage#object")
@@ -43,7 +43,7 @@ test_that("We can upload an list", {
 })
 
 test_that("We can upload using a custom function", {
-
+  skip_on_cran()
   f <- function(input, output) write.csv(input, row.names = FALSE, file = output)
 
   upload <- gcs_upload(mtcars,
@@ -55,14 +55,14 @@ test_that("We can upload using a custom function", {
 })
 
 test_that("We can upload using resumable", {
-
+  skip_on_cran()
   upload <- gcs_upload(mtcars, upload_type = "resumable")
   expect_equal(upload$kind, "storage#object")
   expect_equal(upload$name, "mtcars.csv")
 })
 
 test_that("We can upload with metadata", {
-
+  skip_on_cran()
   meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list(blah = 1,bo = 2))
   upload <- gcs_upload(mtcars, object_metadata = meta)
 
@@ -73,7 +73,7 @@ test_that("We can upload with metadata", {
 context("Downloading")
 
 test_that("We can download a file to disk", {
-
+  skip_on_cran()
   worked <- gcs_get_object("mtcars_meta.csv", saveToDisk = "mtcars.csv")
   expect_true(worked)
   unlink("mtcars.csv")
@@ -81,7 +81,7 @@ test_that("We can download a file to disk", {
 })
 
 test_that("We can download a file directly", {
-
+  skip_on_cran()
   dl <- gcs_get_object("mtcars_meta.csv")
   expect_s3_class(dl, "data.frame")
 
@@ -90,21 +90,21 @@ test_that("We can download a file directly", {
 context("Access Control")
 
 test_that("We can set access control level for user", {
-
+  skip_on_cran()
   acl <- gcs_update_acl("mtcars.csv", entity = "joe@blogs.com")
   expect_true(acl)
 
 })
 
 test_that("We can set access control level for public", {
-
+  skip_on_cran()
   acl <- gcs_update_acl("mtcars.csv", entity_type = "allUsers")
   expect_true(acl)
 
 })
 
 test_that("We can create a download URL", {
-
+  skip_on_cran()
   durl <- gcs_download_url("test_mtcars.csv")
   expect_equal(durl,
                "https://storage.cloud.google.com/mark-edmondson-public-files/test_mtcars.csv")
@@ -112,7 +112,7 @@ test_that("We can create a download URL", {
 })
 
 test_that("We can see access control for allUsers,", {
-
+  skip_on_cran()
   acl <- gcs_get_object_access("mtcars.csv",
                                entity_type = "allUsers")
   expect_equal(acl$kind, "storage#objectAccessControl")
@@ -121,7 +121,7 @@ test_that("We can see access control for allUsers,", {
 })
 
 test_that("We can see access control for single test user,", {
-
+  skip_on_cran()
   acl <- gcs_get_object_access("mtcars.csv",
                                entity = "joe@blogs.com")
   expect_equal(acl$kind, "storage#objectAccessControl")
@@ -132,7 +132,7 @@ test_that("We can see access control for single test user,", {
 context("Meta data")
 
 test_that("We can see object meta data", {
-
+  skip_on_cran()
   meta_obj <- gcs_get_object("mtcars.csv", meta = TRUE)
   expect_equal(meta_obj$kind, "storage#object")
 })
@@ -140,6 +140,7 @@ test_that("We can see object meta data", {
 context("R session functions")
 
 test_that("We can save an R object list", {
+  skip_on_cran()
   cc <- 3
   d <- "test1"
   saved <- gcs_save("cc","d", file = "gcs_save_test.RData")
@@ -148,6 +149,7 @@ test_that("We can save an R object list", {
 })
 
 test_that("We can load an R object list", {
+  skip_on_cran()
   saved <- gcs_load(file = "gcs_save_test.RData")
   on.exit(unlink("gcs_save_test.RData"))
   expect_true(saved)
@@ -159,6 +161,7 @@ test_that("We can load an R object list", {
 })
 
 test_that("We can save the R session", {
+  skip_on_cran()
   a <- 1
   b <- "test"
   saved <- gcs_save_image(file = ".RData_test")
@@ -168,7 +171,7 @@ test_that("We can save the R session", {
 
 
 test_that("We can load the R session", {
-
+  skip_on_cran()
   loaded <- gcs_load(file = ".RData_test", envir = parent.frame())
   on.exit(unlink(".RData_test"))
   expect_true(loaded)
@@ -182,7 +185,7 @@ test_that("We can load the R session", {
 context("Source files")
 
 test_that("We can upload a source file", {
-
+  skip_on_cran()
   cat("x <- 'hello world!'\nx", file = "example.R")
   up <- gcs_upload("example.R")
   expect_true(up$kind == "storage#object")
@@ -191,7 +194,7 @@ test_that("We can upload a source file", {
 })
 
 test_that("We can source the uploaded file", {
-
+  skip_on_cran()
   gcs_source("example.R")
   expect_true(exists("x"))
 
@@ -200,7 +203,7 @@ test_that("We can source the uploaded file", {
 context("Deleting")
 
 test_that("We can delete all test files", {
-
+  skip_on_cran()
   expect_true(gcs_delete_object("a_list.json"))
   expect_true(gcs_delete_object("mtcars"))
   expect_true(gcs_delete_object("mtcars.csv"))
