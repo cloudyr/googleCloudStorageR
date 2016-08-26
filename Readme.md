@@ -489,6 +489,5 @@ if(!require("ghit")){
 ghit::install_github("cloudyr/googleCloudStorageR")
 ```
 
-
 ---
 [![cloudyr project logo](http://i.imgur.com/JHS98Y7.png)](https://github.com/cloudyr)
