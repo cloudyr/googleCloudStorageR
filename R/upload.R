@@ -81,6 +81,8 @@ gcs_upload <- function(file,
     }
 
     temp <- file
+    ## get rid of " marks
+    name <- gsub("%22","", name)
 
   } else if(!is.null(object_function)){
     # user specified object write function

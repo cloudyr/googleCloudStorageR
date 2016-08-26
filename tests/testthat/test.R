@@ -8,7 +8,7 @@ context("Auth")
 test_that("We can login", {
 
   ## requires pre-auth at /tests/testthat/.httr-oauth
-  expect_is(googleAuthR::gar_auth(), "Token2.0")
+  expect_is(gcs_auth(), "Token2.0")
 
 })
 
@@ -20,38 +20,26 @@ test_that("We can set global bucket names", {
 
 context("Uploading")
 
-upload_test <- function(filename){
-
-  googleAuthR::gar_auth()
-  # write.csv(mtcars, file = filename)
-  gcs_upload(filename)
-}
-
-upload_obj <- function(obj){
-
-  googleAuthR::gar_auth()
-  gcs_upload(obj)
-}
-
 test_that("We can upload a file", {
 
-  upload <- upload_test("test_mtcars.csv")
+  upload <- gcs_upload("test_mtcars.csv")
   expect_equal(upload$kind, "storage#object")
 
 })
 
-test_that("We can upload an data.frame", {
+test_that("We can upload a data.frame", {
 
-  upload <- upload_obj(mtcars)
+  upload <- gcs_upload(mtcars)
   expect_equal(upload$kind, "storage#object")
-  expect_equal(upload$name, "obj.csv")
+  expect_equal(upload$name, "mtcars.csv")
 })
 
 test_that("We can upload an list", {
 
-  upload <- upload_obj(list(a = 1, b = 3, c = list(a = 3, g = 5)))
+  a_list <- list(a = 1, b = 3, c = list(a = 3, g = 5))
+  upload <- gcs_upload(a_list)
   expect_equal(upload$kind, "storage#object")
-  expect_equal(upload$name, "obj.json")
+  expect_equal(upload$name, "a_list.json")
 })
 
 test_that("We can upload using a custom function", {
@@ -173,16 +161,16 @@ test_that("We can load an R object list", {
 test_that("We can save the R session", {
   a <- 1
   b <- "test"
-  saved <- gcs_save_image(file = ".RData")
+  saved <- gcs_save_image(file = ".RData_test")
   expect_true(saved)
-  unlink(".RData")
+  unlink(".RData_test")
 })
 
-## I can't get this test to work...but it works fine locally
+
 test_that("We can load the R session", {
 
-  loaded <- gcs_load(file = ".RData", envir = parent.frame())
-  on.exit(unlink(".RData"))
+  loaded <- gcs_load(file = ".RData_test", envir = parent.frame())
+  on.exit(unlink(".RData_test"))
   expect_true(loaded)
   a <- get("a", envir = parent.frame())
   b <- get("b", envir = parent.frame())
@@ -196,7 +184,7 @@ context("Source files")
 test_that("We can upload a source file", {
 
   cat("x <- 'hello world!'\nx", file = "example.R")
-  up <- gcs_upload("example.R", name = "example.R")
+  up <- gcs_upload("example.R")
   expect_true(up$kind == "storage#object")
   unlink("example.R")
 
@@ -213,13 +201,14 @@ context("Deleting")
 
 test_that("We can delete all test files", {
 
-  expect_true(gcs_delete_object("obj.json"))
-  expect_true(gcs_delete_object("obj.csv"))
+  expect_true(gcs_delete_object("a_list.json"))
   expect_true(gcs_delete_object("mtcars"))
   expect_true(gcs_delete_object("mtcars.csv"))
+  expect_true(gcs_delete_object("test_mtcars.csv"))
   expect_true(gcs_delete_object("mtcars_meta.csv"))
   expect_true(gcs_delete_object("example.R"))
   expect_true(gcs_delete_object("gcs_save_test.RData"))
+  expect_true(gcs_delete_object(".RData_test"))
 })
 
 
