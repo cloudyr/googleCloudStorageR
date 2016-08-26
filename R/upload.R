@@ -81,7 +81,6 @@ gcs_upload <- function(file,
     }
 
     temp <- file
-    name <- file
 
   } else if(!is.null(object_function)){
     # user specified object write function

@@ -4,13 +4,13 @@
 \alias{gcs_load}
 \title{Load an R session from the Google Cloud}
 \usage{
-gcs_load(bucket = gcs_get_global_bucket(), file = ".RData",
+gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
   envir = .GlobalEnv)
 }
 \arguments{
-\item{bucket}{Bucket the stored objects are in}
-
 \item{file}{Where the files are stored}
+
+\item{bucket}{Bucket the stored objects are in}
 
 \item{envir}{Environment to load objects into}
 }
@@ -18,10 +18,17 @@ gcs_load(bucket = gcs_get_global_bucket(), file = ".RData",
 TRUE if successful
 }
 \description{
-Load R objects that have been saved using \link{gcs_save}
+Load R objects that have been saved using \link{gcs_save} or \link{gcs_save_image}
+}
+\details{
+The argument \code{file}'s default is to load an image file
+  called \code{.RData} from \link{gcs_save_image} into the Global environment.
+
+This would overwrite your existing \code{.RData} file in the working directory, so
+  change the file name if you don't wish this to be the case.
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_save}},
-  \code{\link{gcs_source}}
+Other R session data functions: \code{\link{gcs_save_image}},
+  \code{\link{gcs_save}}, \code{\link{gcs_source}}
 }
 

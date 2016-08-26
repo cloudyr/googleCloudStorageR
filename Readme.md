@@ -288,17 +288,35 @@ download_url
 
 ## R Session helpers
 
-Versions of `save.image()` and `load()` are implemented called `gcs_save()` and `gcs_load()`.  These functions save and load the global R session to the cloud.
+Versions of `save.image()`, `save()` and `load()` are implemented called `gcs_save_image()`, `gcs_save()` and `gcs_load()`.  These functions save and load the global R session to the cloud.
 
 ```r
 ## save the current R session including all objects
-gcs_save()
+gcs_save_image()
 
 ### wipe environment
 rm(list = ls())
 
 ## load up environment again
 gcs_load()
+```
+
+Save specific objects:
+
+```r
+cc <- 3
+d <- "test1"
+gcs_save("cc","d", file = "gcs_save_test.RData")
+
+## remove the objects saved in cloud from local environment
+rm(cc,d)
+
+## load them back in from GCS
+gcs_load(file = "gcs_save_test.RData")
+cc == 3
+[1] TRUE
+d == "test1"
+[1] TRUE
 ```
 
 You can also upload `.R` code files and source them directly using `gcs_source`:

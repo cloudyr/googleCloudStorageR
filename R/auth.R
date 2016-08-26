@@ -9,7 +9,7 @@
 #' Otherwise it will look in the working directory for the `.httr-oauth` file, which if not present
 #'   will trigger an authentication flow via Google login screen in your browser.
 #'
-#' If \code{GCS_AUTH_FILE} is specified, then this function will be called upon loading the package
+#' If \code{GCS_AUTH_FILE} is specified, then \code{gcs_auth()} will be called upon loading the package
 #'   via \code{library(googleCloudStorageR)},
 #'   meaning that calling this function yourself at the start of the session won't be necessary.
 #'
