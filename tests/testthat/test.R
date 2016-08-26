@@ -181,11 +181,11 @@ test_that("We can save the R session", {
 ## I can't get this test to work...but it works fine locally
 test_that("We can load the R session", {
 
-  saved <- gcs_load(file = ".RData")
+  loaded <- gcs_load(file = ".RData", envir = parent.frame())
   on.exit(unlink(".RData"))
-  expect_true(saved)
-  a <- get("a")
-  b <- get("b")
+  expect_true(loaded)
+  a <- get("a", envir = parent.frame())
+  b <- get("b", envir = parent.frame())
   expect_true(a == 1)
   expect_true(b == "test")
 

@@ -18,11 +18,13 @@
 #' @return TRUE if successful
 #' @export
 gcs_save_image <- function(file = ".RData",
-                           bucket = gcs_get_global_bucket()){
+                           bucket = gcs_get_global_bucket(),
+                           envir = parent.frame()){
 
-  save.image(file = file)
-
-  gcs_upload(file, bucket = bucket, name = file)
+  gcs_save(list = ls(all.names = TRUE, envir = envir),
+           file = file,
+           bucket = bucket,
+           envir = envir)
 
   TRUE
 
@@ -59,7 +61,7 @@ gcs_save <- function(...,
   tmp <- tempfile()
   on.exit(unlink(tmp))
 
-  save(..., file = tmp, envir = parent.frame())
+  save(..., file = tmp, envir = envir)
 
   gcs_upload(tmp, bucket = bucket, name = file)
 

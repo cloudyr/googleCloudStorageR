@@ -4,7 +4,8 @@
 \alias{gcs_save_image}
 \title{Save an R session to the Google Cloud}
 \usage{
-gcs_save_image(file = ".RData", bucket = gcs_get_global_bucket())
+gcs_save_image(file = ".RData", bucket = gcs_get_global_bucket(),
+  envir = parent.frame())
 }
 \arguments{
 \item{file}{Where to save the file in GCS and locally}
