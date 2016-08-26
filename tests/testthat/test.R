@@ -151,28 +151,44 @@ test_that("We can see object meta data", {
 
 context("R session functions")
 
+test_that("We can save an R object list", {
+  cc <- 3
+  d <- "test1"
+  saved <- gcs_save("cc","d", file = "gcs_save_test.RData")
+  expect_true(saved)
+  unlink("gcs_save_test.RData")
+})
+
+test_that("We can load an R object list", {
+  saved <- gcs_load(file = "gcs_save_test.RData")
+  on.exit(unlink("gcs_save_test.RData"))
+  expect_true(saved)
+  cc <- get("cc")
+  d <- get("d")
+  expect_true(cc == 3)
+  expect_true(d == "test1")
+
+})
+
 test_that("We can save the R session", {
   a <- 1
   b <- "test"
-  saved <- gcs_save()
+  saved <- gcs_save_image(file = ".RData")
   expect_true(saved)
+  unlink(".RData")
 })
 
 ## I can't get this test to work...but it works fine locally
-test_that("We can reload the R session", {
+test_that("We can load the R session", {
 
-  a <- 1
-  b <- "test"
-  saved <- gcs_save(file = ".RData")
+  saved <- gcs_load(file = ".RData")
+  on.exit(unlink(".RData"))
   expect_true(saved)
-  rm(a,b)
-
-  loaded <- gcs_load(file = ".RData")
-  expect_true(loaded)
   a <- get("a")
   b <- get("b")
   expect_true(a == 1)
   expect_true(b == "test")
+
 })
 
 context("Source files")
@@ -182,6 +198,7 @@ test_that("We can upload a source file", {
   cat("x <- 'hello world!'\nx", file = "example.R")
   up <- gcs_upload("example.R", name = "example.R")
   expect_true(up$kind == "storage#object")
+  unlink("example.R")
 
 })
 
@@ -202,6 +219,7 @@ test_that("We can delete all test files", {
   expect_true(gcs_delete_object("mtcars.csv"))
   expect_true(gcs_delete_object("mtcars_meta.csv"))
   expect_true(gcs_delete_object("example.R"))
+  expect_true(gcs_delete_object("gcs_save_test.RData"))
 })
 
 

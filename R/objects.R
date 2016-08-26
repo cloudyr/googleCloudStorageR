@@ -1,12 +1,27 @@
 #' List objects in a bucket
 #'
 #' @param bucket bucket containing the objects
+#' @param detail Set level of detail
+#'
+#' @details
+#'
+#' Columns returned by \code{detail} are:
+#'
+#' \itemize{
+#'   \item \code{summary} - name, size, updated
+#'   \item \code{more} - as above plus: bucket, contentType, storageClass, timeCreated
+#'   \item \code{full} - as above plus: id, selfLink, generation, metageneration, md5Hash, mediaLink, crc32c, etag
+#'  }
+#'
 #'
 #' @return A data.frame of the objects
 #'
 #' @family object functions
 #' @export
-gcs_list_objects <- function(bucket = gcs_get_global_bucket()){
+gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
+                             detail = c("summary","more","full")){
+
+  detail <- match.arg(detail)
 
   testthat::expect_type(bucket, "character")
   testthat::expect_length(bucket, 1)
@@ -26,7 +41,14 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket()){
                                       data_parse_function = parse_lo)
   req <- lo()
 
-  req
+  out_names <- switch(detail,
+      summary = c("name", "size", "updated"),
+      more = c("name", "size", "bucket", "contentType", "timeCreated", "updated", "storageClass"),
+      full = TRUE
+                )
+
+  req[,out_names]
+
 
 }
 

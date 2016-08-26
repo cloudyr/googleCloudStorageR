@@ -2,8 +2,42 @@
 #'
 #' Performs \link{save.image} then saves it to Google Cloud Storage.
 #'
-#' @param bucket Bucket to store objects in
 #' @param file Where to save the file in GCS and locally
+#' @param bucket Bucket to store objects in
+#'
+#' @details
+#'
+#' \code{gcs_save_image(bucket = "your_bucket")} will save all objects in the workspace
+#'   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
+#'
+#' Restore the objects using \code{gcs_load(bucket = "your_bucket")}
+#'
+#' This will overwrite any data with the same name in folder.
+#'
+#' @family R session data functions
+#' @return TRUE if successful
+#' @export
+gcs_save_image <- function(file = ".RData",
+                           bucket = gcs_get_global_bucket()){
+
+  save.image(file = file)
+
+  gcs_upload(file, bucket = bucket, name = file)
+
+  TRUE
+
+}
+
+#' Save an R object to the Google Cloud
+#'
+#' Performs \link{save} then saves it to Google Cloud Storage.
+#'
+#' For all session data use \link{gcs_save_image} instead.
+#'
+#' @param ... The names of the objects to be saved (as symbols or character strings).
+#' @param file The file name that will be uploaded (conventionally with file extension \code{.RData})
+#' @param bucket Bucket to store objects in
+#' @param envir Environment to search for objects to be saved
 #'
 #' @details
 #'
@@ -17,12 +51,17 @@
 #' @family R session data functions
 #' @return TRUE if successful
 #' @export
-gcs_save <- function(bucket = gcs_get_global_bucket(),
-                     file = ".RData"){
+gcs_save <- function(...,
+                     file,
+                     bucket = gcs_get_global_bucket(),
+                     envir = parent.frame()){
 
-  save.image(file = file)
+  tmp <- tempfile()
+  on.exit(unlink(tmp))
 
-  gcs_upload(file, bucket = bucket, name = file)
+  save(..., file = tmp, envir = parent.frame())
+
+  gcs_upload(tmp, bucket = bucket, name = file)
 
   TRUE
 
@@ -31,17 +70,25 @@ gcs_save <- function(bucket = gcs_get_global_bucket(),
 
 #' Load an R session from the Google Cloud
 #'
-#' Load R objects that have been saved using \link{gcs_save}
+#' Load R objects that have been saved using \link{gcs_save} or \link{gcs_save_image}
 #'
-#' @param bucket Bucket the stored objects are in
 #' @param file Where the files are stored
+#' @param bucket Bucket the stored objects are in
 #' @param envir Environment to load objects into
+#'
+#' @details
+#'
+#' The argument \code{file}'s default is to load an image file
+#'   called \code{.RData} from \link{gcs_save_image} into the Global environment.
+#'
+#' This would overwrite your existing \code{.RData} file in the working directory, so
+#'   change the file name if you don't wish this to be the case.
 #'
 #' @family R session data functions
 #' @return TRUE if successful
 #' @export
-gcs_load <- function(bucket = gcs_get_global_bucket(),
-                     file = ".RData",
+gcs_load <- function(file = ".RData",
+                     bucket = gcs_get_global_bucket(),
                      envir = .GlobalEnv){
 
   gcs_get_object(file, bucket = bucket, saveToDisk = file)

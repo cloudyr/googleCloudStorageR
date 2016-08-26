@@ -2,22 +2,31 @@
 % Please edit documentation in R/rsession.R
 \name{gcs_save}
 \alias{gcs_save}
-\title{Save an R session to the Google Cloud}
+\title{Save an R object to the Google Cloud}
 \usage{
-gcs_save(bucket = gcs_get_global_bucket(), file = ".RData")
+gcs_save(..., file, bucket = gcs_get_global_bucket(),
+  envir = parent.frame())
 }
 \arguments{
+\item{...}{The names of the objects to be saved (as symbols or character strings).}
+
+\item{file}{The file name that will be uploaded (conventionally with file extension \code{.RData})}
+
 \item{bucket}{Bucket to store objects in}
 
-\item{file}{Where to save the file in GCS and locally}
+\item{envir}{Environment to search for objects to be saved}
 }
 \value{
 TRUE if successful
 }
 \description{
-Performs \link{save.image} then saves it to Google Cloud Storage.
+Performs \link{save} then saves it to Google Cloud Storage.
 }
 \details{
+For all session data use \link{gcs_save_image} instead.
+
+
+
 \code{gcs_save(bucket = "your_bucket")} will save all objects in the workspace
   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
 
@@ -27,6 +36,6 @@ This will overwrite any data with the same name in folder.
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},
-  \code{\link{gcs_source}}
+  \code{\link{gcs_save_image}}, \code{\link{gcs_source}}
 }
 
