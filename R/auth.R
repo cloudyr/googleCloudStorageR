@@ -48,7 +48,7 @@ gcs_auth <- function(new_user = FALSE){
       }
     } else {
     ## auth_file specified but not present
-      stop("GCS_AUTH_FILE specified in environment variables but file not found - looked for ", auth_file)
+      stop("GCS_AUTH_FILE specified in environment variables but file not found - looked for ", auth_file, " and called from ", getwd())
     }
   }
 
