@@ -4,6 +4,7 @@
 #'
 #' @param file Where to save the file in GCS and locally
 #' @param bucket Bucket to store objects in
+#' @param envir Environment to save from
 #'
 #' @details
 #'
