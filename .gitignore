@@ -5,3 +5,5 @@ drat.sh
 .httr-oauth
 .httr-oauth-SUSPENDED
 inst/doc
+
+gcs_save_test.RData
