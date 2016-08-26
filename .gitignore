@@ -5,3 +5,4 @@ drat.sh
 .httr-oauth
 .httr-oauth-SUSPENDED
 inst/doc
+^auth\.json$
