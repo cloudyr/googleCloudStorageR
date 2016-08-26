@@ -473,7 +473,7 @@ The instructions below are for when you visit the Google API console (`https://c
 [![Build Status](https://travis-ci.org/cloudyr/googleCloudStorageR.png?branch=master)](https://travis-ci.org/cloudyr/googleCloudStorageR)
 [![codecov.io](http://codecov.io/github/cloudyr/googleCloudStorageR/coverage.svg?branch=master)](http://codecov.io/github/cloudyr/googleCloudStorageR?branch=master)
 
-This package is on CRAN.
+This package is on CRAN:
 
 ```R
 # latest stable version
