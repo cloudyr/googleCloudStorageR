@@ -1,12 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.httr-oauth$
-^\.httr-oauth.enc$
 cran-comments\.md
 \.travis\.yml
 test_signedurls.RData
 ^codecov\.yml$
 ^CONTRIBUTING\.md$
 ^Readme\.md$
-
-tests/testthat/.httr-oauth
+^auth\.json$
+^auth\.json\.enc$
