@@ -1,6 +1,4 @@
-library(googleAuthR)
 library(testthat)
-options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
 library(googleCloudStorageR)
 
 context("Auth")
