@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.httr-oauth$
+^\.httr-oauth.enc$
 cran-comments\.md
 \.travis\.yml
 test_signedurls.RData

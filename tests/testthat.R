@@ -1,4 +1,4 @@
 library("testthat")
 library("googleCloudStorageR")
 
-#test_check("googleCloudStorageR")
+test_check("googleCloudStorageR")
