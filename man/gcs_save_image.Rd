@@ -11,6 +11,8 @@ gcs_save_image(file = ".RData", bucket = gcs_get_global_bucket(),
 \item{file}{Where to save the file in GCS and locally}
 
 \item{bucket}{Bucket to store objects in}
+
+\item{envir}{Environment to save from}
 }
 \value{
 TRUE if successful
