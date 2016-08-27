@@ -13,7 +13,8 @@ Imports:
     googleAuthR,
     testthat(>= 1.0.2),
     httr (>= 1.2.1),
-    jsonlite (>= 1.0)
+    jsonlite (>= 1.0),
+    readr (>= 0.2.2)
 Suggests:
     knitr,
     covr,
