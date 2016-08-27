@@ -1,6 +1,6 @@
 #' Upload a file of arbitary type
 #'
-#' Simple Upload - for files up to 5MB to Google Cloud Storage
+#' Upload up to 5TB
 #'
 #' @param file data.frame, list, R object or filepath (character) to upload file
 #' @param bucket bucketname you are uploading to
@@ -68,7 +68,7 @@ gcs_upload <- function(file,
   upload_type <- match.arg(upload_type)
   upload_limit <- 5000000
   ## so jsonlite::toJSON works
-  class(object_metadata) <- "list"
+  if(!is.null(object_metadata)) class(object_metadata) <- "list"
 
   ## no leading slashes
   name <- gsub("^/","", utils::URLencode(name, reserved = TRUE))
@@ -127,6 +127,8 @@ gcs_upload <- function(file,
 
   if(upload_type == "resumable" || file.size(temp) > upload_limit){
     ## resumable upload
+    myMessage("Resumable upload", level = 2)
+    myMessage("File size detected as ", file.size(temp), level = 3)
 
     up <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
@@ -184,7 +186,7 @@ gcs_upload <- function(file,
 
   } else if (!is.null(object_metadata)){
     ## multipart upload
-
+    myMessage("Multi-part upload", level = 2)
     if(!is.null(object_metadata$name)){
       name <- object_metadata$name
     }
@@ -223,6 +225,7 @@ gcs_upload <- function(file,
   } else {
     ## simple upload <5MB
     bb <- httr::upload_file(temp, type = type)
+    myMessage("Simple upload", level = 2)
 
     up <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",

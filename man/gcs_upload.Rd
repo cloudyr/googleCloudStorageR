@@ -31,7 +31,7 @@ gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
 If successful, a metadata object
 }
 \description{
-Simple Upload - for files up to 5MB to Google Cloud Storage
+Upload up to 5TB
 }
 \details{
 When using \code{object_function} it expects a function with two arguments:
