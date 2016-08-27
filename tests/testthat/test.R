@@ -10,17 +10,68 @@ test_that("We can login", {
 
 })
 
+context("Buckets")
+
 test_that("We can set global bucket names", {
 
   bucket <- gcs_global_bucket("mark-edmondson-public-files")
   expect_true(bucket == "mark-edmondson-public-files")
 })
 
+test_that("We can list buckets", {
+
+  bb <- gcs_list_buckets("mark-edmondson-gde")
+  expect_s3_class(bb, "data.frame")
+
+})
+
+test_that("We can get a bucket", {
+
+  bb <- gcs_get_bucket()
+  print(bb)
+
+  expect_equal(bb$kind, "storage#bucket")
+
+})
+
+test_that("We can create a bucket", {
+
+  new_bucket <- gcs_create_bucket("blahblahblahfffff",
+                                  projectId = "mark-edmondson-gde")
+  expect_equal(new_bucket$kind, "storage#bucket")
+
+})
+
+test_that("We can delete a bucket", {
+
+  deleted <- gcs_delete_bucket("blahblahblahfffff")
+  expect_true(deleted)
+
+})
+
+# test_that("We can update a bucket", {
+#
+#   update <- gcs_update_bucket()
+#   expect_equal(update$kind, "storage#bucket")
+#
+#
+# })
+
+# test_that("We can undo the update a bucket", {
+#
+#
+#
+# })
+
+
+
+
 context("Uploading")
 
 test_that("We can upload a file", {
   skip_on_cran()
   upload <- gcs_upload("test_mtcars.csv")
+  print(upload)
   expect_equal(upload$kind, "storage#object")
 
 })
@@ -63,6 +114,7 @@ test_that("We can upload with metadata", {
   skip_on_cran()
   meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list(blah = 1,bo = 2))
   upload <- gcs_upload(mtcars, object_metadata = meta)
+  print(upload)
 
   expect_equal(upload$kind, "storage#object")
   expect_equal(upload$name, "mtcars_meta.csv")
@@ -113,6 +165,7 @@ test_that("We can see access control for allUsers,", {
   skip_on_cran()
   acl <- gcs_get_object_access("mtcars.csv",
                                entity_type = "allUsers")
+  print(acl)
   expect_equal(acl$kind, "storage#objectAccessControl")
   expect_equal(acl$role, "READER")
   expect_equal(acl$entity, "allUsers")
@@ -132,6 +185,7 @@ context("Meta data")
 test_that("We can see object meta data", {
   skip_on_cran()
   meta_obj <- gcs_get_object("mtcars.csv", meta = TRUE)
+  print(meta_obj)
   expect_equal(meta_obj$kind, "storage#object")
 })
 

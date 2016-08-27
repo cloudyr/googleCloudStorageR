@@ -55,6 +55,16 @@ gcs_get_global_bucket <- function(){
 #' @param prefix Filter results to names begnning with this prefix
 #' @param projection Properties to return. Default noAcl omits acl properties
 #' @param maxResults Max number of results
+#' @param detail Set level of detail
+#'
+#' @details
+#'
+#' Columns returned by \code{detail} are:
+#'
+#' \itemize{
+#'   \item \code{summary} - name, storageClass, location ,updated
+#'   \item \code{full} - as above plus: id, selfLink, projectNumber, timeCreated, metageneration, etag
+#'  }
 #'
 #' @return data.frame of buckets
 #'
@@ -63,13 +73,14 @@ gcs_get_global_bucket <- function(){
 gcs_list_buckets <- function(projectId,
                              prefix = "",
                              projection = c("noAcl","full"),
-                             maxResults = 1000){
+                             maxResults = 1000,
+                             detail = c("summary","full")){
 
   projection <- match.arg(projection)
+  detail <- match.arg(detail)
 
   testthat::expect_is(projectId, "character")
   testthat::expect_is(prefix, "character")
-  testthat::expect_is(projection, "character")
   testthat::expect_is(maxResults, "numeric")
 
   parse_lb <- function(x){
@@ -89,7 +100,14 @@ gcs_list_buckets <- function(projectId,
                                                     projection=projection),
                                    data_parse_function = parse_lb)
 
-  lb()
+  out <- lb()
+
+  out_names <- switch(detail,
+                      summary = c("name", "storageClass", "location" ,"updated"),
+                      full = TRUE
+  )
+
+  out[,out_names]
 
 }
 
@@ -211,16 +229,57 @@ gcs_create_bucket <-
 
 }
 
-#' Update a bucket
+
+#' Delete a bucket
 #'
-#' Update a buckets metadata
+#' Delete the bucket, and all its objects
 #'
 #' @param bucket Name of the bucket
-#' @param new_name Globally unique name of bucket
+#' @param ifMetagenerationMatch Delete only if metageneration matches
+#' @param ifMetagenerationNotMatch Delete only if metageneration does not match
+#'
+#' @import testthat
+#' @family bucket functions
+#' @export
+gcs_delete_bucket <- function(bucket,
+                              ifMetagenerationMatch = NULL,
+                              ifMetagenerationNotMatch = NULL){
+
+  testthat::expect_is(bucket, "character")
+
+  pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
+                    ifMetagenerationNotMatch=ifMetagenerationNotMatch)
+  pars_args <- rmNullObs(pars_args)
+
+  bb <-
+    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
+                                   "DELETE",
+                                   path_args = list(b = bucket),
+                                   pars_args = pars_args)
+
+  ## suppress warnings of no JSON content detected
+  res <- suppressWarnings(bb())
+
+  if(res$status_code == "204"){
+    myMessage("Bucket ", bucket, " deleted successfully.", level = 3)
+    out <- TRUE
+  } else {
+    myMessage("Bucket ", bucket, " NOT deleted", level = 3)
+    out <- FALSE
+  }
+
+  out
+
+}
+
+
+#' Update a bucket
+#'
+#' Update a buckets metadata using PATCH semantics
+#'
+#' @param bucket Name of the bucket
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
-#' @param location Location of bucket. See details
-#' @param storageClass Type of bucket
 #' @param predefinedAcl Apply predefined access controls to bucket
 #' @param predefinedDefaultObjectAcl Apply predefined access controls to objects
 #' @param projection Properties to return. Default noAcl omits acl properties
@@ -235,33 +294,32 @@ gcs_create_bucket <-
 #' @export
 gcs_update_bucket <-
   function(bucket = gcs_get_global_bucket(),
-           new_name = NULL,
            ifMetagenerationMatch = NULL,
            ifMetagenerationNotMatch = NULL,
-           location = NULL,
-           storageClass = c("STANDARD",
-                            "NEARLINE",
-                            "DURABLE_REDUCED_AVAILABILITY"),
-           predefinedAcl = c("authenticatedRead",
-                             "private",
-                             "projectPrivate",
-                             "publicRead",
-                             "publicReadWrite"),
-           predefinedDefaultObjectAcl = c("authenticatedRead",
-                                          "private",
-                                          "projectPrivate",
-                                          "publicRead",
-                                          "publicReadWrite"),
+           predefinedAcl = NULL,
+           predefinedDefaultObjectAcl = NULL,
            projection = c("noAcl","full")){
 
     projection    <- match.arg(projection)
-    predefinedAcl <- match.arg(predefinedAcl)
-    storageClass  <- match.arg(storageClass)
-    predefinedDefaultObjectAcl <- match.arg(predefinedDefaultObjectAcl)
+
+    if(!is.null(predefinedAcl)){
+      stopifnot(predefinedAcl %in% c("authenticatedRead",
+                                     "private",
+                                     "projectPrivate",
+                                     "publicRead",
+                                     "publicReadWrite"))
+    }
+
+    if(!is.null(predefinedDefaultObjectAcl)){
+      stopifnot(predefinedDefaultObjectAcl %in% c("authenticatedRead",
+                                                  "private",
+                                                  "projectPrivate",
+                                                  "publicRead",
+                                                  "publicReadWrite"))
+
+    }
 
     testthat::expect_is(bucket, "character")
-    testthat::expect_is(location, "character")
-    testthat::expect_is(projection, "character")
 
     pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                       ifMetagenerationNotMatch=ifMetagenerationNotMatch,
@@ -272,14 +330,12 @@ gcs_update_bucket <-
 
     bb <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                     "POST",
+                                     "PATCH",
                                      path_args = list(b = bucket),
                                      pars_args = pars_args)
 
     body <- list(
-      name = new_name,
-      location = location,
-      storageClass = storageClass
+
     )
 
     body <- rmNullObs(body)

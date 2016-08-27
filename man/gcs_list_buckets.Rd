@@ -5,7 +5,7 @@
 \title{List buckets}
 \usage{
 gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
-  maxResults = 1000)
+  maxResults = 1000, detail = c("summary", "full"))
 }
 \arguments{
 \item{projectId}{Project containing buckets to list}
@@ -15,6 +15,8 @@ gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
 \item{projection}{Properties to return. Default noAcl omits acl properties}
 
 \item{maxResults}{Max number of results}
+
+\item{detail}{Set level of detail}
 }
 \value{
 data.frame of buckets
@@ -22,8 +24,17 @@ data.frame of buckets
 \description{
 List the buckets your projectId has access to
 }
+\details{
+Columns returned by \code{detail} are:
+
+\itemize{
+  \item \code{summary} - name, storageClass, location ,updated
+  \item \code{full} - as above plus: id, selfLink, projectNumber, timeCreated, metageneration, etag
+ }
+}
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_delete_bucket}},
   \code{\link{gcs_get_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_global_bucket}},

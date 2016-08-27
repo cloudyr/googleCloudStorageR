@@ -4,27 +4,17 @@
 \alias{gcs_update_bucket}
 \title{Update a bucket}
 \usage{
-gcs_update_bucket(bucket = gcs_get_global_bucket(), new_name = NULL,
+gcs_update_bucket(bucket = gcs_get_global_bucket(),
   ifMetagenerationMatch = NULL, ifMetagenerationNotMatch = NULL,
-  location = NULL, storageClass = c("STANDARD", "NEARLINE",
-  "DURABLE_REDUCED_AVAILABILITY"), predefinedAcl = c("authenticatedRead",
-  "private", "projectPrivate", "publicRead", "publicReadWrite"),
-  predefinedDefaultObjectAcl = c("authenticatedRead", "private",
-  "projectPrivate", "publicRead", "publicReadWrite"), projection = c("noAcl",
-  "full"))
+  predefinedAcl = NULL, predefinedDefaultObjectAcl = NULL,
+  projection = c("noAcl", "full"))
 }
 \arguments{
 \item{bucket}{Name of the bucket}
 
-\item{new_name}{Globally unique name of bucket}
-
 \item{ifMetagenerationMatch}{Return only if metageneration matches}
 
 \item{ifMetagenerationNotMatch}{Return only if metageneration does not match}
-
-\item{location}{Location of bucket. See details}
-
-\item{storageClass}{Type of bucket}
 
 \item{predefinedAcl}{Apply predefined access controls to bucket}
 
@@ -33,7 +23,7 @@ gcs_update_bucket(bucket = gcs_get_global_bucket(), new_name = NULL,
 \item{projection}{Properties to return. Default noAcl omits acl properties}
 }
 \description{
-Update a buckets metadata
+Update a buckets metadata using PATCH semantics
 }
 \details{
 \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
@@ -42,6 +32,7 @@ todo: acl, cors, lifecycle, logging, versioning, website
 }
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_delete_bucket}},
   \code{\link{gcs_get_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_global_bucket}},

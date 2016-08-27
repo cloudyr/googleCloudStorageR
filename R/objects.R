@@ -195,6 +195,8 @@ gcs_delete_object <- function(object_name,
                                        path_args = list(b = bucket,
                                                         o = object_name),
                                        pars_args = pars)
+
+  ## suppress warnings of no JSON content detected
   suppressWarnings(ob())
 
   myMessage("Deleted '", object_name, "' from bucket '", bucket,"'")

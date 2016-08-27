@@ -25,6 +25,7 @@ Meta data about the bucket
 }
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_delete_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_global_bucket}},
   \code{\link{gcs_list_buckets}},

@@ -36,7 +36,8 @@ Create a new bucket in your project
 todo: acl, cors, lifecycle, logging, versioning, website
 }
 \seealso{
-Other bucket functions: \code{\link{gcs_get_bucket}},
+Other bucket functions: \code{\link{gcs_delete_bucket}},
+  \code{\link{gcs_get_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_global_bucket}},
   \code{\link{gcs_list_buckets}},
