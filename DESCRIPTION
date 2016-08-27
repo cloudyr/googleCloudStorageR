@@ -10,7 +10,6 @@ BugReports: https://github.com/cloudyr/googleCloudStorageR/issues
 Depends:
     R (>= 3.2.0)
 Imports:
-    googleAuthR (>= 0.3.1),
     testthat(>= 1.0.2),
     httr (>= 1.2.1),
     jsonlite (>= 1.0)
@@ -18,6 +17,8 @@ Suggests:
     knitr,
     covr,
     rmarkdown
+Remotes:
+    MarkEdmondson1234/googleAuthR
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr

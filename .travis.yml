@@ -4,6 +4,8 @@ r_packages:
 - knitr
 - covr
 - drat
+r_github_packages:
+- MarkEdmondson1234/googleAuthR
 after_success:
 - Rscript -e 'library("covr");codecov()'
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
