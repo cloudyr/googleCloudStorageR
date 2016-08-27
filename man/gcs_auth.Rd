@@ -4,10 +4,12 @@
 \alias{gcs_auth}
 \title{Authenticate this session}
 \usage{
-gcs_auth(new_user = FALSE)
+gcs_auth(new_user = FALSE, no_auto = FALSE)
 }
 \arguments{
-\item{new_user}{If TRUE, reauthenticate via Google login screen
+\item{new_user}{If TRUE, reauthenticate via Google login screen}
+
+\item{no_auto}{Will ignore auto-authentication settings if TRUE
 
 If you have set the environment variable \code{GCS_AUTH_FILE} to a valid file location,
   the function will look there for authentication details.

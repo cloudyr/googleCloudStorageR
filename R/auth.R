@@ -3,6 +3,7 @@
 #' A wrapper for \link[googleAuthR]{gar_auth} and \link[googleAuthR]{gar_auth_service}
 #'
 #' @param new_user If TRUE, reauthenticate via Google login screen
+#' @param no_auto Will ignore auto-authentication settings if TRUE
 #'
 #' If you have set the environment variable \code{GCS_AUTH_FILE} to a valid file location,
 #'   the function will look there for authentication details.
@@ -20,7 +21,7 @@
 #' @import googleAuthR
 #' @importFrom tools file_ext
 #' @export
-gcs_auth <- function(new_user = FALSE){
+gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
 
   if(!any(getOption("googleAuthR.scopes.selected") %in%
           c("https://www.googleapis.com/auth/devstorage.full_control",
@@ -30,7 +31,18 @@ gcs_auth <- function(new_user = FALSE){
          https://www.googleapis.com/auth/devstorage.read_write")
   }
 
-  auth_file <- Sys.getenv("GCS_AUTH_FILE")
+  if(no_auto){
+    return(invisible(googleAuthR::gar_auth(new_user = new_user)))
+  }
+
+  ## Travis checks are relative file paths to getwd()
+  if(Sys.getenv("TRAVIS_GCS_AUTH_FILE") != ""){
+    message("Authentication on travis")
+    auth_file <- Sys.getenv("TRAVIS_GCS_AUTH_FILE")
+    auth_file <- paste0(getwd(), auth_file)
+  } else {
+    auth_file <- Sys.getenv("GCS_AUTH_FILE")
+  }
 
   if(auth_file == ""){
     ## normal auth looking for .httr-oauth in working folder or new user
