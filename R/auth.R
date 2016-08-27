@@ -39,7 +39,7 @@ gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
   if(Sys.getenv("TRAVIS_GCS_AUTH_FILE") != ""){
     message("Authentication on travis")
     auth_file <- Sys.getenv("TRAVIS_GCS_AUTH_FILE")
-    auth_file <- paste0(getwd(), auth_file)
+    auth_file <- file.path(getwd(), auth_file)
   } else {
     auth_file <- Sys.getenv("GCS_AUTH_FILE")
   }
