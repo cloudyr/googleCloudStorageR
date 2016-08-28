@@ -6,6 +6,7 @@ context("Auth")
 test_that("We can login", {
   skip_on_cran()
   ## requires pre-auth at /tests/testthat/.httr-oauth
+  ## or setting environment var GCS_AUTH_FILE and TRAVIS_GCS_AUTH_FILE
   expect_is(gcs_auth(), "Token2.0")
 
 })
