@@ -9,3 +9,4 @@ test_signedurls.RData
 ^Readme\.md$
 ^auth\.json$
 ^auth\.json\.enc$
+^drat\.sh$
