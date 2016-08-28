@@ -8,16 +8,9 @@
 
 .onAttach <- function(libname, pkgname){
 
-  scopes <- getOption("googleAuthR.scopes.selected")
-  if(!("https://www.googleapis.com/auth/devstorage.full_control" %in% scopes)){
-    packageStartupMessage("Adding https://www.googleapis.com/auth/devstorage.full_control scope")
-    new_scopes <- c(getOption("googleAuthR.scopes.selected"),
-                    "https://www.googleapis.com/auth/devstorage.full_control")
-  } else {
-    new_scopes <- scopes
-  }
-
-  options(googleAuthR.scopes.selected = new_scopes)
+  googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
+                                    environment_var = "GCS_AUTH_FILE",
+                                    travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
 
   if(Sys.getenv("GCS_CLIENT_ID") != ""){
     options(googleAuthR.client_id = Sys.getenv("GCS_CLIENT_ID"))
@@ -38,11 +31,6 @@
   if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
     .gcs_env$bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
     packageStartupMessage("Set default bucket name to '", Sys.getenv("GCS_DEFAULT_BUCKET"),"'")
-  }
-
-  if(Sys.getenv("GCS_AUTH_FILE") != ""){
-    googleCloudStorageR::gcs_auth()
-    packageStartupMessage("Successfully authenticated via ", Sys.getenv("GCS_AUTH_FILE"))
   }
 
   invisible()

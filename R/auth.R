@@ -23,46 +23,12 @@
 #' @export
 gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
 
-  if(!any(getOption("googleAuthR.scopes.selected") %in%
-          c("https://www.googleapis.com/auth/devstorage.full_control",
-            "https://www.googleapis.com/auth/devstorage.read_write"))){
-    stop("Cannot authenticate - googleAuthR.scopes.selected needs to be set to include
-         https://www.googleapis.com/auth/devstorage.full_control or
-         https://www.googleapis.com/auth/devstorage.read_write")
-  }
+  required_scopes <- c("https://www.googleapis.com/auth/devstorage.full_control",
+                       "https://www.googleapis.com/auth/devstorage.read_write")
 
-  if(no_auto){
-    return(invisible(googleAuthR::gar_auth(new_user = new_user)))
-  }
-
-  ## Travis checks are relative file paths to getwd()
-  if(Sys.getenv("TRAVIS_GCS_AUTH_FILE") != ""){
-    message("Authentication on travis")
-    auth_file <- Sys.getenv("TRAVIS_GCS_AUTH_FILE")
-    auth_file <- file.path(getwd(), auth_file)
-  } else {
-    auth_file <- Sys.getenv("GCS_AUTH_FILE")
-  }
-
-  if(auth_file == ""){
-    ## normal auth looking for .httr-oauth in working folder or new user
-    out <- googleAuthR::gar_auth(new_user = new_user)
-  } else {
-    ## auth_file specified in GCS_AUTH_FILE
-    if(file.exists(auth_file)){
-      ## Service JSON file
-      if(tools::file_ext(auth_file) == "json"){
-        out <- googleAuthR::gar_auth_service(auth_file)
-      } else {
-      ## .httr-oauth file
-        token <- readRDS(auth_file)
-        out <- googleAuthR::gar_auth(token = token[[1]])
-      }
-    } else {
-    ## auth_file specified but not present
-      stop("GCS_AUTH_FILE specified in environment variables but file not found - looked for ", auth_file, " and called from ", getwd())
-    }
-  }
-
-  invisible(out)
+  googleAuthR::gar_auto_auth(required_scopes,
+                             new_user = new_user,
+                             no_auto = no_auto,
+                             environment_var = "GCS_AUTH_FILE",
+                             travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
 }
