@@ -159,6 +159,8 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
 #' @param predefinedAcl Apply predefined access controls to bucket
 #' @param predefinedDefaultObjectAcl Apply predefined access controls to objects
 #' @param projection Properties to return. Default noAcl omits acl properties
+#' @param versioning Set if the bucket supports versioning of its objects
+#' @param lifecycle A list of \link{gcs_create_lifecycle} objects
 #'
 #' @details
 #'   \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
@@ -184,7 +186,9 @@ gcs_create_bucket <-
                                           "projectPrivate",
                                           "publicRead",
                                           "publicReadWrite"),
-           projection = c("noAcl","full")){
+           projection = c("noAcl","full"),
+           versioning = FALSE,
+           lifecycle = NULL){
 
   projection    <- match.arg(projection)
   predefinedAcl <- match.arg(predefinedAcl)
@@ -210,7 +214,11 @@ gcs_create_bucket <-
   body <- list(
     name = name,
     location = location,
-    storageClass = storageClass
+    storageClass = storageClass,
+    versioning = list(
+      enabled = versioning
+    ),
+    lifecycle = make_lifecycle_list(lifecycle)
   )
 
   body <- rmNullObs(body)
@@ -283,6 +291,8 @@ gcs_delete_bucket <- function(bucket,
 #' @param predefinedAcl Apply predefined access controls to bucket
 #' @param predefinedDefaultObjectAcl Apply predefined access controls to objects
 #' @param projection Properties to return. Default noAcl omits acl properties
+#' @param versioning Set if the bucket supports versioning of its objects
+#' @param lifecycle A list of \link{gcs_create_lifecycle} objects
 #'
 #' @details
 #'   \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
@@ -298,7 +308,9 @@ gcs_update_bucket <-
            ifMetagenerationNotMatch = NULL,
            predefinedAcl = NULL,
            predefinedDefaultObjectAcl = NULL,
-           projection = c("noAcl","full")){
+           projection = c("noAcl","full"),
+           versioning = NULL,
+           lifecycle = NULL){
 
     projection    <- match.arg(projection)
 
@@ -334,8 +346,13 @@ gcs_update_bucket <-
                                      path_args = list(b = bucket),
                                      pars_args = pars_args)
 
-    body <- list(
 
+
+    body <- list(
+      versioning = list(
+        enabled = versioning
+      ),
+      lifecycle = make_lifecycle_list(lifecycle)
     )
 
     body <- rmNullObs(body)
@@ -353,3 +370,70 @@ gcs_update_bucket <-
     out
 
   }
+
+
+#' Create a lifecycle condition
+#'
+#' Use this to set rules for how long objects last in a bucket in \link{gcs_update_bucket} and \link{gcs_create_bucket}
+#'
+#' @param age Age in days before objects are deleted
+#' @param createdBefore Deletes all objects before this date
+#' @param NumberOfNewerVersions Deletes all newer versions of this object
+#' @param isLive If TRUE deletes all live objects, if FALSE delets all archived versions
+#'
+#' \code{NumberOfNewerVersions} and \code{isLive} works only for buckets with object versioning
+#'
+#' For multiple conditions, pass this object in as a list.
+#'
+#' To disable lifecycle management for a bucket, pass in an empty list.
+#'
+#' @seealso
+#'
+#' Lifecycle documentation \url{https://cloud.google.com/storage/docs/lifecycle}
+#'
+#' @export
+#' @family bucket functions
+gcs_create_lifecycle <- function(age = NULL,
+                                 createdBefore = NULL,
+                                 NumberOfNewerVersions = NULL,
+                                 isLive = NULL){
+
+  rule <- list(
+    action = list(
+      type = "Delete"
+    ),
+    condition = list(
+      age = age,
+      createdBefore = createdBefore,
+      NumberOfNewerVersions = NumberOfNewerVersions,
+      isLive = isLive
+    )
+  )
+
+  rule <- rmNullObs(rule)
+
+  structure(
+    rule, class = "gcs_lifecycle"
+  )
+
+}
+
+make_lifecycle_list <- function(lifecycle){
+
+  if(!is.null(lifecycle)){
+
+    testthat::expect_type(lifecycle, "list")
+    testthat::expect_true(all(vapply(lifecycle,
+                                     function(x) class(x) == "gcs_lifecycle",
+                                     logical(1))))
+    out <- list(
+      lifecycle = list(
+        rule = lifecycle
+      )
+    )
+  } else {
+    out <- NULL
+  }
+
+  out
+}

@@ -7,7 +7,7 @@
 gcs_update_bucket(bucket = gcs_get_global_bucket(),
   ifMetagenerationMatch = NULL, ifMetagenerationNotMatch = NULL,
   predefinedAcl = NULL, predefinedDefaultObjectAcl = NULL,
-  projection = c("noAcl", "full"))
+  projection = c("noAcl", "full"), versioning = NULL, lifecycle = NULL)
 }
 \arguments{
 \item{bucket}{Name of the bucket}
@@ -21,6 +21,10 @@ gcs_update_bucket(bucket = gcs_get_global_bucket(),
 \item{predefinedDefaultObjectAcl}{Apply predefined access controls to objects}
 
 \item{projection}{Properties to return. Default noAcl omits acl properties}
+
+\item{versioning}{Set if the bucket supports versioning of its objects}
+
+\item{lifecycle}{A list of \link{gcs_create_lifecycle} objects}
 }
 \description{
 Update a buckets metadata using PATCH semantics
@@ -32,6 +36,7 @@ todo: acl, cors, lifecycle, logging, versioning, website
 }
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_create_lifecycle}},
   \code{\link{gcs_delete_bucket}},
   \code{\link{gcs_get_bucket}},
   \code{\link{gcs_get_global_bucket}},

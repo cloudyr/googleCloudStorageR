@@ -34,6 +34,7 @@ Columns returned by \code{detail} are:
 }
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
+  \code{\link{gcs_create_lifecycle}},
   \code{\link{gcs_delete_bucket}},
   \code{\link{gcs_get_bucket}},
   \code{\link{gcs_get_global_bucket}},

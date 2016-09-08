@@ -14,6 +14,7 @@
 * Add retry uploads via `gcs_retry_upload`
 * Add delete object via `gcs_delete_object`
 * Add `gcs_source` to source .R files from GCS
+* Add versioning and lifecycle management to create and update bucket functions
 
 # googleCloudStorageR 0.1.0
 
