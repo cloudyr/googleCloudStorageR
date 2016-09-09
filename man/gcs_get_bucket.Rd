@@ -9,7 +9,7 @@ gcs_get_bucket(bucket = gcs_get_global_bucket(),
   projection = c("noAcl", "full"))
 }
 \arguments{
-\item{bucket}{Name of a bucket}
+\item{bucket}{Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}}
 
 \item{ifMetagenerationMatch}{Return only if metageneration matches}
 

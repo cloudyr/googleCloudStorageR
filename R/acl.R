@@ -1,3 +1,106 @@
+#' Get Bucket Access Controls
+#'
+#' Returns the ACL entry for the specified entity on the specified bucket
+#'
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
+#' @param entity The entity holding the permission. Not needed for entity_type \code{allUsers} or \code{allAuthenticatedUsers}
+#' @param entity_type what type of entity
+#'
+#' Used also for when a bucket is updated
+#'
+#' @return Bucket access control object
+#' @export
+#' @family Access control functions
+gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
+                               entity = "",
+                               entity_type = c("user",
+                                               "group",
+                                               "domain",
+                                               "project",
+                                               "allUsers",
+                                               "allAuthenticatedUsers")){
+  entity_type <- match.arg(entity_type)
+
+  if(inherits(bucket, "gcs_bucket")){
+    bucket <- bucket$name
+  }
+
+  if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
+    stop("Must supply non-empty entity argument")
+  }
+
+  testthat::expect_type(entity, "character")
+
+  entity <- build_entity(entity, entity_type)
+
+  ge <-
+    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1",
+                                   "GET",
+                                   path_args = list(b = bucket,
+                                                    acl = entity),
+                                   data_parse_function = function(x) x)
+
+  req <- ge()
+
+
+  structure(req, class = "gcs_bucket_access")
+}
+
+#' Create a Bucket Access Controls
+#'
+#' Create a new access control at the bucket level
+#'
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
+#' @param entity The entity holding the permission. Not needed for entity_type \code{allUsers} or \code{allAuthenticatedUsers}
+#' @param entity_type what type of entity
+#' @param role Access permission for entity
+#'
+#' Used also for when a bucket is updated
+#'
+#' @return Bucket access control object
+#' @export
+#' @family Access control functions
+gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
+                                  entity = "",
+                                  entity_type = c("user",
+                                                  "group",
+                                                  "domain",
+                                                  "project",
+                                                  "allUsers",
+                                                  "allAuthenticatedUsers"),
+                                  role = c("READER","OWNER")){
+
+  entity_type <- match.arg(entity_type)
+  role <- match.arg(role)
+
+  if(inherits(bucket, "gcs_bucket")){
+    bucket <- bucket$name
+  }
+
+  if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
+    stop("Must supply non-empty entity argument")
+  }
+
+  testthat::expect_type(entity, "character")
+
+  accessControls <- list(
+    entity = build_entity(entity, entity_type),
+    role = role
+  )
+
+  insert <-
+    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1",
+                                   "POST",
+                                   path_args = list(b = bucket,
+                                                    acl = ""),
+                                   data_parse_function = function(x) x)
+
+  req <- insert(the_body = accessControls)
+
+  structure(req, class = "gcs_bucket_access")
+}
+
+
 
 #' Change access to an object in a bucket
 #'
@@ -34,16 +137,16 @@
 #' @return TRUE if successful
 #' @family Access control functions
 #' @export
-gcs_update_acl <- function(object_name,
-                           bucket = gcs_get_global_bucket(),
-                           entity = "",
-                           entity_type = c("user",
-                                           "group",
-                                           "domain",
-                                           "project",
-                                           "allUsers",
-                                           "allAuthenticatedUsers"),
-                           role = c("READER","OWNER")){
+gcs_update_object_acl <- function(object_name,
+                                  bucket = gcs_get_global_bucket(),
+                                  entity = "",
+                                  entity_type = c("user",
+                                                  "group",
+                                                  "domain",
+                                                  "project",
+                                                  "allUsers",
+                                                  "allAuthenticatedUsers"),
+                                  role = c("READER","OWNER")){
 
   entity_type <- match.arg(entity_type)
   role <- match.arg(role)
@@ -97,7 +200,7 @@ gcs_update_acl <- function(object_name,
 #' @importFrom googleAuthR gar_api_generator
 #' @family Access control functions
 #' @export
-gcs_get_object_access <- function(object_name,
+gcs_get_object_acl <- function(object_name,
                                   bucket = gcs_get_global_bucket(),
                                   entity = "",
                                   entity_type = c("user",

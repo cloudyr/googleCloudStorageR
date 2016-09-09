@@ -7,7 +7,7 @@
 gcs_global_bucket(bucket)
 }
 \arguments{
-\item{bucket}{bucket name you want this session to use by default}
+\item{bucket}{bucket name you want this session to use by default, or a bucket object}
 }
 \value{
 The bucket name (invisibly)

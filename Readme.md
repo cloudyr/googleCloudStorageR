@@ -230,7 +230,7 @@ By default you are "OWNER" of all the objects and buckets you upload and create.
 
 ```r
 ## update access of object to READER for all public
-gcs_update_acl("your-object.csv", entity_type = "allUsers")
+gcs_update_object_acl("your-object.csv", entity_type = "allUsers")
 
 ## update access of object for user joe@blogs.com to OWNER
 gcs_update_acl("your-object.csv", 
@@ -238,15 +238,15 @@ gcs_update_acl("your-object.csv",
                role = "OWNER")
 
 ## update access of object for googlegroup users to READER
-gcs_update_acl("your-object.csv", 
-               entity = "my-group@googlegroups.com", 
-               entity_type = "group")
+gcs_update_object_acl("your-object.csv", 
+                      entity = "my-group@googlegroups.com", 
+                      entity_type = "group")
 
 ## update access of object for all users to OWNER on your Google Apps domain
-gcs_update_acl("your-object.csv", 
-               entity = "yourdomain.com", 
-               entity_type = "domain", 
-               role = OWNER)
+gcs_update_object_acl("your-object.csv", 
+                      entity = "yourdomain.com", 
+                      entity_type = "domain", 
+                      role = OWNER)
 ```
 
 ## Deleting an object
@@ -260,18 +260,18 @@ gcs_delete_object("your-object.csv")
 
 ### Viewing current access level to objects
 
-Use `gcs_get_object_access()` to see what the current access is for an `entity` + `entity_type`.
+Use `gcs_get_object_acl()` to see what the current access is for an `entity` + `entity_type`.
 
 ```r
 ## default entity_type is user
-acl <- gcs_get_object_access("your-object.csv", 
-                             entity = "joe@blogs.com")
+acl <- gcs_get_object_acl("your-object.csv", 
+                         entity = "joe@blogs.com")
 acl$role 
 [1] "OWNER"
 
 ## for allUsers and allAuthenticated users, you don't need to supply entity
-acl <- gcs_get_object_access("your-object.csv", 
-                             entity_type = "allUsers")
+acl <- gcs_get_object_acl("your-object.csv", 
+                          entity_type = "allUsers")
 acl$role 
 [1] "READER"
 ```

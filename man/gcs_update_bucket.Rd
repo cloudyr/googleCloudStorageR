@@ -10,7 +10,7 @@ gcs_update_bucket(bucket = gcs_get_global_bucket(),
   projection = c("noAcl", "full"), versioning = NULL, lifecycle = NULL)
 }
 \arguments{
-\item{bucket}{Name of the bucket}
+\item{bucket}{Name of the bucket, or a bucket object}
 
 \item{ifMetagenerationMatch}{Return only if metageneration matches}
 

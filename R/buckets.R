@@ -5,7 +5,7 @@
 #'
 #' Set a bucket name used for this R session
 #'
-#' @param bucket bucket name you want this session to use by default
+#' @param bucket bucket name you want this session to use by default, or a bucket object
 #'
 #' @details
 #'   This sets a bucket to a global environment value so you don't need to
@@ -16,6 +16,11 @@
 #' @family bucket functions
 #' @export
 gcs_global_bucket <- function(bucket){
+
+  if(inherits(bucket, "gcs_bucket")){
+    bucket <- bucket$name
+  }
+
   stopifnot(inherits(bucket, "character"),
             length(bucket) == 1)
 
@@ -115,7 +120,7 @@ gcs_list_buckets <- function(projectId,
 #'
 #' Meta data about the bucket
 #'
-#' @param bucket Name of a bucket
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
 #' @param projection Properties to return. Default noAcl omits acl properties
@@ -129,6 +134,10 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
                            projection = c("noAcl","full")){
 
   projection <- match.arg(projection)
+
+  if(inherits(bucket, "gcs_bucket")){
+    bucket <- bucket$name
+  }
 
   testthat::expect_is(bucket, "character")
   testthat::expect_is(projection, "character")
@@ -165,8 +174,6 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
 #' @details
 #'   \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
 #'
-#' todo: acl, cors, lifecycle, logging, versioning, website
-#'
 #' @family bucket functions
 #' @export
 gcs_create_bucket <-
@@ -199,6 +206,7 @@ gcs_create_bucket <-
   testthat::expect_is(name, "character")
   testthat::expect_is(location, "character")
   testthat::expect_is(projection, "character")
+  testthat::expect_type(versioning, "logical")
 
   pars_args <- list(project = projectId,
                     predefinedAcl = predefinedAcl,
@@ -242,7 +250,7 @@ gcs_create_bucket <-
 #'
 #' Delete the bucket, and all its objects
 #'
-#' @param bucket Name of the bucket
+#' @param bucket Name of the bucket, or a bucket object
 #' @param ifMetagenerationMatch Delete only if metageneration matches
 #' @param ifMetagenerationNotMatch Delete only if metageneration does not match
 #'
@@ -252,6 +260,10 @@ gcs_create_bucket <-
 gcs_delete_bucket <- function(bucket,
                               ifMetagenerationMatch = NULL,
                               ifMetagenerationNotMatch = NULL){
+
+  if(inherits(bucket, "gcs_bucket")){
+    bucket <- bucket$name
+  }
 
   testthat::expect_is(bucket, "character")
 
@@ -285,7 +297,7 @@ gcs_delete_bucket <- function(bucket,
 #'
 #' Update a buckets metadata using PATCH semantics
 #'
-#' @param bucket Name of the bucket
+#' @param bucket Name of the bucket, or a bucket object
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
 #' @param predefinedAcl Apply predefined access controls to bucket
@@ -312,7 +324,17 @@ gcs_update_bucket <-
            versioning = NULL,
            lifecycle = NULL){
 
+    if(inherits(bucket, "gcs_bucket")){
+      bucket <- bucket$name
+    }
+
+    testthat::expect_is(bucket, "character")
+
     projection    <- match.arg(projection)
+
+    if(!is.null(versioning)){
+      testthat::expect_type(versioning, "logical")
+    }
 
     if(!is.null(predefinedAcl)){
       stopifnot(predefinedAcl %in% c("authenticatedRead",
@@ -331,7 +353,7 @@ gcs_update_bucket <-
 
     }
 
-    testthat::expect_is(bucket, "character")
+
 
     pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                       ifMetagenerationNotMatch=ifMetagenerationNotMatch,
@@ -395,8 +417,29 @@ gcs_update_bucket <-
 #' @family bucket functions
 gcs_create_lifecycle <- function(age = NULL,
                                  createdBefore = NULL,
-                                 NumberOfNewerVersions = NULL,
+                                 numNewerVersions = NULL,
                                  isLive = NULL){
+
+  if(!is.null(age)){
+    testthat::expect_is(age, "numeric")
+  }
+
+
+  if(!is.null(createdBefore)){
+    createdBefore <- as.character(as.Date(createdBefore, format = "%Y-%m-%d"))
+    if(is.na(createdBefore)){
+      stop("Problem with createdBefore date, converted to ", createdBefore)
+    }
+    testthat::expect_type(createdBefore, "character")
+  }
+
+  if(!is.null(numNewerVersions)){
+    testthat::expect_is(numNewerVersions, "numeric")
+  }
+
+  if(!is.null(isLive)){
+    testthat::expect_is(isLive, "logical")
+  }
 
   rule <- list(
     action = list(
@@ -405,7 +448,7 @@ gcs_create_lifecycle <- function(age = NULL,
     condition = list(
       age = age,
       createdBefore = createdBefore,
-      NumberOfNewerVersions = NumberOfNewerVersions,
+      numNewerVersions = numNewerVersions,
       isLive = isLive
     )
   )
@@ -413,7 +456,7 @@ gcs_create_lifecycle <- function(age = NULL,
   rule <- rmNullObs(rule)
 
   structure(
-    rule, class = "gcs_lifecycle"
+    rule, class = c("list","gcs_lifecycle")
   )
 
 }
@@ -424,13 +467,14 @@ make_lifecycle_list <- function(lifecycle){
 
     testthat::expect_type(lifecycle, "list")
     testthat::expect_true(all(vapply(lifecycle,
-                                     function(x) class(x) == "gcs_lifecycle",
+                                     function(x) inherits(x, "gcs_lifecycle"),
                                      logical(1))))
     out <- list(
-      lifecycle = list(
+      list(
         rule = lifecycle
       )
-    )
+
+        )
   } else {
     out <- NULL
   }

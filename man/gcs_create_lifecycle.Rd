@@ -5,14 +5,12 @@
 \title{Create a lifecycle condition}
 \usage{
 gcs_create_lifecycle(age = NULL, createdBefore = NULL,
-  NumberOfNewerVersions = NULL, isLive = NULL)
+  numNewerVersions = NULL, isLive = NULL)
 }
 \arguments{
 \item{age}{Age in days before objects are deleted}
 
 \item{createdBefore}{Deletes all objects before this date}
-
-\item{NumberOfNewerVersions}{Deletes all newer versions of this object}
 
 \item{isLive}{If TRUE deletes all live objects, if FALSE delets all archived versions
 
@@ -21,6 +19,8 @@ gcs_create_lifecycle(age = NULL, createdBefore = NULL,
 For multiple conditions, pass this object in as a list.
 
 To disable lifecycle management for a bucket, pass in an empty list.}
+
+\item{NumberOfNewerVersions}{Deletes all newer versions of this object}
 }
 \description{
 Use this to set rules for how long objects last in a bucket in \link{gcs_update_bucket} and \link{gcs_create_bucket}

@@ -7,8 +7,12 @@ print.gcs_bucket <- function(x, ...){
   cat0("Class:          ", x$storageClass)
   cat0("Created:        ", as.character(timestamp_to_r(x$timeCreated)))
   cat0("Updated:        ", as.character(timestamp_to_r(x$updated)))
+  cat0("Versionsing:    ", x$versioning$true)
   cat0("Meta-generation:", x$metageneration)
   cat0("eTag:           ", x$etag)
+  cat("Lifecycle Rules: \n")
+  print(x$lifecycle$rule)
+
 }
 
 #' @export

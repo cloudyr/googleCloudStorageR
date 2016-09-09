@@ -36,8 +36,6 @@ Create a new bucket in your project
 }
 \details{
 \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
-
-todo: acl, cors, lifecycle, logging, versioning, website
 }
 \seealso{
 Other bucket functions: \code{\link{gcs_create_lifecycle}},

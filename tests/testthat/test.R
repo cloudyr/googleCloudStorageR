@@ -50,22 +50,38 @@ test_that("We can delete a bucket", {
 
 })
 
-# test_that("We can update a bucket", {
-#
-#   update <- gcs_update_bucket()
-#   expect_equal(update$kind, "storage#bucket")
-#
-#
-# })
+test_that("We can make a bucket with lifecycle and versioning set",{
 
-# test_that("We can undo the update a bucket", {
-#
-#
-#
-# })
+  lc1 <- gcs_create_lifecycle(age = 365)
+  lc2 <- gcs_create_lifecycle(numNewerVersions = 3)
 
+  life_cyclebucket <- gcs_create_bucket("blahblahblahffflifecycle",
+                                        projectId = "mark-edmondson-gde",
+                                        lifecycle = list(lc1, lc2),
+                                        versioning = TRUE,
+                                        predefinedAcl = "authenticatedRead")
 
+  expect_equal(life_cyclebucket$kind, "storage#bucket")
+  expect_equal(life_cyclebucket$lifecycle$rule$action$type, c("Delete","Delete"))
+  expect_equal(life_cyclebucket$lifecycle$rule$condition$age, c(365,NA))
+  expect_equal(life_cyclebucket$lifecycle$rule$condition$numNewerVersions, c(NA,3))
+  expect_true(life_cyclebucket$versioning$enabled)
 
+})
+
+test_that("We can update the lifecycle bucket",{
+
+  update_lifecycle <- gcs_update_bucket("blahblahblahffflifecycle",
+                                        versioning = FALSE)
+
+})
+
+test_that("We can delete the lifecycle bucket", {
+
+  deleted <- gcs_delete_bucket("blahblahblahffflifecycle")
+  expect_true(deleted)
+
+})
 
 context("Uploading")
 
@@ -142,14 +158,14 @@ context("Access Control")
 
 test_that("We can set access control level for user", {
   skip_on_cran()
-  acl <- gcs_update_acl("mtcars.csv", entity = "joe@blogs.com")
+  acl <- gcs_update_object_acl("mtcars.csv", entity = "joe@blogs.com")
   expect_true(acl)
 
 })
 
 test_that("We can set access control level for public", {
   skip_on_cran()
-  acl <- gcs_update_acl("mtcars.csv", entity_type = "allUsers")
+  acl <- gcs_update_object_acl("mtcars.csv", entity_type = "allUsers")
   expect_true(acl)
 
 })
@@ -164,8 +180,8 @@ test_that("We can create a download URL", {
 
 test_that("We can see access control for allUsers,", {
   skip_on_cran()
-  acl <- gcs_get_object_access("mtcars.csv",
-                               entity_type = "allUsers")
+  acl <- gcs_get_object_acl("mtcars.csv",
+                            entity_type = "allUsers")
   print(acl)
   expect_equal(acl$kind, "storage#objectAccessControl")
   expect_equal(acl$role, "READER")
@@ -174,8 +190,8 @@ test_that("We can see access control for allUsers,", {
 
 test_that("We can see access control for single test user,", {
   skip_on_cran()
-  acl <- gcs_get_object_access("mtcars.csv",
-                               entity = "joe@blogs.com")
+  acl <- gcs_get_object_acl("mtcars.csv",
+                            entity = "joe@blogs.com")
   expect_equal(acl$kind, "storage#objectAccessControl")
   expect_equal(acl$role, "READER")
   expect_equal(acl$entity, "user-joe@blogs.com")

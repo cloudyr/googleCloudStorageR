@@ -8,7 +8,7 @@ gcs_delete_bucket(bucket, ifMetagenerationMatch = NULL,
   ifMetagenerationNotMatch = NULL)
 }
 \arguments{
-\item{bucket}{Name of the bucket}
+\item{bucket}{Name of the bucket, or a bucket object}
 
 \item{ifMetagenerationMatch}{Delete only if metageneration matches}
 
