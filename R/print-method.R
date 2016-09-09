@@ -7,12 +7,19 @@ print.gcs_bucket <- function(x, ...){
   cat0("Class:          ", x$storageClass)
   cat0("Created:        ", as.character(timestamp_to_r(x$timeCreated)))
   cat0("Updated:        ", as.character(timestamp_to_r(x$updated)))
-  cat0("Versionsing:    ", x$versioning$true)
+  cat0("Versioning:     ", x$versioning$enabled)
   cat0("Meta-generation:", x$metageneration)
   cat0("eTag:           ", x$etag)
-  cat("Lifecycle Rules: \n")
-  print(x$lifecycle$rule)
 
+  if(!is.null(x$lifecycle)){
+    cat("Lifecycle Rules: \n")
+    print(x$lifecycle$rule)
+  }
+
+  if(!is.null(x$acl)){
+    cat("\nAccess Control List:  \n")
+    print(x$acl[,c("entity","role","projectTeam")])
+  }
 }
 
 #' @export

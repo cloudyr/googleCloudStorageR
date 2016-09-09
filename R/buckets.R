@@ -324,8 +324,23 @@ gcs_update_bucket <-
            versioning = NULL,
            lifecycle = NULL){
 
+    ## so versioning in right form
+    options(googleAuthR.jsonlite.simplifyVector = FALSE)
+    on.exit(options(googleAuthR.jsonlite.simplifyVector = TRUE))
+
     if(inherits(bucket, "gcs_bucket")){
+
+      if(is.null(bucket$acl)){
+        myMessage("Getting Bucket ACL data", level = 2)
+        b_acl <- gcs_get_bucket(bucket, projection = "full")
+      }
+
+      myMessage("Using existing bucket ACL data", level = 2)
+
       bucket <- bucket$name
+    } else {
+      myMessage("Getting Bucket ACL data", level = 2)
+      b_acl <- gcs_get_bucket(bucket, projection = "full")
     }
 
     testthat::expect_is(bucket, "character")
@@ -364,25 +379,32 @@ gcs_update_bucket <-
 
     bb <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                     "PATCH",
+                                     "PUT",
                                      path_args = list(b = bucket),
                                      pars_args = pars_args)
 
 
 
-    body <- list(
+    new_body <- list(
       versioning = list(
         enabled = versioning
       ),
       lifecycle = make_lifecycle_list(lifecycle)
     )
 
-    body <- rmNullObs(body)
+    ## keep required fields and any
+
+    body <- substitute.list(b_acl, new_body)
+
+    if(is.null(body$acl)){
+      ## acl is required even when its blank (stupid)
+      body <- c(acl = list(list()), body)
+    }
 
     req <- bb(the_body = body)
 
     if(req$status_code == 200){
-      myMessage("Bucket update successfully", level = 3)
+      myMessage("Bucket update successful", level = 3)
       out <- structure(req$content, class = "gcs_bucket")
     } else {
       myMessage("Bucket update failed", level = 3)
