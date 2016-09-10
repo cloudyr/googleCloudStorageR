@@ -69,13 +69,6 @@ test_that("We can make a bucket with lifecycle and versioning set",{
 
 })
 
-test_that("We can update the lifecycle bucket",{
-
-  update_lifecycle <- gcs_update_bucket("blahblahblahffflifecycle",
-                                        versioning = FALSE)
-
-})
-
 test_that("We can delete the lifecycle bucket", {
 
   deleted <- gcs_delete_bucket("blahblahblahffflifecycle")
