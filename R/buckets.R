@@ -120,7 +120,7 @@ gcs_list_buckets <- function(projectId,
 #'
 #' Meta data about the bucket
 #'
-#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket}
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
 #' @param projection Properties to return. Default noAcl omits acl properties
@@ -294,18 +294,17 @@ gcs_delete_bucket <- function(bucket,
 
 #' Create a lifecycle condition
 #'
-#' Use this to set rules for how long objects last in a bucket in \link{gcs_update_bucket} and \link{gcs_create_bucket}
+#' Use this to set rules for how long objects last in a bucket in \link{gcs_create_bucket}
 #'
 #' @param age Age in days before objects are deleted
 #' @param createdBefore Deletes all objects before this date
-#' @param NumberOfNewerVersions Deletes all newer versions of this object
+#' @param numNewerVersions Deletes all newer versions of this object
 #' @param isLive If TRUE deletes all live objects, if FALSE delets all archived versions
 #'
-#' \code{NumberOfNewerVersions} and \code{isLive} works only for buckets with object versioning
+#' \code{numNewerVersions} and \code{isLive} works only for buckets with object versioning
 #'
 #' For multiple conditions, pass this object in as a list.
 #'
-#' To disable lifecycle management for a bucket, pass in an empty list.
 #'
 #' @seealso
 #'

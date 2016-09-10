@@ -2,7 +2,7 @@
 #'
 #' Returns the ACL entry for the specified entity on the specified bucket
 #'
-#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket}
 #' @param entity The entity holding the permission. Not needed for entity_type \code{allUsers} or \code{allAuthenticatedUsers}
 #' @param entity_type what type of entity
 #'

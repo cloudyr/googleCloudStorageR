@@ -16,7 +16,7 @@ bucket names should be length 1 or same length as object_name}
 \value{
 the URL for downloading objects
 
-You may need to update access for your email to get access via \link{gcs_update_acl}
+You may need to update access for your email to get access via \link{gcs_update_object_acl}
 }
 \description{
 Create the download URL for objects in buckets

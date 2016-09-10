@@ -9,14 +9,14 @@
 #'
 #' @return the URL for downloading objects
 #'
-#' You may need to update access for your email to get access via \link{gcs_update_acl}
+#' You may need to update access for your email to get access via \link{gcs_update_object_acl}
 #'
 #' @family download functions
 #' @export
 gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket()){
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
-  
+
   ## no leading slashes
   object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
 

@@ -12,18 +12,16 @@ gcs_create_lifecycle(age = NULL, createdBefore = NULL,
 
 \item{createdBefore}{Deletes all objects before this date}
 
+\item{numNewerVersions}{Deletes all newer versions of this object}
+
 \item{isLive}{If TRUE deletes all live objects, if FALSE delets all archived versions
 
-\code{NumberOfNewerVersions} and \code{isLive} works only for buckets with object versioning
+\code{numNewerVersions} and \code{isLive} works only for buckets with object versioning
 
-For multiple conditions, pass this object in as a list.
-
-To disable lifecycle management for a bucket, pass in an empty list.}
-
-\item{NumberOfNewerVersions}{Deletes all newer versions of this object}
+For multiple conditions, pass this object in as a list.}
 }
 \description{
-Use this to set rules for how long objects last in a bucket in \link{gcs_update_bucket} and \link{gcs_create_bucket}
+Use this to set rules for how long objects last in a bucket in \link{gcs_create_bucket}
 }
 \seealso{
 Lifecycle documentation \url{https://cloud.google.com/storage/docs/lifecycle}
