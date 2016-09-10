@@ -14,20 +14,20 @@ test_that("We can login", {
 context("Buckets")
 
 test_that("We can set global bucket names", {
-
+  skip_on_cran()
   bucket <- gcs_global_bucket("mark-edmondson-public-files")
   expect_true(bucket == "mark-edmondson-public-files")
 })
 
 test_that("We can list buckets", {
-
+  skip_on_cran()
   bb <- gcs_list_buckets("mark-edmondson-gde")
   expect_s3_class(bb, "data.frame")
 
 })
 
 test_that("We can get a bucket", {
-
+  skip_on_cran()
   bb <- gcs_get_bucket()
   print(bb)
 
@@ -36,7 +36,7 @@ test_that("We can get a bucket", {
 })
 
 test_that("We can create a bucket", {
-
+  skip_on_cran()
   new_bucket <- gcs_create_bucket("blahblahblahfffff",
                                   projectId = "mark-edmondson-gde")
   expect_equal(new_bucket$kind, "storage#bucket")
@@ -44,14 +44,14 @@ test_that("We can create a bucket", {
 })
 
 test_that("We can delete a bucket", {
-
+  skip_on_cran()
   deleted <- gcs_delete_bucket("blahblahblahfffff")
   expect_true(deleted)
 
 })
 
 test_that("We can make a bucket with lifecycle and versioning set",{
-
+  skip_on_cran()
   lc1 <- gcs_create_lifecycle(age = 365)
   lc2 <- gcs_create_lifecycle(numNewerVersions = 3)
 
@@ -70,7 +70,7 @@ test_that("We can make a bucket with lifecycle and versioning set",{
 })
 
 test_that("We can delete the lifecycle bucket", {
-
+  skip_on_cran()
   deleted <- gcs_delete_bucket("blahblahblahffflifecycle")
   expect_true(deleted)
 
