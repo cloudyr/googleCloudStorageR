@@ -8,16 +8,90 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 R library for interacting with the Google Cloud Storage JSON API ([api docs](https://cloud.google.com/storage/docs/json_api/)).
 
 ## Setup
 
 Google Cloud Storage charges you for storage [(prices here)](https://cloud.google.com/storage/pricing).
 
-You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the Google API Console after login here: `https://console.developers.google.com`.
+You can use your own Google Project with a credit card added to create buckets, where the charges will apply.  This can be done in the [Google API Console](https://console.developers.google.com)
+
+### Setting environment variables
+
+By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:
+
+```r
+Sys.setenv("GCS_CLIENT_ID" = "mykey",
+           "GCS_CLIENT_SECRET" = "mysecretkey",
+           "GCS_WEB_CLIENT_ID" = "my-shiny-key",
+           "GCS_WEB_CLIENT_SECRET" = "my-shiny-secret-key",
+           "GCS_DEFAULT_BUCKET" = "my-default-bucket",
+           "GCS_AUTH_FILE" = "/fullpath/to/service-auth.json")
+```
+
+These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
+
+## Authentication
+
+Authentication can be carried out each session via `gcs_auth`.  The first time you run this you will be sent to a Google login prompt in your browser to allow the `googleCloudStorageR` project access (or the Google project you configure). 
+
+Once authenticated a file named `.httr-oauth` is saved to your working directory.  On subsequent authentication this file will hold your authentication details, and you won't need to go via the browser.  Deleting this file, or setting `new_user=TRUE` will start the authentication flow again.
+
+```r
+library(googleCloudStorageR)
+## first time this will send you to the browser to authenticate
+gcs_auth()
+
+## to authenticate with a fresh user, delete .httr-oauth or run with new_user=TRUE
+gcs_auth(new_user = TRUE)
+
+...call functions...etc...
+
+```
+
+Each new R session will need to run `gcs_auth()` to authenticate future API calls.
+
+### Auto-authentication
+
+Alternatively, you can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created `.httr-oauth` token in a system environment:
+
+        Sys.setenv("GCS_AUTH_FILE" = "/fullpath/to/auth.json")
+
+This file will then used for authentication via `gcs_auth()` when you load the library:
+
+```r
+## GCS_AUTH_FILE set so auto-authentication
+library(googleCloudStorageR)
+
+## no need for gcs_auth()
+gcs_get_bucket("your-bucket")
+
+```
 
 ## Examples
+
+### Setting a default Bucket
+
+To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function `gcs_global_bucket()`.  See the `Setting environment variables` section below for more details.
+
+```r
+## set bucket via environment
+Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket")
+
+library(googleCloudStorageR)
+
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
+
+## check what the default bucket is
+gcs_get_global_bucket()
+[1] "my-default-bucket"
+
+## you can also set a default bucket after loading the library for that session
+gcs_global_bucket("your-default-bucket-2")
+gcs_get_global_bucket()
+[1] "my-default-bucket-2"
+```
 
 ### Downloading objects from Google Cloud storage
 
@@ -25,13 +99,9 @@ Once you have a Google project and created a bucket with an object in it, you ca
 
 ```r
 library(googleCloudStorageR)
-options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
 
-## optional, if you want to use your own Google project
-# options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
-# options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
-
-googleAuthR::gar_auth()
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
 
 ## get your project name from the API console
 proj <- "your-project"
@@ -40,39 +110,124 @@ proj <- "your-project"
 buckets <- gcs_list_buckets(proj)
 bucket <- "your-bucket"
 bucket_info <- gcs_get_bucket(bucket)
+bucket_info
 
-## get object info
-objects <- gcs_list_objects(bucket)
+==Google Cloud Storage Bucket==
+Bucket:          your-bucket 
+Project Number:  1123123123 
+Location:        EU 
+Class:           STANDARD 
+Created:         2016-04-28 11:39:06 
+Updated:         2016-04-28 11:39:06 
+Meta-generation: 1 
+eTag:            Cxx=
+
+
+## get object info in the default bucket
+objects <- gcs_list_objects()
 
 ## save directly to an R object (warning, don't run out of RAM if its a big object)
 ## the download type is guessed into an appropriate R object
-parsed_download <- gcs_get_object(objects$name[[1]], bucket)
+parsed_download <- gcs_get_object(objects$name[[1]])
 
 ## if you want to do your own parsing, set parseObject to FALSE
 ## use httr::content() to parse afterwards
 raw_download <- gcs_get_object(objects$name[[1]], 
-                               bucket, 
                                parseObject = FALSE)
 
 ## save directly to a file in your working directory
 ## parseObject has no effect, it is a httr::content(req, "raw") download
-gcs_get_object(objects$name[[1]], bucket, saveToDisk = "csv_downloaded.csv")
+gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")
 ```
 
-## Uploading objects
+## Uploading objects < 5MB
 
-Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  Data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects.  By default, data frames will be converted to CSV via `write.csv()`, lists to JSON via `jsonlite::toJSON`.
+
+If you want to use other functions for transforming R objects, for example setting `row.names = FALSE` or using `write.csv2`, pass the function through `object_function`
 
 ```r
 ## upload a file - type will be guessed from file extension or supply type  
 write.csv(mtcars, file = filename)
-gcs_upload(filename, "your-bucket")
+gcs_upload(filename)
 
 ## upload an R data.frame directly - will be converted to csv via write.csv
-gcs_upload(mtcars, "your-bucket")
+gcs_upload(mtcars)
 
 ## upload an R list - will be converted to json via jsonlite::toJSON
-gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)), "your-bucket")
+gcs_upload(list(a = 1, b = 3, c = list(d = 2, e = 5)))
+
+## upload an R data.frame directly, with a custom function
+## function should have arguments 'input' and 'output'
+## safest to supply type too
+f <- function(input, output) write.csv(input, row.names = FALSE, file = output)
+
+gcs_upload(mtcars, 
+           object_function = f,
+           type = "text/csv")
+```
+
+## Upload metadata
+
+You can pass metadata with an object via the function `gcs_metadata_object()`.
+
+the name you pass to the metadata object will override the name if it is also set elsewhere.
+
+```r
+meta <- gcs_metadata_object("mtcars.csv",
+                             metadata = list(custom1 = 2,
+                                             custom_key = 'dfsdfsdfsfs))
+                                             
+gcs_upload(mtcars, object_metadata = meta)
+```
+
+
+## Resumable uploads for files > 5MB up to 5TB
+
+If the file/object is under 5MB, simple uploads are used.  
+
+For files > 5MB, [resumable uploads](https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resumable) are used.  This allows you to upload up to 5TB.  
+
+If you get an interrupted connection when uploading, `gcs_upload` will retry 3 times, if it fails it will return a Retry object, that you can try again later from where the upload stopped.  Call this via `gcs_retry_upload`
+
+```r
+## write a big object to a file
+big_file <- "big_filename.csv"
+write.csv(big_object, file = big_file)
+
+## attempt upload
+upload_try <- gcs_upload(big_file)
+
+## if successful, upload_try is an object metadata object
+upload_try
+==Google Cloud Storage Object==
+Name:            "big_filename.csv" 
+Size:            8.5 Gb 
+Media URL        https://www.googleapis.com/download/storage/v1/b/xxxx 
+Bucket:          your-bucket 
+ID:              your-bucket/"test.pdf"/xxxx
+MD5 Hash:        rshao1nxxxxxY68JZQ== 
+Class:           STANDARD 
+Created:         2016-08-12 17:33:05 
+Updated:         2016-08-12 17:33:05 
+Generation:      1471023185977000 
+Meta Generation: 1 
+eTag:            CKi90xxxxxEAE= 
+crc32c:          j4i1sQ== 
+
+
+## if unsuccessful after 3 retries, upload_try is a Retry object
+==Google Cloud Storage Upload Retry Object==
+File Location:     big_filename.csv
+Retry Upload URL:  http://xxxx
+Created:           2016-08-12 17:33:05 
+Type:              csv
+File Size:        8.5 Gb
+Upload Byte:      4343
+Upload remaining: 8.1 Gb
+
+## you can retry to upload the remaining data using gcs_retry_upload()
+try2 <- gcs_retry_upload(upload_try)
 ```
 
 ## Updating user access to objects
@@ -83,34 +238,48 @@ By default you are "OWNER" of all the objects and buckets you upload and create.
 
 ```r
 ## update access of object to READER for all public
-gcs_update_acl("your-object.csv", "your-project", entity_type = "allUsers")
+gcs_update_object_acl("your-object.csv", entity_type = "allUsers")
 
 ## update access of object for user joe@blogs.com to OWNER
-gcs_update_acl("your-object.csv", "your-project", "joe@blogs.com", role = "OWNER")
+gcs_update_acl("your-object.csv", 
+               entity = "joe@blogs.com", 
+               role = "OWNER")
 
 ## update access of object for googlegroup users to READER
-gcs_update_acl("your-object.csv", "your-project", "my-group@googlegroups.com", entity_type = "group")
+gcs_update_object_acl("your-object.csv", 
+                      entity = "my-group@googlegroups.com", 
+                      entity_type = "group")
 
 ## update access of object for all users to OWNER on your Google Apps domain
-gcs_update_acl("your-object.csv", 
-               "your-project", 
-               "yourdomain.com", 
-               entity_type = "domain", 
-               role = OWNER)
+gcs_update_object_acl("your-object.csv", 
+                      entity = "yourdomain.com", 
+                      entity_type = "domain", 
+                      role = OWNER)
+```
+
+## Deleting an object
+
+Delete an object by passing its name (and bucket if not default)
+
+```r
+## returns TRUE is successful, a 404 error if not found
+gcs_delete_object("your-object.csv")
 ```
 
 ### Viewing current access level to objects
 
-Use `gcs_get_object_access()` to see what the current access is for an `entity` + `entity_type`.
+Use `gcs_get_object_acl()` to see what the current access is for an `entity` + `entity_type`.
 
 ```r
 ## default entity_type is user
-acl <- gcs_get_object_access("your-object.csv", "your-project", entity = "joe@blogs.com")
+acl <- gcs_get_object_acl("your-object.csv", 
+                         entity = "joe@blogs.com")
 acl$role 
 [1] "OWNER"
 
 ## for allUsers and allAuthenticated users, you don't need to supply entity
-acl <- gcs_get_object_access("your-object.csv", "your-project", entity_type = "allUsers")
+acl <- gcs_get_object_acl("your-object.csv", 
+                          entity_type = "allUsers")
 acl$role 
 [1] "READER"
 ```
@@ -120,14 +289,62 @@ acl$role
 Once a user (or group or the public) has access, they can reach that object via a download link generated by the function `gcs_download_url`
 
 ```r
-download_url <- gcs_download_url("your-object.csv", "your-project")
+download_url <- gcs_download_url("your-object.csv")
 download_url
 [1] "https://storage.cloud.google.com/your-project/your-object.csv"
 ```
 
+## R Session helpers
+
+Versions of `save.image()`, `save()` and `load()` are implemented called `gcs_save_image()`, `gcs_save()` and `gcs_load()`.  These functions save and load the global R session to the cloud.
+
+```r
+## save the current R session including all objects
+gcs_save_image()
+
+### wipe environment
+rm(list = ls())
+
+## load up environment again
+gcs_load()
+```
+
+Save specific objects:
+
+```r
+cc <- 3
+d <- "test1"
+gcs_save("cc","d", file = "gcs_save_test.RData")
+
+## remove the objects saved in cloud from local environment
+rm(cc,d)
+
+## load them back in from GCS
+gcs_load(file = "gcs_save_test.RData")
+cc == 3
+[1] TRUE
+d == "test1"
+[1] TRUE
+```
+
+You can also upload `.R` code files and source them directly using `gcs_source`:
+
+```r
+## make a R source file and upload it
+cat("x <- 'hello world!'\nx", file = "example.R")
+gcs_upload("example.R", name = "example.R")
+
+## source the file to run its code
+gcs_source("example.R")
+
+## the code from the upload file has run
+x
+[1] "hello world!"
+```
+
 ## Uploading via a Shiny app
 
-The library is also compatible with Shiny authentication flows, so for example you can create Shiny apps that lets users log in and upload their own data.  
+The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.  
 
 An example of that is shown below:
 
@@ -196,7 +413,6 @@ There are various functions to manipulate Buckets:
 * `gcs_list_buckets`
 * `gcs_get_bucket`
 * `gcs_create_bucket`
-* `gcs_update_bucket`
 
 ## Object administration
 
@@ -210,13 +426,22 @@ gcs_get_object("your-object", "your-bucket", meta = TRUE)
 
 `googleCloudStorageR` has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.  
 
-No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
+No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).  
+
+## Configuring your own Google Project
+
+The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
 
 ### For local use
 
 1. Click 'Create a new Client ID', and choose "Installed Application".
 2. Note your Client ID and secret.
-3. Modify these options after googleAuthR has been loaded:
+3. Add them by modifying your .Renviron file, or under the following entries:
+
+        Sys.setenv("GCS_CLIENT_ID" = "mykey",
+                   "GCS_CLIENT_SECRET" = "mysecretkey")
+
+4. Alternatively, modify these options after googleAuthR has been loaded:
 
         options("googleAuthR.client_id" = "YOUR_CLIENT_ID")
         options("googleAuthR.client_secret" = "YOUR_CLIENT_SECRET")
@@ -227,18 +452,24 @@ No other user, including the owner of the Google Cloud Storage API project has a
 2. Note your Client ID and secret.
 3. Add the URL of where your Shiny app will run, with no port number. e.g. `https://mark.shinyapps.io/searchConsoleRDemo/`
 4. And/Or also put in localhost or 127.0.0.1 with a port number for local testing. Remember the port number you use as you will need it later to launch the app e.g. `http://127.0.0.1:1221`
-5. In your Shiny script modify these options:
+5. Add them by modifying your .Renviron file, or under the following entries:
+
+        Sys.setenv("GCS_WEB_CLIENT_ID" = "mykey",
+                   "GCS_WEB_CLIENT_SECRET" = "mysecretkey")
+                   
+6. Alternatively, in your Shiny script modify these options:
 
         options("googleAuthR.webapp.client_id" = "YOUR_CLIENT_ID")
         options("googleAuthR.webapp.client_secret" = "YOUR_CLIENT_SECRET")
 
-6. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
-7. Running on your Shiny Server will work only for the URL from step 3.
+7. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
+8. Running on your Shiny Server will work only for the URL from step 3.
 
 ### Activate API
 
 1. Click on "APIs"
 2. Select and activate the Cloud Storage JSON API 
-3. Set the `googleAuthR`option for Google Cloud storage scope:
+3. After loading the package via `library(googleCloudStorage)`, it will look to see if `"https://www.googleapis.com/auth/devstorage.full_control"` is set in `getOption("googleAuthR.scopes.selected")` and set it if it is not, adding to the existing scopes.  
+4. Alternativly, set the `googleAuthR` option for Google Cloud storage scope after the library has been loaded but before authentication. 
 
         options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")

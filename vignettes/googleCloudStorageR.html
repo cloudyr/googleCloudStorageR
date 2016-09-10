@@ -12,7 +12,7 @@
 
 <meta name="author" content="Mark Edmondson" />
 
-<meta name="date" content="2016-09-08" />
+<meta name="date" content="2016-09-10" />
 
 <title>googleCloudStorageR</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">googleCloudStorageR</h1>
 <h4 class="author"><em>Mark Edmondson</em></h4>
-<h4 class="date"><em>2016-09-08</em></h4>
+<h4 class="date"><em>2016-09-10</em></h4>
 
 
 
@@ -78,21 +78,73 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>Google Cloud Storage charges you for storage <a href="https://cloud.google.com/storage/pricing">(prices here)</a>.</p>
-<p>You can use your own Google Project with a credit card added to create buckets, where the charges will apply. This can be done in the Google API Console after login here: <code>https://console.developers.google.com</code>.</p>
+<p>You can use your own Google Project with a credit card added to create buckets, where the charges will apply. This can be done in the <a href="https://console.developers.google.com">Google API Console</a></p>
+<div id="setting-environment-variables" class="section level3">
+<h3>Setting environment variables</h3>
+<p>By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Sys.setenv</span>(<span class="st">&quot;GCS_CLIENT_ID&quot;</span> =<span class="st"> &quot;mykey&quot;</span>,
+           <span class="st">&quot;GCS_CLIENT_SECRET&quot;</span> =<span class="st"> &quot;mysecretkey&quot;</span>,
+           <span class="st">&quot;GCS_WEB_CLIENT_ID&quot;</span> =<span class="st"> &quot;my-shiny-key&quot;</span>,
+           <span class="st">&quot;GCS_WEB_CLIENT_SECRET&quot;</span> =<span class="st"> &quot;my-shiny-secret-key&quot;</span>,
+           <span class="st">&quot;GCS_DEFAULT_BUCKET&quot;</span> =<span class="st"> &quot;my-default-bucket&quot;</span>,
+           <span class="st">&quot;GCS_AUTH_FILE&quot;</span> =<span class="st"> &quot;/fullpath/to/service-auth.json&quot;</span>)</code></pre></div>
+<p>These can alternatively be set on the command line or via an Renviron.site or .Renviron file (<a href="https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html">see here for instructions</a>).</p>
+</div>
+</div>
+<div id="authentication" class="section level2">
+<h2>Authentication</h2>
+<p>Authentication can be carried out each session via <code>gcs_auth</code>. The first time you run this you will be sent to a Google login prompt in your browser to allow the <code>googleCloudStorageR</code> project access (or the Google project you configure).</p>
+<p>Once authenticated a file named <code>.httr-oauth</code> is saved to your working directory. On subsequent authentication this file will hold your authentication details, and you won’t need to go via the browser. Deleting this file, or setting <code>new_user=TRUE</code> will start the authentication flow again.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(googleCloudStorageR)
+## first time this will send you to the browser to authenticate
+<span class="kw">gcs_auth</span>()
+
+## to authenticate with a fresh user, delete .httr-oauth or run with new_user=TRUE
+<span class="kw">gcs_auth</span>(<span class="dt">new_user =</span> <span class="ot">TRUE</span>)
+
+...call functions...etc...</code></pre></div>
+<p>Each new R session will need to run <code>gcs_auth()</code> to authenticate future API calls.</p>
+<div id="auto-authentication" class="section level3">
+<h3>Auto-authentication</h3>
+<p>Alternatively, you can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created <code>.httr-oauth</code> token in a system environment:</p>
+<pre><code>    Sys.setenv(&quot;GCS_AUTH_FILE&quot; = &quot;/fullpath/to/auth.json&quot;)</code></pre>
+<p>This file will then used for authentication via <code>gcs_auth()</code> when you load the library:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## GCS_AUTH_FILE set so auto-authentication
+<span class="kw">library</span>(googleCloudStorageR)
+
+## no need for gcs_auth()
+<span class="kw">gcs_get_bucket</span>(<span class="st">&quot;your-bucket&quot;</span>)</code></pre></div>
+</div>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
+<div id="setting-a-default-bucket" class="section level3">
+<h3>Setting a default Bucket</h3>
+<p>To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function <code>gcs_global_bucket()</code>. See the <code>Setting environment variables</code> section below for more details.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## set bucket via environment
+<span class="kw">Sys.setenv</span>(<span class="st">&quot;GCS_DEFAULT_BUCKET&quot;</span> =<span class="st"> &quot;my-default-bucket&quot;</span>)
+
+<span class="kw">library</span>(googleCloudStorageR)
+
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
+
+## check what the default bucket is
+<span class="kw">gcs_get_global_bucket</span>()
+[<span class="dv">1</span>] <span class="st">&quot;my-default-bucket&quot;</span>
+
+## you can also set a default bucket after loading the library for that session
+<span class="kw">gcs_global_bucket</span>(<span class="st">&quot;your-default-bucket-2&quot;</span>)
+<span class="kw">gcs_get_global_bucket</span>()
+[<span class="dv">1</span>] <span class="st">&quot;my-default-bucket-2&quot;</span></code></pre></div>
+</div>
 <div id="downloading-objects-from-google-cloud-storage" class="section level3">
 <h3>Downloading objects from Google Cloud storage</h3>
 <p>Once you have a Google project and created a bucket with an object in it, you can download it as below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(googleCloudStorageR)
-<span class="kw">options</span>(<span class="dt">googleAuthR.scopes.selected =</span> <span class="st">&quot;https://www.googleapis.com/auth/devstorage.full_control&quot;</span>)
 
-## optional, if you want to use your own Google project
-<span class="co"># options(&quot;googleAuthR.client_id&quot; = &quot;YOUR_CLIENT_ID&quot;)</span>
-<span class="co"># options(&quot;googleAuthR.client_secret&quot; = &quot;YOUR_CLIENT_SECRET&quot;)</span>
-
-googleAuthR::<span class="kw">gar_auth</span>()
+## optional, if you haven't set environment argument GCS_AUTH_FILE
+## gcs_auth()
 
 ## get your project name from the API console
 proj &lt;-<span class="st"> &quot;your-project&quot;</span>
@@ -101,81 +153,203 @@ proj &lt;-<span class="st"> &quot;your-project&quot;</span>
 buckets &lt;-<span class="st"> </span><span class="kw">gcs_list_buckets</span>(proj)
 bucket &lt;-<span class="st"> &quot;your-bucket&quot;</span>
 bucket_info &lt;-<span class="st"> </span><span class="kw">gcs_get_bucket</span>(bucket)
+bucket_info
 
-## get object info
-objects &lt;-<span class="st"> </span><span class="kw">gcs_list_objects</span>(bucket)
+==Google Cloud Storage Bucket==
+Bucket:<span class="st">          </span>your-bucket 
+Project Number:<span class="st">  </span><span class="dv">1123123123</span> 
+Location:<span class="st">        </span>EU 
+Class:<span class="st">           </span>STANDARD 
+Created:<span class="st">         </span><span class="dv">2016-04-28</span> <span class="dv">11</span>:<span class="dv">39</span>:<span class="dv">06</span> 
+Updated:<span class="st">         </span><span class="dv">2016-04-28</span> <span class="dv">11</span>:<span class="dv">39</span>:<span class="dv">06</span> 
+Meta-generation:<span class="st"> </span><span class="dv">1</span> 
+eTag:<span class="st">            </span>Cxx=
+
+
+## get object info in the default bucket
+objects &lt;-<span class="st"> </span><span class="kw">gcs_list_objects</span>()
 
 ## save directly to an R object (warning, don't run out of RAM if its a big object)
 ## the download type is guessed into an appropriate R object
-parsed_download &lt;-<span class="st"> </span><span class="kw">gcs_get_object</span>(objects$name[[<span class="dv">1</span>]], bucket)
+parsed_download &lt;-<span class="st"> </span><span class="kw">gcs_get_object</span>(objects$name[[<span class="dv">1</span>]])
 
 ## if you want to do your own parsing, set parseObject to FALSE
 ## use httr::content() to parse afterwards
 raw_download &lt;-<span class="st"> </span><span class="kw">gcs_get_object</span>(objects$name[[<span class="dv">1</span>]], 
-                               bucket, 
                                <span class="dt">parseObject =</span> <span class="ot">FALSE</span>)
 
 ## save directly to a file in your working directory
 ## parseObject has no effect, it is a httr::content(req, &quot;raw&quot;) download
-<span class="kw">gcs_get_object</span>(objects$name[[<span class="dv">1</span>]], bucket, <span class="dt">saveToDisk =</span> <span class="st">&quot;csv_downloaded.csv&quot;</span>)</code></pre></div>
+<span class="kw">gcs_get_object</span>(objects$name[[<span class="dv">1</span>]], <span class="dt">saveToDisk =</span> <span class="st">&quot;csv_downloaded.csv&quot;</span>)</code></pre></div>
 </div>
 </div>
-<div id="uploading-objects" class="section level2">
-<h2>Uploading objects</h2>
-<p>Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects. Data frames will be converted to CSV via <code>write.csv()</code>, lists to JSON via <code>jsonlite::toJSON</code>.</p>
+<div id="uploading-objects-5mb" class="section level2">
+<h2>Uploading objects &lt; 5MB</h2>
+<p>Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects. By default, data frames will be converted to CSV via <code>write.csv()</code>, lists to JSON via <code>jsonlite::toJSON</code>.</p>
+<p>If you want to use other functions for transforming R objects, for example setting <code>row.names = FALSE</code> or using <code>write.csv2</code>, pass the function through <code>object_function</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## upload a file - type will be guessed from file extension or supply type  
 <span class="kw">write.csv</span>(mtcars, <span class="dt">file =</span> filename)
-<span class="kw">gcs_upload</span>(filename, <span class="st">&quot;your-bucket&quot;</span>)
+<span class="kw">gcs_upload</span>(filename)
 
 ## upload an R data.frame directly - will be converted to csv via write.csv
-<span class="kw">gcs_upload</span>(mtcars, <span class="st">&quot;your-bucket&quot;</span>)
+<span class="kw">gcs_upload</span>(mtcars)
 
 ## upload an R list - will be converted to json via jsonlite::toJSON
-<span class="kw">gcs_upload</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">c =</span> <span class="kw">list</span>(<span class="dt">d =</span> <span class="dv">2</span>, <span class="dt">e =</span> <span class="dv">5</span>)), <span class="st">&quot;your-bucket&quot;</span>)</code></pre></div>
+<span class="kw">gcs_upload</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">c =</span> <span class="kw">list</span>(<span class="dt">d =</span> <span class="dv">2</span>, <span class="dt">e =</span> <span class="dv">5</span>)))
+
+## upload an R data.frame directly, with a custom function
+## function should have arguments 'input' and 'output'
+## safest to supply type too
+f &lt;-<span class="st"> </span>function(input, output) <span class="kw">write.csv</span>(input, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">file =</span> output)
+
+<span class="kw">gcs_upload</span>(mtcars, 
+           <span class="dt">object_function =</span> f,
+           <span class="dt">type =</span> <span class="st">&quot;text/csv&quot;</span>)</code></pre></div>
+</div>
+<div id="upload-metadata" class="section level2">
+<h2>Upload metadata</h2>
+<p>You can pass metadata with an object via the function <code>gcs_metadata_object()</code>.</p>
+<p>the name you pass to the metadata object will override the name if it is also set elsewhere.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span><span class="kw">gcs_metadata_object</span>(<span class="st">&quot;mtcars.csv&quot;</span>,
+                             <span class="dt">metadata =</span> <span class="kw">list</span>(<span class="dt">custom1 =</span> <span class="dv">2</span>,
+                                             <span class="dt">custom_key =</span> <span class="st">'dfsdfsdfsfs))</span>
+<span class="st">                                             </span>
+<span class="st">gcs_upload(mtcars, object_metadata = meta)</span></code></pre></div>
+</div>
+<div id="resumable-uploads-for-files-5mb-up-to-5tb" class="section level2">
+<h2>Resumable uploads for files &gt; 5MB up to 5TB</h2>
+<p>If the file/object is under 5MB, simple uploads are used.</p>
+<p>For files &gt; 5MB, <a href="https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resumable">resumable uploads</a> are used. This allows you to upload up to 5TB.</p>
+<p>If you get an interrupted connection when uploading, <code>gcs_upload</code> will retry 3 times, if it fails it will return a Retry object, that you can try again later from where the upload stopped. Call this via <code>gcs_retry_upload</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## write a big object to a file
+big_file &lt;-<span class="st"> &quot;big_filename.csv&quot;</span>
+<span class="kw">write.csv</span>(big_object, <span class="dt">file =</span> big_file)
+
+## attempt upload
+upload_try &lt;-<span class="st"> </span><span class="kw">gcs_upload</span>(big_file)
+
+## if successful, upload_try is an object metadata object
+upload_try
+==Google Cloud Storage Object==
+Name:<span class="st">            &quot;big_filename.csv&quot;</span> 
+Size:<span class="st">            </span><span class="fl">8.5</span> Gb 
+Media URL        https:<span class="er">//</span>www.googleapis.com/download/storage/v1/b/xxxx 
+Bucket:<span class="st">          </span>your-bucket 
+ID:<span class="st">              </span>your-bucket/<span class="st">&quot;test.pdf&quot;</span>/xxxx
+MD5 Hash:<span class="st">        </span>rshao1nxxxxxY68JZQ==<span class="st"> </span>
+Class:<span class="st">           </span>STANDARD 
+Created:<span class="st">         </span><span class="dv">2016-08-12</span> <span class="dv">17</span>:<span class="dv">33</span>:<span class="dv">05</span> 
+Updated:<span class="st">         </span><span class="dv">2016-08-12</span> <span class="dv">17</span>:<span class="dv">33</span>:<span class="dv">05</span> 
+Generation:<span class="st">      </span><span class="dv">1471023185977000</span> 
+Meta Generation:<span class="st"> </span><span class="dv">1</span> 
+eTag:<span class="st">            </span>CKi90xxxxxEAE=<span class="st"> </span>
+crc32c:<span class="st">          </span>j4i1sQ==<span class="st"> </span>
+
+
+## if unsuccessful after 3 retries, upload_try is a Retry object
+<span class="er">==</span>Google Cloud Storage Upload Retry Object==
+File Location:<span class="st">     </span>big_filename.csv
+Retry Upload URL:<span class="st">  </span>http:<span class="er">//</span>xxxx
+Created:<span class="st">           </span><span class="dv">2016-08-12</span> <span class="dv">17</span>:<span class="dv">33</span>:<span class="dv">05</span> 
+Type:<span class="st">              </span>csv
+File Size:<span class="st">        </span><span class="fl">8.5</span> Gb
+Upload Byte:<span class="st">      </span><span class="dv">4343</span>
+Upload remaining:<span class="st"> </span><span class="fl">8.1</span> Gb
+
+## you can retry to upload the remaining data using gcs_retry_upload()
+try2 &lt;-<span class="st"> </span><span class="kw">gcs_retry_upload</span>(upload_try)</code></pre></div>
 </div>
 <div id="updating-user-access-to-objects" class="section level2">
 <h2>Updating user access to objects</h2>
 <p>You can change who can access objects via <code>gcs_update_acl</code> to one of <code>READER</code> or <code>OWNER</code>, on a user, group, domain, project or public for all users or authenticated users.</p>
 <p>By default you are “OWNER” of all the objects and buckets you upload and create.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## update access of object to READER for all public
-<span class="kw">gcs_update_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>, <span class="dt">entity_type =</span> <span class="st">&quot;allUsers&quot;</span>)
+<span class="kw">gcs_update_object_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="dt">entity_type =</span> <span class="st">&quot;allUsers&quot;</span>)
 
 ## update access of object for user joe@blogs.com to OWNER
-<span class="kw">gcs_update_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>, <span class="st">&quot;joe@blogs.com&quot;</span>, <span class="dt">role =</span> <span class="st">&quot;OWNER&quot;</span>)
+<span class="kw">gcs_update_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
+               <span class="dt">entity =</span> <span class="st">&quot;joe@blogs.com&quot;</span>, 
+               <span class="dt">role =</span> <span class="st">&quot;OWNER&quot;</span>)
 
 ## update access of object for googlegroup users to READER
-<span class="kw">gcs_update_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>, <span class="st">&quot;my-group@googlegroups.com&quot;</span>, <span class="dt">entity_type =</span> <span class="st">&quot;group&quot;</span>)
+<span class="kw">gcs_update_object_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
+                      <span class="dt">entity =</span> <span class="st">&quot;my-group@googlegroups.com&quot;</span>, 
+                      <span class="dt">entity_type =</span> <span class="st">&quot;group&quot;</span>)
 
 ## update access of object for all users to OWNER on your Google Apps domain
-<span class="kw">gcs_update_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
-               <span class="st">&quot;your-project&quot;</span>, 
-               <span class="st">&quot;yourdomain.com&quot;</span>, 
-               <span class="dt">entity_type =</span> <span class="st">&quot;domain&quot;</span>, 
-               <span class="dt">role =</span> OWNER)</code></pre></div>
+<span class="kw">gcs_update_object_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
+                      <span class="dt">entity =</span> <span class="st">&quot;yourdomain.com&quot;</span>, 
+                      <span class="dt">entity_type =</span> <span class="st">&quot;domain&quot;</span>, 
+                      <span class="dt">role =</span> OWNER)</code></pre></div>
+</div>
+<div id="deleting-an-object" class="section level2">
+<h2>Deleting an object</h2>
+<p>Delete an object by passing its name (and bucket if not default)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## returns TRUE is successful, a 404 error if not found
+<span class="kw">gcs_delete_object</span>(<span class="st">&quot;your-object.csv&quot;</span>)</code></pre></div>
 <div id="viewing-current-access-level-to-objects" class="section level3">
 <h3>Viewing current access level to objects</h3>
-<p>Use <code>gcs_get_object_access()</code> to see what the current access is for an <code>entity</code> + <code>entity_type</code>.</p>
+<p>Use <code>gcs_get_object_acl()</code> to see what the current access is for an <code>entity</code> + <code>entity_type</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## default entity_type is user
-acl &lt;-<span class="st"> </span><span class="kw">gcs_get_object_access</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>, <span class="dt">entity =</span> <span class="st">&quot;joe@blogs.com&quot;</span>)
+acl &lt;-<span class="st"> </span><span class="kw">gcs_get_object_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
+                         <span class="dt">entity =</span> <span class="st">&quot;joe@blogs.com&quot;</span>)
 acl$role 
 [<span class="dv">1</span>] <span class="st">&quot;OWNER&quot;</span>
 
 ## for allUsers and allAuthenticated users, you don't need to supply entity
-acl &lt;-<span class="st"> </span><span class="kw">gcs_get_object_access</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>, <span class="dt">entity_type =</span> <span class="st">&quot;allUsers&quot;</span>)
+acl &lt;-<span class="st"> </span><span class="kw">gcs_get_object_acl</span>(<span class="st">&quot;your-object.csv&quot;</span>, 
+                          <span class="dt">entity_type =</span> <span class="st">&quot;allUsers&quot;</span>)
 acl$role 
 [<span class="dv">1</span>] <span class="st">&quot;READER&quot;</span></code></pre></div>
 </div>
 <div id="creating-download-links" class="section level3">
 <h3>Creating download links</h3>
 <p>Once a user (or group or the public) has access, they can reach that object via a download link generated by the function <code>gcs_download_url</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">download_url &lt;-<span class="st"> </span><span class="kw">gcs_download_url</span>(<span class="st">&quot;your-object.csv&quot;</span>, <span class="st">&quot;your-project&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">download_url &lt;-<span class="st"> </span><span class="kw">gcs_download_url</span>(<span class="st">&quot;your-object.csv&quot;</span>)
 download_url
 [<span class="dv">1</span>] <span class="st">&quot;https://storage.cloud.google.com/your-project/your-object.csv&quot;</span></code></pre></div>
 </div>
 </div>
+<div id="r-session-helpers" class="section level2">
+<h2>R Session helpers</h2>
+<p>Versions of <code>save.image()</code>, <code>save()</code> and <code>load()</code> are implemented called <code>gcs_save_image()</code>, <code>gcs_save()</code> and <code>gcs_load()</code>. These functions save and load the global R session to the cloud.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## save the current R session including all objects
+<span class="kw">gcs_save_image</span>()
+
+### wipe environment
+<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+
+## load up environment again
+<span class="kw">gcs_load</span>()</code></pre></div>
+<p>Save specific objects:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cc &lt;-<span class="st"> </span><span class="dv">3</span>
+d &lt;-<span class="st"> &quot;test1&quot;</span>
+<span class="kw">gcs_save</span>(<span class="st">&quot;cc&quot;</span>,<span class="st">&quot;d&quot;</span>, <span class="dt">file =</span> <span class="st">&quot;gcs_save_test.RData&quot;</span>)
+
+## remove the objects saved in cloud from local environment
+<span class="kw">rm</span>(cc,d)
+
+## load them back in from GCS
+<span class="kw">gcs_load</span>(<span class="dt">file =</span> <span class="st">&quot;gcs_save_test.RData&quot;</span>)
+cc ==<span class="st"> </span><span class="dv">3</span>
+[<span class="dv">1</span>] <span class="ot">TRUE</span>
+d ==<span class="st"> &quot;test1&quot;</span>
+[<span class="dv">1</span>] <span class="ot">TRUE</span></code></pre></div>
+<p>You can also upload <code>.R</code> code files and source them directly using <code>gcs_source</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## make a R source file and upload it
+<span class="kw">cat</span>(<span class="st">&quot;x &lt;- 'hello world!'</span><span class="ch">\n</span><span class="st">x&quot;</span>, <span class="dt">file =</span> <span class="st">&quot;example.R&quot;</span>)
+<span class="kw">gcs_upload</span>(<span class="st">&quot;example.R&quot;</span>, <span class="dt">name =</span> <span class="st">&quot;example.R&quot;</span>)
+
+## source the file to run its code
+<span class="kw">gcs_source</span>(<span class="st">&quot;example.R&quot;</span>)
+
+## the code from the upload file has run
+x
+[<span class="dv">1</span>] <span class="st">&quot;hello world!&quot;</span></code></pre></div>
+</div>
 <div id="uploading-via-a-shiny-app" class="section level2">
 <h2>Uploading via a Shiny app</h2>
-<p>The library is also compatible with Shiny authentication flows, so for example you can create Shiny apps that lets users log in and upload their own data.</p>
+<p>The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.</p>
 <p>An example of that is shown below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;shiny&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;googleAuthR&quot;</span>)
@@ -240,7 +414,6 @@ download_url
 <li><code>gcs_list_buckets</code></li>
 <li><code>gcs_get_bucket</code></li>
 <li><code>gcs_create_bucket</code></li>
-<li><code>gcs_update_bucket</code></li>
 </ul>
 </div>
 <div id="object-administration" class="section level2">
@@ -251,13 +424,20 @@ download_url
 <div id="explanation-of-google-project-access" class="section level2">
 <h2>Explanation of Google Project access</h2>
 <p><code>googleCloudStorageR</code> has its own Google project which is used to call the Google Cloud Storage API, but does not have access to the objects or buckets in your Google Project unless you give permission for the library to access your own buckets during the OAuth2 authentication process.</p>
-<p>No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets). The instructions below are for when you visit the Google API console (<code>https://console.developers.google.com/apis/</code>)</p>
+<p>No other user, including the owner of the Google Cloud Storage API project has access unless you have given them access, but you may want to change to use your own Google Project (that could or could not be the same as the one that holds your buckets).</p>
+</div>
+<div id="configuring-your-own-google-project" class="section level2">
+<h2>Configuring your own Google Project</h2>
+<p>The instructions below are for when you visit the Google API console (<code>https://console.developers.google.com/apis/</code>)</p>
 <div id="for-local-use" class="section level3">
 <h3>For local use</h3>
 <ol style="list-style-type: decimal">
 <li>Click ‘Create a new Client ID’, and choose “Installed Application”.</li>
 <li>Note your Client ID and secret.</li>
-<li><p>Modify these options after googleAuthR has been loaded:</p>
+<li><p>Add them by modifying your .Renviron file, or under the following entries:</p>
+<pre><code>Sys.setenv(&quot;GCS_CLIENT_ID&quot; = &quot;mykey&quot;,
+           &quot;GCS_CLIENT_SECRET&quot; = &quot;mysecretkey&quot;)</code></pre></li>
+<li><p>Alternatively, modify these options after googleAuthR has been loaded:</p>
 <pre><code>options(&quot;googleAuthR.client_id&quot; = &quot;YOUR_CLIENT_ID&quot;)
 options(&quot;googleAuthR.client_secret&quot; = &quot;YOUR_CLIENT_SECRET&quot;)</code></pre></li>
 </ol>
@@ -269,7 +449,10 @@ options(&quot;googleAuthR.client_secret&quot; = &quot;YOUR_CLIENT_SECRET&quot;)<
 <li>Note your Client ID and secret.</li>
 <li>Add the URL of where your Shiny app will run, with no port number. e.g. <code>https://mark.shinyapps.io/searchConsoleRDemo/</code></li>
 <li>And/Or also put in localhost or 127.0.0.1 with a port number for local testing. Remember the port number you use as you will need it later to launch the app e.g. <code>http://127.0.0.1:1221</code></li>
-<li><p>In your Shiny script modify these options:</p>
+<li><p>Add them by modifying your .Renviron file, or under the following entries:</p>
+<pre><code>Sys.setenv(&quot;GCS_WEB_CLIENT_ID&quot; = &quot;mykey&quot;,
+           &quot;GCS_WEB_CLIENT_SECRET&quot; = &quot;mysecretkey&quot;)</code></pre></li>
+<li><p>Alternatively, in your Shiny script modify these options:</p>
 <pre><code>options(&quot;googleAuthR.webapp.client_id&quot; = &quot;YOUR_CLIENT_ID&quot;)
 options(&quot;googleAuthR.webapp.client_secret&quot; = &quot;YOUR_CLIENT_SECRET&quot;)</code></pre></li>
 <li>To run the app locally specifying the port number you used in step 4 e.g. <code>shiny::runApp(port=1221)</code> or set a shiny option to default to it: <code>options(shiny.port = 1221)</code> and launch via the <code>RunApp</code> button in RStudio.</li>
@@ -281,7 +464,9 @@ options(&quot;googleAuthR.webapp.client_secret&quot; = &quot;YOUR_CLIENT_SECRET&
 <ol style="list-style-type: decimal">
 <li>Click on “APIs”</li>
 <li>Select and activate the Cloud Storage JSON API</li>
-<li><p>Set the <code>googleAuthR</code>option for Google Cloud storage scope:</p>
+<li>After loading the package via <code>library(googleCloudStorage)</code>, it will look to see if <code>&quot;https://www.googleapis.com/auth/devstorage.full_control&quot;</code> is set in <code>getOption(&quot;googleAuthR.scopes.selected&quot;)</code> and set it if it is not, adding to the existing scopes.<br />
+</li>
+<li><p>Alternativly, set the <code>googleAuthR</code> option for Google Cloud storage scope after the library has been loaded but before authentication.</p>
 <pre><code>options(googleAuthR.scopes.selected = &quot;https://www.googleapis.com/auth/devstorage.full_control&quot;)</code></pre></li>
 </ol>
 </div>

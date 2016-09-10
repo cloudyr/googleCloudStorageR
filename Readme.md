@@ -405,7 +405,6 @@ There are various functions to manipulate Buckets:
 * `gcs_list_buckets`
 * `gcs_get_bucket`
 * `gcs_create_bucket`
-* `gcs_update_bucket`
 
 ## Object administration
 
