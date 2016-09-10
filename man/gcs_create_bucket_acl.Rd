@@ -9,7 +9,7 @@ gcs_create_bucket_acl(bucket = gcs_get_global_bucket(), entity = "",
   "allAuthenticatedUsers"), role = c("READER", "OWNER"))
 }
 \arguments{
-\item{bucket}{Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}}
+\item{bucket}{Name of a bucket, or a bucket object returned by \link{gcs_create_bucket}}
 
 \item{entity}{The entity holding the permission. Not needed for entity_type \code{allUsers} or \code{allAuthenticatedUsers}}
 

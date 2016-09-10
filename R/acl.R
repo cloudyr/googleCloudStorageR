@@ -50,7 +50,7 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
 #'
 #' Create a new access control at the bucket level
 #'
-#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket} or \link{gcs_update_bucket}
+#' @param bucket Name of a bucket, or a bucket object returned by \link{gcs_create_bucket}
 #' @param entity The entity holding the permission. Not needed for entity_type \code{allUsers} or \code{allAuthenticatedUsers}
 #' @param entity_type what type of entity
 #' @param role Access permission for entity
