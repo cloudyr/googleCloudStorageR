@@ -69,12 +69,7 @@ test_that("We can make a bucket with lifecycle and versioning set",{
 
 })
 
-test_that("We can delete the lifecycle bucket", {
-  skip_on_cran()
-  deleted <- gcs_delete_bucket("blahblahblahffflifecycle")
-  expect_true(deleted)
 
-})
 
 context("Uploading")
 
@@ -171,7 +166,7 @@ test_that("We can create a download URL", {
 
 })
 
-test_that("We can see access control for allUsers,", {
+test_that("We can see access control for allUsers", {
   skip_on_cran()
   acl <- gcs_get_object_acl("mtcars.csv",
                             entity_type = "allUsers")
@@ -181,7 +176,7 @@ test_that("We can see access control for allUsers,", {
   expect_equal(acl$entity, "allUsers")
 })
 
-test_that("We can see access control for single test user,", {
+test_that("We can see access control for single test user", {
   skip_on_cran()
   acl <- gcs_get_object_acl("mtcars.csv",
                             entity = "joe@blogs.com")
@@ -189,6 +184,21 @@ test_that("We can see access control for single test user,", {
   expect_equal(acl$role, "READER")
   expect_equal(acl$entity, "user-joe@blogs.com")
 })
+
+test_that("We can get bucket access data", {
+  skip_on_cran()
+  acl <- gcs_get_bucket_acl(entity_type = "project",
+                            entity = "viewers-1080525199262")
+  expect_equal(acl$kind, "storage#bucketAccessControl")
+
+})
+
+# test_that("We can set access control for test bucket", {
+#   skip_on_cran()
+#   acl <- gcs_create_bucket_acl("blahblahblahffflifecycle",
+#                                entity = "test@sunholo.com")
+#
+# })
 
 context("Meta data")
 
@@ -274,6 +284,13 @@ test_that("We can delete all test files", {
   expect_true(gcs_delete_object("example.R"))
   expect_true(gcs_delete_object("gcs_save_test.RData"))
   expect_true(gcs_delete_object(".RData_test"))
+})
+
+test_that("We can delete the lifecycle bucket", {
+  skip_on_cran()
+  deleted <- gcs_delete_bucket("blahblahblahffflifecycle")
+  expect_true(deleted)
+
 })
 
 
