@@ -1,4 +1,4 @@
-# 0.1.0.9000
+# 0.2.0
 
 * Fix bug where you can't rename objects via name in `gcs_upload`
 * Add `gcs_save` to store R session data in cloud
