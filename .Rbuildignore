@@ -10,3 +10,4 @@ test_signedurls.RData
 ^auth\.json$
 ^auth\.json\.enc$
 ^drat\.sh$
+^revdep
