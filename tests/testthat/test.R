@@ -209,6 +209,14 @@ test_that("We can see object meta data", {
   expect_equal(meta_obj$kind, "storage#object")
 })
 
+test_that("We can list objects", {
+  skip_on_cran()
+  obj_list <- gcs_list_objects()
+
+  print(obj_list)
+  expect_s3_class(obj_list, "data.frame")
+})
+
 context("R session functions")
 
 test_that("We can save an R object list", {
