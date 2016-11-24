@@ -117,7 +117,7 @@ test_that("We can upload using resumable", {
 
 test_that("We can upload with metadata", {
   skip_on_cran()
-  meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list("Content-Language" = "en"))
+  meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list("Content-Language" = "en", blah = 2))
   upload <- gcs_upload(mtcars, object_metadata = meta)
   print(upload)
 
