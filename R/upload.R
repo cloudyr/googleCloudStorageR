@@ -197,7 +197,7 @@ gcs_upload <- function(file,
     on.exit(unlink(temp2))
 
     ## http://stackoverflow.com/questions/31080363/how-to-post-multipart-related-content-with-httr-for-google-drive-api
-    writeLines(jsonlite::toJSON(object_metadata), temp2)
+    writeLines(jsonlite::toJSON(object_metadata, auto_unbox = TRUE), temp2)
 
     bb <- list(
       metadata = httr::upload_file(temp2, type = "application/json; charset=UTF-8"),

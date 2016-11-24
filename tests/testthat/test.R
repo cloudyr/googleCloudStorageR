@@ -117,7 +117,7 @@ test_that("We can upload using resumable", {
 
 test_that("We can upload with metadata", {
   skip_on_cran()
-  meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list(blah = 1,bo = 2))
+  meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list("Content-Language" = "en"))
   upload <- gcs_upload(mtcars, object_metadata = meta)
   print(upload)
 
@@ -204,9 +204,10 @@ context("Meta data")
 
 test_that("We can see object meta data", {
   skip_on_cran()
-  meta_obj <- gcs_get_object("mtcars.csv", meta = TRUE)
+  meta_obj <- gcs_get_object("mtcars_meta.csv", meta = TRUE)
   print(meta_obj)
   expect_equal(meta_obj$kind, "storage#object")
+  expect_true(!is.null(meta_obj$metadata))
 })
 
 test_that("We can list objects", {

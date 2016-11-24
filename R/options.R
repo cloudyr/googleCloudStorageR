@@ -8,9 +8,14 @@
 
 .onAttach <- function(libname, pkgname){
 
-  googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
+  attempt <- try(googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
                                     environment_var = "GCS_AUTH_FILE",
-                                    travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
+                                    travis_environment_var = "TRAVIS_GCS_AUTH_FILE"))
+  
+  if(inherits(attempt, "try-error")){
+    warning("Problem using auto-authentication when loading from GCS_AUTH_FILE.  
+            Run googleAuthR::gar_auth() or googleAuthR::gar_auth_service() instead.")
+  }
 
   if(Sys.getenv("GCS_CLIENT_ID") != ""){
     options(googleAuthR.client_id = Sys.getenv("GCS_CLIENT_ID"))

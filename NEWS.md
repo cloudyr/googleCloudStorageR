@@ -1,6 +1,6 @@
 # 0.2.0.9000
 
-* erm
+* Correct metadata upload (#55 - thanks AndrewMarritt)
 
 # 0.2.0
 
