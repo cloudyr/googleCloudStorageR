@@ -1,6 +1,7 @@
 # 0.2.0.9000
 
 * Correct metadata upload (#55 - thanks AndrewMarritt)
+* Let `gcs_object_metaname` not require name so it can be reused (#56 - thanks seandavi)
 
 # 0.2.0
 

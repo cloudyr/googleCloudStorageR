@@ -4,7 +4,7 @@
 \alias{gcs_metadata_object}
 \title{Make metadata for an object}
 \usage{
-gcs_metadata_object(object_name, metadata = NULL, md5Hash = NULL,
+gcs_metadata_object(object_name = NULL, metadata = NULL, md5Hash = NULL,
   crc32c = NULL, contentLanguage = NULL, contentEncoding = NULL,
   contentDisposition = NULL, cacheControl = NULL)
 }
