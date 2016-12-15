@@ -8,9 +8,9 @@ gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
   saveToDisk = NULL, parseObject = TRUE)
 }
 \arguments{
-\item{object_name}{name of object in the bucket. URL encoded.}
+\item{object_name}{name of object in the bucket that will be URL encoded, or a \code{gs://} URL}
 
-\item{bucket}{bucket containing the objects}
+\item{bucket}{bucket containing the objects. Not needed if using a \code{gs://} URL}
 
 \item{meta}{If TRUE then get info about the object, not the object itself}
 
@@ -23,8 +23,14 @@ The object, or TRUE if sucessfully saved to disk.
 }
 \description{
 This retrieves an object directly.
+}
+\details{
 This differs from providing downloads via a download link as you can
   do via \link{gcs_download_url}
+
+For \code{object_name} you can use a \code{gs://} URL instead,
+in which case it will take the bucket name from that URL and \code{bucket} argument
+will be overridden.
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},

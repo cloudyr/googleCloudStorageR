@@ -52,18 +52,44 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
 }
 
+# Parse gs:// URIs to bucket and name
+gcs_parse_gsurls <- function(gsurl){
+  testthat::expect_type(gsurl, "character")
+
+  if(grepl("^gs://", gsurl)){
+    ## parse out bucket and object name
+    bucket <- gsub("^gs://(.+?)/(.+)$","\\1", gsurl)
+    obj <- gsub(paste0("^gs://",bucket,"/"), "", gsurl)
+
+    out <- list(bucket = bucket, obj = obj)
+  } else {
+    # not a gs:// URL
+    out <- NULL
+  }
+
+  out
+
+}
+
 #' Get an object in a bucket directly
 #'
 #' This retrieves an object directly.
-#' This differs from providing downloads via a download link as you can
-#'   do via \link{gcs_download_url}
 #'
 #'
-#' @param object_name name of object in the bucket. URL encoded.
-#' @param bucket bucket containing the objects
+#' @param object_name name of object in the bucket that will be URL encoded, or a \code{gs://} URL
+#' @param bucket bucket containing the objects. Not needed if using a \code{gs://} URL
 #' @param meta If TRUE then get info about the object, not the object itself
 #' @param saveToDisk Specify a filename to save directly to disk.
 #' @param parseObject If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}
+#'
+#' @details
+#'
+#' This differs from providing downloads via a download link as you can
+#'   do via \link{gcs_download_url}
+#'
+#' For \code{object_name} you can use a \code{gs://} URI instead,
+#' in which case it will take the bucket name from that URI and \code{bucket} argument
+#' will be overridden.  The URLs should be in the form \code{gs://bucket/object/name}
 #'
 #' @return The object, or TRUE if sucessfully saved to disk.
 #'
@@ -79,6 +105,12 @@ gcs_get_object <- function(object_name,
   testthat::expect_type(object_name, "character")
   testthat::expect_length(bucket, 1)
   testthat::expect_length(object_name, 1)
+
+  parse_gsurl <- gcs_parse_gsurls(object_name)
+  if(!is.null(parse_gsurl)){
+    object_name <- parse_gsurl$obj
+    bucket <- parse_gsurl$bucket
+  }
 
   object_name <- URLencode(object_name, reserved = TRUE)
 
@@ -148,6 +180,12 @@ gcs_metadata_object <- function(object_name = NULL,
                                 contentDisposition = NULL,
                                 cacheControl = NULL){
 
+  parse_gsurl <- gcs_parse_gsurls(object_name)
+  if(!is.null(parse_gsurl)){
+    object_name <- parse_gsurl$obj
+    # bucket <- parse_gsurl$bucket
+  }
+
   object_name <- if(!is.null(object_name)) URLencode(object_name, reserved = TRUE)
 
   out <- Object(name = object_name,
@@ -184,6 +222,12 @@ gcs_delete_object <- function(object_name,
   testthat::expect_type(object_name, "character")
   testthat::expect_length(bucket, 1)
   testthat::expect_length(object_name, 1)
+
+  parse_gsurl <- gcs_parse_gsurls(object_name)
+  if(!is.null(parse_gsurl)){
+    object_name <- parse_gsurl$obj
+    bucket <- parse_gsurl$bucket
+  }
 
   object_name <- URLencode(object_name, reserved = TRUE)
 
@@ -289,49 +333,3 @@ Object <- function(acl = NULL,
                  timeCreated = timeCreated,
                  timeDeleted = timeDeleted, updated = updated), class = "gar_Object")
 }
-
-# #' Stores a new object and metadata.
-# #'
-# #'
-# #' @param Object The \link{Object} object to pass to this method
-# #' @param bucket Name of the bucket in which to store the new object
-# #' @param contentEncoding If set, sets the contentEncoding property of the final object to this value
-# #' @param ifGenerationMatch Makes the operation conditional on whether the object's current generation matches the given value
-# #' @param ifGenerationNotMatch Makes the operation conditional on whether the object's current generation does not match the given value
-# #' @param ifMetagenerationMatch Makes the operation conditional on whether the object's current metageneration matches the given value
-# #' @param ifMetagenerationNotMatch Makes the operation conditional on whether the object's current metageneration does not match the given value
-# #' @param name Name of the object
-# #' @param predefinedAcl Apply a predefined set of access controls to this object
-# #' @param projection Set of properties to return
-# #' @importFrom googleAuthR gar_api_generator
-# #' @family Object functions
-# #' @export
-# objects.insert <- function(Object,
-#                            bucket,
-#                            contentEncoding = NULL,
-#                            ifGenerationMatch = NULL,
-#                            ifGenerationNotMatch = NULL,
-#                            ifMetagenerationMatch = NULL,
-#                            ifMetagenerationNotMatch = NULL,
-#                            name = NULL,
-#                            predefinedAcl = NULL,
-#                            projection = NULL) {
-#   url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/o", bucket)
-#   # storage.objects.insert
-#   f <- gar_api_generator(url,
-#                          "POST",
-#                          pars_args = list(contentEncoding = contentEncoding,
-#                                           ifGenerationMatch = ifGenerationMatch,
-#                                           ifGenerationNotMatch = ifGenerationNotMatch,
-#                                           ifMetagenerationMatch = ifMetagenerationMatch,
-#                                           ifMetagenerationNotMatch = ifMetagenerationNotMatch,
-#                                           name = name,
-#                                           predefinedAcl = predefinedAcl,
-#                                           projection = projection),
-#                          data_parse_function = function(x) x)
-#
-#   stopifnot(inherits(Object, "gar_Object"))
-#
-#   f(the_body = Object)
-#
-# }

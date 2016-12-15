@@ -2,6 +2,7 @@
 
 * Correct metadata upload (#55 - thanks AndrewMarritt)
 * Let `gcs_object_metaname` not require name so it can be reused (#56 - thanks seandavi)
+* Add support for gs:// style URLs for object names (#57 - thanks seandavi)
 
 # 0.2.0
 
