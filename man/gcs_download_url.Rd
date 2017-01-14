@@ -4,22 +4,30 @@
 \alias{gcs_download_url}
 \title{Get the download URL}
 \usage{
-gcs_download_url(object_name, bucket = gcs_get_global_bucket())
+gcs_download_url(object_name, bucket = gcs_get_global_bucket(),
+  public = FALSE)
 }
 \arguments{
 \item{object_name}{A vector of object names}
 
-\item{bucket}{A vector of bucket names
+\item{bucket}{A vector of bucket names}
 
-bucket names should be length 1 or same length as object_name}
+\item{public}{TRUE to return a public URL}
 }
 \value{
 the URL for downloading objects
-
-You may need to update access for your email to get access via \link{gcs_update_object_acl}
 }
 \description{
 Create the download URL for objects in buckets
+}
+\details{
+\code{bucket} names should be length 1 or same length as \code{object_name}
+
+Download URLs can be either authenticated behind a login that you may need to update
+  access for via \link{gcs_update_object_acl}, or public to all if their \code{predefinedAcl = 'publicRead'}
+
+Use the \code{public = TRUE} to return the URL accessible to all, which changes the domain name from
+  \code{storage.cloud.google.com} to \code{storage.googleapis.com}
 }
 \seealso{
 Other download functions: \code{\link{gcs_parse_download}}

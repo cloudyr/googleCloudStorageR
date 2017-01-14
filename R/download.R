@@ -4,16 +4,24 @@
 #'
 #' @param object_name A vector of object names
 #' @param bucket A vector of bucket names
+#' @param public TRUE to return a public URL
 #'
-#' bucket names should be length 1 or same length as object_name
+#' @details
+#' \code{bucket} names should be length 1 or same length as \code{object_name}
+#'
+#' Download URLs can be either authenticated behind a login that you may need to update
+#'   access for via \link{gcs_update_object_acl}, or public to all if their \code{predefinedAcl = 'publicRead'}
+#'
+#' Use the \code{public = TRUE} to return the URL accessible to all, which changes the domain name from
+#'   \code{storage.cloud.google.com} to \code{storage.googleapis.com}
 #'
 #' @return the URL for downloading objects
 #'
-#' You may need to update access for your email to get access via \link{gcs_update_object_acl}
+#'
 #'
 #' @family download functions
 #' @export
-gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket()){
+gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), public = FALSE){
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
 
@@ -24,9 +32,13 @@ gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket()){
     stop("bucket must be length 1 or same length as object_name")
   }
 
-  paste0("https://storage.cloud.google.com",
-         "/", bucket,
-         "/", object_name)
+  if(public){
+    domain <- "https://storage.googleapis.com"
+  } else {
+    domain <- "https://storage.cloud.google.com"
+  }
+
+  file.path(domain, bucket, object_name, fsep = "/")
 }
 
 #' Parse downloaded objects straight into R

@@ -28,9 +28,9 @@ This retrieves an object directly.
 This differs from providing downloads via a download link as you can
   do via \link{gcs_download_url}
 
-For \code{object_name} you can use a \code{gs://} URL instead,
-in which case it will take the bucket name from that URL and \code{bucket} argument
-will be overridden.
+For \code{object_name} you can use a \code{gs://} URI instead,
+in which case it will take the bucket name from that URI and \code{bucket} argument
+will be overridden.  The URLs should be in the form \code{gs://bucket/object/name}
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},
