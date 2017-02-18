@@ -3,6 +3,8 @@
 * Correct metadata upload (#55 - thanks AndrewMarritt)
 * Let `gcs_object_metaname` not require name so it can be reused (#56 - thanks seandavi)
 * Add support for `gs://` style URLs for object names (#57 - thanks seandavi)
+* Add what the public URL would be to an objects print method (#59 - thanks mwhitaker)
+* Add check to `gcs_get_bucket()` to only expect length 1 character vectors for bucket name. (#60)
 
 # 0.2.0
 

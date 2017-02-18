@@ -140,6 +140,7 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
   }
 
   testthat::expect_is(bucket, "character")
+  testthat::expect_length(bucket, 1)
   testthat::expect_is(projection, "character")
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
