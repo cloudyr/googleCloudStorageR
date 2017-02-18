@@ -85,6 +85,7 @@ gcs_list_buckets <- function(projectId,
   detail <- match.arg(detail)
 
   testthat::expect_is(projectId, "character")
+  testthat::expect_length(projectId, 1)
   testthat::expect_is(prefix, "character")
   testthat::expect_is(maxResults, "numeric")
 
@@ -205,7 +206,10 @@ gcs_create_bucket <-
 
   testthat::expect_is(projectId, "character")
   testthat::expect_is(name, "character")
+  testthat::expect_length(projectId, 1)
+  testthat::expect_length(name, 1)
   testthat::expect_is(location, "character")
+  testthat::expect_length(location, 1)
   testthat::expect_is(projection, "character")
   testthat::expect_type(versioning, "logical")
 
@@ -267,6 +271,7 @@ gcs_delete_bucket <- function(bucket,
   }
 
   testthat::expect_is(bucket, "character")
+  testthat::expect_length(bucket, 1)
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch)
