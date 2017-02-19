@@ -78,6 +78,7 @@ gcs_save <- function(...,
 #' @param file Where the files are stored
 #' @param bucket Bucket the stored objects are in
 #' @param envir Environment to load objects into
+#' @param saveToDisk Where to save the loaded file.  Default same file name
 #'
 #' @details
 #'
@@ -92,9 +93,10 @@ gcs_save <- function(...,
 #' @export
 gcs_load <- function(file = ".RData",
                      bucket = gcs_get_global_bucket(),
-                     envir = .GlobalEnv){
+                     envir = .GlobalEnv,
+                     saveToDisk = file){
 
-  gcs_get_object(file, bucket = bucket, saveToDisk = file)
+  gcs_get_object(file, bucket = bucket, saveToDisk = saveToDisk)
   load(file, envir = envir)
 
   TRUE

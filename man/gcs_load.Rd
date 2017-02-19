@@ -5,7 +5,7 @@
 \title{Load an R session from the Google Cloud}
 \usage{
 gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
-  envir = .GlobalEnv)
+  envir = .GlobalEnv, saveToDisk = file)
 }
 \arguments{
 \item{file}{Where the files are stored}
@@ -13,6 +13,8 @@ gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
 \item{bucket}{Bucket the stored objects are in}
 
 \item{envir}{Environment to load objects into}
+
+\item{saveToDisk}{Where to save the loaded file.  Default same file name}
 }
 \value{
 TRUE if successful
