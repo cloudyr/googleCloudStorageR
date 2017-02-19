@@ -27,11 +27,14 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
   testthat::expect_length(bucket, 1)
 
   parse_lo <- function(x){
+    nextPageToken <- x$nextPageToken
     x <- x$items
     x$timeCreated <- timestamp_to_r(x$timeCreated)
     x$updated <- timestamp_to_r(x$updated)
     x$kind <- NULL
     x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
+
+    attr(x, "nextPageToken") <- nextPageToken
     x
   }
 
@@ -40,6 +43,27 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                                        o = ""),
                                       data_parse_function = parse_lo)
   req <- lo()
+
+  ## page through list if necessary
+  if(!is.null(attr(req, "nextPageToken"))){
+    npt <- attr(req, "nextPageToken")
+
+    lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
+                                         path_args = list(b = bucket,
+                                                          o = ""),
+                                         pars_args = list(pageToken = npt),
+                                         data_parse_function = parse_lo)
+
+
+    while(!is.null(npt)){
+      myMessage("Paging through results: ", npt, level = 3)
+      more_req <- lo2(pars_arguments = npt)
+      npt <- attr(more_req, "nextPageToken")
+      req <- rbind(req, more_req)
+    }
+  }
+
+
 
   out_names <- switch(detail,
       summary = c("name", "size", "updated"),
