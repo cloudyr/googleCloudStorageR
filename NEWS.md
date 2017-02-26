@@ -6,6 +6,7 @@
 * Add what the public URL would be to an objects print method (#59 - thanks mwhitaker)
 * Add check to `gcs_get_bucket()` to only expect length 1 character vectors for bucket name. (#60)
 * Add paging for `gcs_object_list` (#58 - thanks @G3rtjan)
+* Add `saveToDisk` option to `gcs_load` (#52 - thanks @tomsing1)
 
 # 0.2.0
 
