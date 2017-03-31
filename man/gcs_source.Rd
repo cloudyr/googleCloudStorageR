@@ -23,4 +23,3 @@ Source an R script and run via \link{source}
 Other R session data functions: \code{\link{gcs_load}},
   \code{\link{gcs_save_image}}, \code{\link{gcs_save}}
 }
-

@@ -32,4 +32,3 @@ Use the \code{public = TRUE} to return the URL accessible to all, which changes 
 \seealso{
 Other download functions: \code{\link{gcs_parse_download}}
 }
-

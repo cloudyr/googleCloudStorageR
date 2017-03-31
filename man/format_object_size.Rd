@@ -10,4 +10,3 @@ format_object_size(x, units = "b", ...)
 taken from utils:::format.object_size
 }
 \keyword{internal}
-

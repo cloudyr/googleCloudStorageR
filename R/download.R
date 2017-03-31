@@ -43,7 +43,7 @@ gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), publ
 
 #' Parse downloaded objects straight into R
 #'
-#' Wrapper for httr::content
+#' Wrapper for httr::content.  This is the default function used in \link{gcs_get_object}
 #'
 #' @param object The object downloaded
 #' @param encoding Default to UTF-8

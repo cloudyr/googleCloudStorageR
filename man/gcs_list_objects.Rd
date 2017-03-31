@@ -32,4 +32,3 @@ Other object functions: \code{\link{gcs_delete_object}},
   \code{\link{gcs_get_object}},
   \code{\link{gcs_metadata_object}}
 }
-

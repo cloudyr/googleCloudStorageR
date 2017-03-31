@@ -28,4 +28,3 @@ Other Access control functions: \code{\link{gcs_create_bucket_acl}},
   \code{\link{gcs_get_object_acl}},
   \code{\link{gcs_update_object_acl}}
 }
-

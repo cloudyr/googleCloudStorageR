@@ -137,7 +137,22 @@ test_that("We can download a file to disk", {
 
 test_that("We can download a file directly", {
   skip_on_cran()
-  dl <- gcs_get_object("mtcars_meta.csv")
+  expect_warning(gcs_get_object("mtcars_meta.csv"))
+
+  dl <- suppressWarnings(gcs_get_object("mtcars_meta.csv"))
+  expect_s3_class(dl, "data.frame")
+
+})
+
+test_that("We can supply our own parseFunction to downloads", {
+  skip_on_cran()
+  f <- function(object){
+    out <- suppressWarnings(httr::content(object, encoding = "UTF-8"))
+    message("Object parsed to class: ", paste(class(out), collapse = " "))
+    out
+  }
+
+  dl <- gcs_get_object("mtcars_meta.csv", parseFunction = f)
   expect_s3_class(dl, "data.frame")
 
 })

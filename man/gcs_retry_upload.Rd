@@ -28,4 +28,3 @@ If successful, an object metadata object, if not an gcs_upload_retry object.
 Used internally in \link{gcs_upload}, you can also use this
   for failed uploads within one week of generating the upload URL
 }
-

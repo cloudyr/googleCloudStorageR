@@ -104,7 +104,8 @@ gcs_parse_gsurls <- function(gsurl){
 #' @param bucket bucket containing the objects. Not needed if using a \code{gs://} URL
 #' @param meta If TRUE then get info about the object, not the object itself
 #' @param saveToDisk Specify a filename to save directly to disk.
-#' @param parseObject If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}
+#' @param parseObject If saveToDisk is NULL, whether to parse with \code{parseFunction}
+#' @param parseFunction If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}
 #'
 #' @details
 #'
@@ -115,6 +116,8 @@ gcs_parse_gsurls <- function(gsurl){
 #' in which case it will take the bucket name from that URI and \code{bucket} argument
 #' will be overridden.  The URLs should be in the form \code{gs://bucket/object/name}
 #'
+#' By default if you want to get the object straight into an R session \link{gcs_parse_download} which wraps \link[httr]{content}.  If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.
+#'
 #' @return The object, or TRUE if sucessfully saved to disk.
 #'
 #' @family object functions
@@ -123,7 +126,8 @@ gcs_get_object <- function(object_name,
                            bucket = gcs_get_global_bucket(),
                            meta = FALSE,
                            saveToDisk = NULL,
-                           parseObject = TRUE){
+                           parseObject = TRUE,
+                           parseFunction = gcs_parse_download){
 
   testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
@@ -170,7 +174,10 @@ gcs_get_object <- function(object_name,
       message("Downloaded ", object_name)
 
       if(parseObject){
-        out <- gcs_parse_download(req)
+        out <- try(parseFunction(req))
+        if(is.error(out)){
+          stop("Problem parsing the object with supplied parseFunction.")
+        }
       } else {
         out <- req
       }

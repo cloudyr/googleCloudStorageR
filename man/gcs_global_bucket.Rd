@@ -27,4 +27,3 @@ Other bucket functions: \code{\link{gcs_create_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_list_buckets}}
 }
-

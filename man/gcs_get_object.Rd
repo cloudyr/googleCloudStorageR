@@ -5,7 +5,8 @@
 \title{Get an object in a bucket directly}
 \usage{
 gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
-  saveToDisk = NULL, parseObject = TRUE)
+  saveToDisk = NULL, parseObject = TRUE,
+  parseFunction = gcs_parse_download)
 }
 \arguments{
 \item{object_name}{name of object in the bucket that will be URL encoded, or a \code{gs://} URL}
@@ -16,7 +17,9 @@ gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
 
 \item{saveToDisk}{Specify a filename to save directly to disk.}
 
-\item{parseObject}{If saveToDisk is NULL, whether to parse with \link{gcs_parse_download}}
+\item{parseObject}{If saveToDisk is NULL, whether to parse with \code{parseFunction}}
+
+\item{parseFunction}{If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}}
 }
 \value{
 The object, or TRUE if sucessfully saved to disk.
@@ -31,10 +34,11 @@ This differs from providing downloads via a download link as you can
 For \code{object_name} you can use a \code{gs://} URI instead,
 in which case it will take the bucket name from that URI and \code{bucket} argument
 will be overridden.  The URLs should be in the form \code{gs://bucket/object/name}
+
+By default if you want to get the object straight into an R session \link{gcs_parse_download} which wraps \link[httr]{content}.  If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},
   \code{\link{gcs_list_objects}},
   \code{\link{gcs_metadata_object}}
 }
-

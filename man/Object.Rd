@@ -73,4 +73,3 @@ Object Object
 \details{
 An object.
 }
-

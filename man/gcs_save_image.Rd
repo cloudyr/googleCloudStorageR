@@ -32,4 +32,3 @@ This will overwrite any data with the same name in folder.
 Other R session data functions: \code{\link{gcs_load}},
   \code{\link{gcs_save}}, \code{\link{gcs_source}}
 }
-

@@ -7,6 +7,12 @@ cat0 <- function(prefix = "", x){
   }
 }
 
+#' Javascript time to R time
+#'
+#' @keywords internal
+js_to_posix <- function(x){
+  as.POSIXct(as.numeric(x) / 1000, origin = "1970-01-01")
+}
 
 #' taken from utils:::format.object_size
 #'

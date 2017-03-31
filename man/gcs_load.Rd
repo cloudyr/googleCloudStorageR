@@ -33,4 +33,3 @@ This would overwrite your existing \code{.RData} file in the working directory, 
 Other R session data functions: \code{\link{gcs_save_image}},
   \code{\link{gcs_save}}, \code{\link{gcs_source}}
 }
-
