@@ -31,11 +31,40 @@ This retrieves an object directly.
 This differs from providing downloads via a download link as you can
   do via \link{gcs_download_url}
 
-For \code{object_name} you can use a \code{gs://} URI instead,
+\code{object_name} can use a \code{gs://} URI instead,
 in which case it will take the bucket name from that URI and \code{bucket} argument
 will be overridden.  The URLs should be in the form \code{gs://bucket/object/name}
 
-By default if you want to get the object straight into an R session \link{gcs_parse_download} which wraps \link[httr]{content}.  If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.
+By default if you want to get the object straight into an R session the parseFunction is \link{gcs_parse_download} which wraps \code{httr}'s \link[httr]{content}.
+
+If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.
+}
+\examples{
+
+\dontrun{
+
+## something to download
+## data.frame that defaults to be called "mtcars.csv"
+gcs_upload(mtcars)
+
+## get the mtcars csv from GCS, convert it to an R obj
+gcs_get_object("mtcars.csv")
+
+## get the mtcars csv from GCS, save it to disk
+gcs_get_object("mtcars.csv", saveToDisk = "mtcars.csv")
+
+
+## default gives a warning about missing column name.
+## custom parse function to suppress warning
+f <- function(object){
+  suppressWarnings(httr::content(object, encoding = "UTF-8"))
+}
+
+## get mtcars csv with custom parse function.
+gcs_get_object("mtcars_meta.csv", parseFunction = f)
+
+}
+
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},
