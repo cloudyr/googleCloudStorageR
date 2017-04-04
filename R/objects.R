@@ -157,9 +157,7 @@ gcs_get_object <- function(object_name,
                            parseObject = TRUE,
                            parseFunction = gcs_parse_download){
 
-  testthat::expect_type(bucket, "character")
   testthat::expect_type(object_name, "character")
-  testthat::expect_length(bucket, 1)
   testthat::expect_length(object_name, 1)
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
@@ -167,6 +165,9 @@ gcs_get_object <- function(object_name,
     object_name <- parse_gsurl$obj
     bucket <- parse_gsurl$bucket
   }
+
+  testthat::expect_type(bucket, "character")
+  testthat::expect_length(bucket, 1)
 
   object_name <- URLencode(object_name, reserved = TRUE)
 
