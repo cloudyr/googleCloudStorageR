@@ -8,6 +8,7 @@
 * Add paging for `gcs_object_list` (#58 - thanks @G3rtjan)
 * Add `saveToDisk` option to `gcs_load` (#52 - thanks @tomsing1)
 * Supply your own parse function to `gcs_get_object()` (#63 - thanks @nkeriks)
+* Support for `prefix` in `gcs_object_list` to filter objects listed (#68)
 
 # 0.2.0
 

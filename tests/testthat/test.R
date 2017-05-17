@@ -233,6 +233,14 @@ test_that("We can list objects", {
   expect_s3_class(obj_list, "data.frame")
 })
 
+test_that("We can list objects with a prefix", {
+  skip_on_cran()
+  obj_list <- gcs_list_objects(prefix = "a")
+  
+  expect_s3_class(obj_list, "data.frame")
+  
+})
+
 context("R session functions")
 
 test_that("We can save an R object list", {

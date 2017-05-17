@@ -5,12 +5,14 @@
 \title{List objects in a bucket}
 \usage{
 gcs_list_objects(bucket = gcs_get_global_bucket(), detail = c("summary",
-  "more", "full"))
+  "more", "full"), prefix = NULL)
 }
 \arguments{
 \item{bucket}{bucket containing the objects}
 
 \item{detail}{Set level of detail}
+
+\item{prefix}{Filter results to objects whose names begin with this prefix.}
 }
 \value{
 A data.frame of the objects
@@ -26,6 +28,11 @@ Columns returned by \code{detail} are:
   \item \code{more} - as above plus: bucket, contentType, storageClass, timeCreated
   \item \code{full} - as above plus: id, selfLink, generation, metageneration, md5Hash, mediaLink, crc32c, etag
  }
+ 
+ \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
+    aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, 
+    contain delimiter will have their name, truncated after the delimiter, returned in prefixes. 
+    Duplicate prefixes are omitted.
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},

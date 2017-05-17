@@ -2,7 +2,7 @@
 #'
 #' @param bucket bucket containing the objects
 #' @param detail Set level of detail
-#'
+#' @param prefix Filter results to objects whose names begin with this prefix. 
 #' @details
 #'
 #' Columns returned by \code{detail} are:
@@ -12,6 +12,11 @@
 #'   \item \code{more} - as above plus: bucket, contentType, storageClass, timeCreated
 #'   \item \code{full} - as above plus: id, selfLink, generation, metageneration, md5Hash, mediaLink, crc32c, etag
 #'  }
+#'  
+#'  \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
+#'     aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, 
+#'     contain delimiter will have their name, truncated after the delimiter, returned in prefixes. 
+#'     Duplicate prefixes are omitted. 
 #'
 #'
 #' @return A data.frame of the objects
@@ -19,7 +24,8 @@
 #' @family object functions
 #' @export
 gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
-                             detail = c("summary","more","full")){
+                             detail = c("summary","more","full"),
+                             prefix = NULL){
 
   detail <- match.arg(detail)
 
@@ -28,6 +34,10 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
   parse_lo <- function(x){
     nextPageToken <- x$nextPageToken
+    if(is.null(x$items)){
+      myMessage("No objects found", level = 3)
+      return(data.frame())
+    }
     x <- x$items
     x$timeCreated <- timestamp_to_r(x$timeCreated)
     x$updated <- timestamp_to_r(x$updated)
@@ -37,10 +47,14 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     attr(x, "nextPageToken") <- nextPageToken
     x
   }
+  
+  pars <- list(prefix = prefix)
+  pars <- rmNullObs(pars)
 
   lo <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                       path_args = list(b = bucket,
                                                        o = ""),
+                                      pars_args = pars,
                                       data_parse_function = parse_lo)
   req <- lo()
 
@@ -51,7 +65,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                          path_args = list(b = bucket,
                                                           o = ""),
-                                         pars_args = list(pageToken = npt),
+                                         pars_args = c(pars, list(pageToken = npt)),
                                          data_parse_function = parse_lo)
 
 
@@ -65,14 +79,16 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
 
 
-  out_names <- switch(detail,
-      summary = c("name", "size", "updated"),
-      more = c("name", "size", "bucket", "contentType", "timeCreated", "updated", "storageClass"),
-      full = TRUE
-                )
+  if(nrow(req) > 0){
+    out_names <- switch(detail,
+                        summary = c("name", "size", "updated"),
+                        more = c("name", "size", "bucket", "contentType", "timeCreated", "updated", "storageClass"),
+                        full = TRUE
+    )
+    req[,out_names]
+  }
 
-  req[,out_names]
-
+  req
 
 }
 
