@@ -46,9 +46,18 @@ test_that("We can create a bucket", {
 test_that("We can upload to the new bucket", {
   skip_on_cran()
 
-  upload <- gcs_upload(mtcars, bucket = "blahblahblahfffff")
+  upload <- gcs_upload(mtcars, bucket = "blahblahblahfffff", name = "mtcars.csv")
 
   expect_equal(class(upload), "gcs_objectmeta")
+
+})
+
+test_that("We can delete upload to the new bucket", {
+  skip_on_cran()
+
+  del <- gcs_delete_object("mtcars.csv", bucket = "blahblahblahfffff")
+
+  expect_true(del)
 
 })
 
@@ -244,7 +253,15 @@ test_that("We can list objects", {
 
 test_that("We can list objects with a prefix", {
   skip_on_cran()
-  obj_list <- gcs_list_objects(prefix = "a")
+  obj_list <- gcs_list_objects(prefix = "man")
+
+  expect_s3_class(obj_list, "data.frame")
+
+})
+
+test_that("We can list objects with a prefix and delimiter", {
+  skip_on_cran()
+  obj_list <- gcs_list_objects(prefix = "man/", delimiter = "/")
 
   expect_s3_class(obj_list, "data.frame")
 

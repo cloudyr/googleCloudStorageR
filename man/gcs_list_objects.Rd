@@ -5,14 +5,16 @@
 \title{List objects in a bucket}
 \usage{
 gcs_list_objects(bucket = gcs_get_global_bucket(), detail = c("summary",
-  "more", "full"), prefix = NULL)
+  "more", "full"), prefix = NULL, delimiter = NULL)
 }
 \arguments{
 \item{bucket}{bucket containing the objects}
 
 \item{detail}{Set level of detail}
 
-\item{prefix}{Filter results to objects whose names begin with this prefix.}
+\item{prefix}{Filter results to objects whose names begin with this prefix}
+
+\item{delimiter}{Use to list objects like a directory listing.}
 }
 \value{
 A data.frame of the objects
@@ -30,9 +32,12 @@ Columns returned by \code{detail} are:
  }
 
  \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
-    aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix,
-    contain delimiter will have their name, truncated after the delimiter, returned in prefixes.
-    Duplicate prefixes are omitted.
+    aside from the prefix, do not contain delimiter. In conjunction with the prefix filter,
+    the use of the delimiter parameter allows the list method to operate like a directory listing,
+    despite the object namespace being flat.
+    For example, if delimiter were set to \code{"/"}, then listing objects from a bucket that contains the
+    objects \code{"a/b", "a/c", "dddd", "eeee", "e/f"} would return objects \code{"dddd" and "eeee"},
+    and prefixes \code{"a/" and "e/"}.
 }
 \seealso{
 Other object functions: \code{\link{gcs_delete_object}},

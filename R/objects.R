@@ -2,7 +2,8 @@
 #'
 #' @param bucket bucket containing the objects
 #' @param detail Set level of detail
-#' @param prefix Filter results to objects whose names begin with this prefix.
+#' @param prefix Filter results to objects whose names begin with this prefix
+#' @param delimiter Use to list objects like a directory listing.
 #' @details
 #'
 #' Columns returned by \code{detail} are:
@@ -14,9 +15,12 @@
 #'  }
 #'
 #'  \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
-#'     aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix,
-#'     contain delimiter will have their name, truncated after the delimiter, returned in prefixes.
-#'     Duplicate prefixes are omitted.
+#'     aside from the prefix, do not contain delimiter. In conjunction with the prefix filter,
+#'     the use of the delimiter parameter allows the list method to operate like a directory listing,
+#'     despite the object namespace being flat.
+#'     For example, if delimiter were set to \code{"/"}, then listing objects from a bucket that contains the
+#'     objects \code{"a/b", "a/c", "dddd", "eeee", "e/f"} would return objects \code{"dddd" and "eeee"},
+#'     and prefixes \code{"a/" and "e/"}.
 #'
 #'
 #' @return A data.frame of the objects
@@ -25,7 +29,8 @@
 #' @export
 gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                              detail = c("summary","more","full"),
-                             prefix = NULL){
+                             prefix = NULL,
+                             delimiter = NULL){
 
   detail <- match.arg(detail)
 
@@ -34,7 +39,8 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     is.unit(bucket)
   )
 
-  pars <- list(prefix = prefix)
+  pars <- list(prefix = prefix,
+               delimiter = delimiter)
   pars <- rmNullObs(pars)
 
   lo <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
@@ -53,7 +59,6 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                                           o = ""),
                                          pars_args = c(pars, list(pageToken = npt)),
                                          data_parse_function = parse_lo)
-
 
     while(!is.null(npt)){
       myMessage("Paging through results: ", npt, level = 3)
@@ -86,12 +91,19 @@ parse_lo <- function(x){
     return(data.frame())
   }
   x <- x$items
+  if(is.null(x$prefixes)){
+    myMessage("No prefixes found", level = 2)
+    prefixes <- NULL
+  } else {
+    prefixes <- x$prefixes
+  }
   x$timeCreated <- timestamp_to_r(x$timeCreated)
   x$updated <- timestamp_to_r(x$updated)
   x$kind <- NULL
   x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
 
   attr(x, "nextPageToken") <- nextPageToken
+  attr(x, "prefixes") <- prefixes
   x
 }
 
