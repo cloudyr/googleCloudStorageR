@@ -21,8 +21,10 @@ gcs_global_bucket <- function(bucket){
     bucket <- bucket$name
   }
 
-  stopifnot(inherits(bucket, "character"),
-            length(bucket) == 1)
+  assertthat::assert_that(
+    is.character(bucket),
+    is.unit(bucket)
+  )
 
   .gcs_env$bucket <- bucket
   message("Set default bucket name to '", bucket,"'")

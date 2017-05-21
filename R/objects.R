@@ -34,22 +34,6 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     is.unit(bucket)
   )
 
-  parse_lo <- function(x){
-    nextPageToken <- x$nextPageToken
-    if(is.null(x$items)){
-      myMessage("No objects found", level = 3)
-      return(data.frame())
-    }
-    x <- x$items
-    x$timeCreated <- timestamp_to_r(x$timeCreated)
-    x$updated <- timestamp_to_r(x$updated)
-    x$kind <- NULL
-    x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
-
-    attr(x, "nextPageToken") <- nextPageToken
-    x
-  }
-
   pars <- list(prefix = prefix)
   pars <- rmNullObs(pars)
 
@@ -92,6 +76,23 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
   req
 
+}
+
+## parse
+parse_lo <- function(x){
+  nextPageToken <- x$nextPageToken
+  if(is.null(x$items)){
+    myMessage("No objects found", level = 3)
+    return(data.frame())
+  }
+  x <- x$items
+  x$timeCreated <- timestamp_to_r(x$timeCreated)
+  x$updated <- timestamp_to_r(x$updated)
+  x$kind <- NULL
+  x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
+
+  attr(x, "nextPageToken") <- nextPageToken
+  x
 }
 
 # Parse gs:// URIs to bucket and name
@@ -187,6 +188,7 @@ gcs_get_object <- function(object_name,
     bucket <- parse_gsurl$bucket
   }
 
+  ## here as the bucket can be inferred from a gs URL
   assertthat::assert_that(
     is.character(bucket),
     is.unit(bucket)

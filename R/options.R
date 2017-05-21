@@ -11,9 +11,9 @@
   attempt <- try(googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
                                     environment_var = "GCS_AUTH_FILE",
                                     travis_environment_var = "TRAVIS_GCS_AUTH_FILE"))
-  
+
   if(inherits(attempt, "try-error")){
-    warning("Problem using auto-authentication when loading from GCS_AUTH_FILE.  
+    warning("Problem using auto-authentication when loading from GCS_AUTH_FILE: \n", attempt, "
             Run googleAuthR::gar_auth() or googleAuthR::gar_auth_service() instead.")
   }
 

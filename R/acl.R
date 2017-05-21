@@ -81,7 +81,7 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
     stop("Must supply non-empty entity argument")
   }
 
-  assertthat::asset_that(is.character(entity))
+  assertthat::assert_that(is.character(entity))
 
   accessControls <- list(
     entity = build_entity(entity, entity_type),
@@ -153,9 +153,14 @@ gcs_update_object_acl <- function(object_name,
 
   object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
 
-  stopifnot(inherits(bucket, "character"),
-            inherits(object_name, "character"),
-            inherits(entity, "character"))
+  assertthat::assert_that(
+    is.character(bucket),
+    is.unit(bucket),
+    is.character(object_name),
+    is.unit(object_name),
+    is.character(entity),
+    is.unit(entity)
+  )
 
   if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
     stop("Must supply non-empty entity argument")

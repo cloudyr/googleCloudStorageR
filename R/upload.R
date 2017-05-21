@@ -274,7 +274,8 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
       stop("Must supply either retry_object or all of upload_url, file and type")
     }
   } else {
-    stopifnot(inherits(retry_object, "gcs_upload_retry"))
+
+    assertthat::assert_that(inherits(retry_object, "gcs_upload_retry"))
 
     upload_url <- retry_object$upload_url
     file <- retry_object$file
