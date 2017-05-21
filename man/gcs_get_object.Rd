@@ -22,7 +22,7 @@ gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
 \item{parseFunction}{If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}}
 }
 \value{
-The object, or TRUE if sucessfully saved to disk.
+The object, or TRUE if successfully saved to disk.
 }
 \description{
 This retrieves an object directly.

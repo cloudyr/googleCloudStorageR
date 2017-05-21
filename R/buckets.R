@@ -84,10 +84,10 @@ gcs_list_buckets <- function(projectId,
   projection <- match.arg(projection)
   detail <- match.arg(detail)
 
-  testthat::expect_is(projectId, "character")
-  testthat::expect_length(projectId, 1)
-  testthat::expect_is(prefix, "character")
-  testthat::expect_is(maxResults, "numeric")
+  assertthat::assert_that(is.character(projectId),
+                          is.unit(projectId),
+                          is.character(prefix),
+                          is.numeric(maxResults))
 
   parse_lb <- function(x){
     x <- x$items
@@ -140,9 +140,9 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
     bucket <- bucket$name
   }
 
-  testthat::expect_is(bucket, "character")
-  testthat::expect_length(bucket, 1)
-  testthat::expect_is(projection, "character")
+  assertthat::assert_that(is.character(bucket),
+                          is.unit(bucket),
+                          is.character(projection))
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch,
@@ -204,14 +204,16 @@ gcs_create_bucket <-
   storageClass  <- match.arg(storageClass)
   predefinedDefaultObjectAcl <- match.arg(predefinedDefaultObjectAcl)
 
-  testthat::expect_is(projectId, "character")
-  testthat::expect_is(name, "character")
-  testthat::expect_length(projectId, 1)
-  testthat::expect_length(name, 1)
-  testthat::expect_is(location, "character")
-  testthat::expect_length(location, 1)
-  testthat::expect_is(projection, "character")
-  testthat::expect_type(versioning, "logical")
+  assertthat::assert_that(
+    is.character(projectId),
+    is.character(name),
+    is.unit(projectId),
+    is.unit(name),
+    is.character(location),
+    is.unit(location),
+    is.character(projection),
+    is.logical(versioning)
+  )
 
   pars_args <- list(project = projectId,
                     predefinedAcl = predefinedAcl,
@@ -259,7 +261,6 @@ gcs_create_bucket <-
 #' @param ifMetagenerationMatch Delete only if metageneration matches
 #' @param ifMetagenerationNotMatch Delete only if metageneration does not match
 #'
-#' @import testthat
 #' @family bucket functions
 #' @export
 gcs_delete_bucket <- function(bucket,
@@ -270,8 +271,8 @@ gcs_delete_bucket <- function(bucket,
     bucket <- bucket$name
   }
 
-  testthat::expect_is(bucket, "character")
-  testthat::expect_length(bucket, 1)
+  assertthat::assert_that(is.character(bucket),
+                          is.unit(bucket))
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch)
@@ -324,7 +325,7 @@ gcs_create_lifecycle <- function(age = NULL,
                                  isLive = NULL){
 
   if(!is.null(age)){
-    testthat::expect_is(age, "numeric")
+    assertthat::assert_that(is.numeric(age))
   }
 
 
@@ -333,15 +334,15 @@ gcs_create_lifecycle <- function(age = NULL,
     if(is.na(createdBefore)){
       stop("Problem with createdBefore date, converted to ", createdBefore)
     }
-    testthat::expect_type(createdBefore, "character")
+    assertthat::assert_that(is.character(createdBefore))
   }
 
   if(!is.null(numNewerVersions)){
-    testthat::expect_is(numNewerVersions, "numeric")
+    assertthat::assert_that(is.numeric(numNewerVersions))
   }
 
   if(!is.null(isLive)){
-    testthat::expect_is(isLive, "logical")
+    assertthat::assert_that(is.logical(isLive))
   }
 
   rule <- list(
@@ -368,10 +369,13 @@ make_lifecycle_list <- function(lifecycle){
 
   if(!is.null(lifecycle)){
 
-    testthat::expect_type(lifecycle, "list")
-    testthat::expect_true(all(vapply(lifecycle,
-                                     function(x) inherits(x, "gcs_lifecycle"),
-                                     logical(1))))
+    assertthat::assert_that(
+      is.list(lifecycle),
+      all(vapply(lifecycle,
+                 function(x) inherits(x, "gcs_lifecycle"),
+                 logical(1)))
+      )
+
     out <- list(
       list(
         rule = lifecycle

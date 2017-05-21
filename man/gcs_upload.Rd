@@ -7,7 +7,7 @@
 gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
   name = deparse(substitute(file)), object_function = NULL,
   object_metadata = NULL, predefinedAcl = c("private", "authenticatedRead",
-  "bucketOwnerFullControl", "buckerOwnerRead", "projectPrivate", "publicRead"),
+  "bucketOwnerFullControl", "bucketOwnerRead", "projectPrivate", "publicRead"),
   upload_type = c("simple", "resumable"))
 }
 \arguments{

@@ -29,8 +29,10 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
   detail <- match.arg(detail)
 
-  testthat::expect_type(bucket, "character")
-  testthat::expect_length(bucket, 1)
+  assertthat::assert_that(
+    is.character(bucket),
+    is.unit(bucket)
+  )
 
   parse_lo <- function(x){
     nextPageToken <- x$nextPageToken
@@ -94,7 +96,8 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
 # Parse gs:// URIs to bucket and name
 gcs_parse_gsurls <- function(gsurl){
-  testthat::expect_type(gsurl, "character")
+
+  assertthat::assert_that(is.character(gsurl))
 
   if(grepl("^gs://", gsurl)){
     ## parse out bucket and object name
@@ -173,8 +176,10 @@ gcs_get_object <- function(object_name,
                            parseObject = TRUE,
                            parseFunction = gcs_parse_download){
 
-  testthat::expect_type(object_name, "character")
-  testthat::expect_length(object_name, 1)
+  assertthat::assert_that(
+    is.character(object_name),
+    is.unit(object_name)
+  )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
   if(!is.null(parse_gsurl)){
@@ -182,8 +187,10 @@ gcs_get_object <- function(object_name,
     bucket <- parse_gsurl$bucket
   }
 
-  testthat::expect_type(bucket, "character")
-  testthat::expect_length(bucket, 1)
+  assertthat::assert_that(
+    is.character(bucket),
+    is.unit(bucket)
+    )
 
   object_name <- URLencode(object_name, reserved = TRUE)
 
@@ -294,10 +301,13 @@ gcs_metadata_object <- function(object_name = NULL,
 gcs_delete_object <- function(object_name,
                               bucket = gcs_get_global_bucket(),
                               generation = NULL){
-  testthat::expect_type(bucket, "character")
-  testthat::expect_type(object_name, "character")
-  testthat::expect_length(bucket, 1)
-  testthat::expect_length(object_name, 1)
+
+  assertthat::assert_that(
+    is.character(bucket),
+    is.unit(bucket),
+    is.character(object_name),
+    is.unit(object_name)
+  )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
   if(!is.null(parse_gsurl)){

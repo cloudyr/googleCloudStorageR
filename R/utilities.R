@@ -1,3 +1,7 @@
+is.unit <- function(x){
+  length(x) == 1L
+}
+
 #' if argument is NULL, no line output
 #'
 #' @keywords internal

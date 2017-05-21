@@ -28,10 +28,10 @@ Columns returned by \code{detail} are:
   \item \code{more} - as above plus: bucket, contentType, storageClass, timeCreated
   \item \code{full} - as above plus: id, selfLink, generation, metageneration, md5Hash, mediaLink, crc32c, etag
  }
- 
+
  \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
-    aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, 
-    contain delimiter will have their name, truncated after the delimiter, returned in prefixes. 
+    aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix,
+    contain delimiter will have their name, truncated after the delimiter, returned in prefixes.
     Duplicate prefixes are omitted.
 }
 \seealso{

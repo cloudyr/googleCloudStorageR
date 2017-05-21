@@ -29,7 +29,7 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
     stop("Must supply non-empty entity argument")
   }
 
-  testthat::expect_type(entity, "character")
+  assertthat::asset_that(is.character(entity))
 
   entity <- build_entity(entity, entity_type)
 
@@ -81,7 +81,7 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
     stop("Must supply non-empty entity argument")
   }
 
-  testthat::expect_type(entity, "character")
+  assertthat::asset_that(is.character(entity))
 
   accessControls <- list(
     entity = build_entity(entity, entity_type),

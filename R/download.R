@@ -22,8 +22,11 @@
 #' @family download functions
 #' @export
 gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), public = FALSE){
-  testthat::expect_type(bucket, "character")
-  testthat::expect_type(object_name, "character")
+
+  assertthat::assert_that(
+    is.character(bucket),
+    is.character(object_name)
+  )
 
   ## no leading slashes
   object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
