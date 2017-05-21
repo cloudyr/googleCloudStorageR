@@ -62,6 +62,11 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                             pars_args = c(pars, list(pageToken = npt)),
                                             data_parse_function = parse_lo)
       more_req <- lo2(pars_arguments = npt)
+
+      if(attr(more_req, "nextPageToken") == npt){
+        myMessage("Breaking out of object list", level = 3)
+        break()
+      }
       npt <- attr(more_req, "nextPageToken")
       req <- rbind(req, more_req)
     }
