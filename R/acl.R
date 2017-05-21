@@ -29,7 +29,7 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
     stop("Must supply non-empty entity argument")
   }
 
-  assertthat::asset_that(is.character(entity))
+  assertthat::assert_that(is.character(entity))
 
   entity <- build_entity(entity, entity_type)
 
