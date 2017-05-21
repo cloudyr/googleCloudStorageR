@@ -61,7 +61,7 @@ gcs_upload <- function(file,
                          "private",
                          "authenticatedRead",
                          "bucketOwnerFullControl",
-                         "buckerOwnerRead",
+                         "bucketOwnerRead",
                          "projectPrivate",
                          "publicRead"
                        ),

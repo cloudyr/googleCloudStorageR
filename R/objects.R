@@ -2,7 +2,7 @@
 #'
 #' @param bucket bucket containing the objects
 #' @param detail Set level of detail
-#' @param prefix Filter results to objects whose names begin with this prefix. 
+#' @param prefix Filter results to objects whose names begin with this prefix.
 #' @details
 #'
 #' Columns returned by \code{detail} are:
@@ -12,11 +12,11 @@
 #'   \item \code{more} - as above plus: bucket, contentType, storageClass, timeCreated
 #'   \item \code{full} - as above plus: id, selfLink, generation, metageneration, md5Hash, mediaLink, crc32c, etag
 #'  }
-#'  
+#'
 #'  \code{delimited} returns results in a directory-like mode: items will contain only objects whose names,
-#'     aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, 
-#'     contain delimiter will have their name, truncated after the delimiter, returned in prefixes. 
-#'     Duplicate prefixes are omitted. 
+#'     aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix,
+#'     contain delimiter will have their name, truncated after the delimiter, returned in prefixes.
+#'     Duplicate prefixes are omitted.
 #'
 #'
 #' @return A data.frame of the objects
@@ -47,7 +47,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     attr(x, "nextPageToken") <- nextPageToken
     x
   }
-  
+
   pars <- list(prefix = prefix)
   pars <- rmNullObs(pars)
 
@@ -136,7 +136,7 @@ gcs_parse_gsurls <- function(gsurl){
 #'
 #' If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.
 #'
-#' @return The object, or TRUE if sucessfully saved to disk.
+#' @return The object, or TRUE if successfully saved to disk.
 #'
 #' @examples
 #'
