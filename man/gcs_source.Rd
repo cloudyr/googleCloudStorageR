@@ -17,7 +17,7 @@ gcs_source(script, bucket = gcs_get_global_bucket(), ...)
 TRUE if successful
 }
 \description{
-Source an R script and run via \link{source}
+Download an R script and run it immediately via \link{source}
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},

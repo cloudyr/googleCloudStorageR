@@ -2,7 +2,7 @@
 % Please edit documentation in R/rsession.R
 \name{gcs_load}
 \alias{gcs_load}
-\title{Load an R session from the Google Cloud}
+\title{Load .RData objects or sessions from the Google Cloud}
 \usage{
 gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
   envir = .GlobalEnv, saveToDisk = file)

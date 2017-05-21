@@ -73,7 +73,7 @@ gcs_get_global_bucket <- function(){
 #'   \item \code{full} - as above plus: id, selfLink, projectNumber, timeCreated, metageneration, etag
 #'  }
 #'
-#' @return data.frame of buckets
+#' @return \code{data.frame} of buckets
 #'
 #' @examples
 #'

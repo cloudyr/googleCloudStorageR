@@ -26,7 +26,7 @@ Performs \link{save.image} then saves it to Google Cloud Storage.
 
 Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 
-This will overwrite any data with the same name in folder.
+This will overwrite any data with the same name in your current local environment.
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},

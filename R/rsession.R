@@ -13,7 +13,7 @@
 #'
 #' Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 #'
-#' This will overwrite any data with the same name in folder.
+#' This will overwrite any data with the same name in your current local environment.
 #'
 #' @family R session data functions
 #' @return TRUE if successful
@@ -31,11 +31,9 @@ gcs_save_image <- function(file = ".RData",
 
 }
 
-#' Save an R object to the Google Cloud
+#' Save .RData objects to the Google Cloud
 #'
 #' Performs \link{save} then saves it to Google Cloud Storage.
-#'
-#' For all session data use \link{gcs_save_image} instead.
 #'
 #' @param ... The names of the objects to be saved (as symbols or character strings).
 #' @param file The file name that will be uploaded (conventionally with file extension \code{.RData})
@@ -44,12 +42,15 @@ gcs_save_image <- function(file = ".RData",
 #'
 #' @details
 #'
-#' \code{gcs_save(bucket = "your_bucket")} will save all objects in the workspace
-#'   to \code{.RData} folder on Google Cloud Storage within \code{your_bucket}.
+#' For all session data use \link{gcs_save_image} instead.
 #'
-#' Restore the objects using \code{gcs_load(bucket = "your_bucket")}
+#' \code{gcs_save(ob1, ob2, ob3, file = "mydata.RData")} will save the objects specified to an \code{.RData} file then save it to Cloud Storage, to be loaded later using \link{gcs_load}.
 #'
-#' This will overwrite any data with the same name in folder.
+#' For any other use, its better to use \link{gcs_upload} and \link{gcs_get_object} instead.
+#'
+#' Restore the R objects using \code{gcs_load(bucket = "your_bucket")}
+#'
+#' This will overwrite any data within your local environment with the same name.
 #'
 #' @family R session data functions
 #' @return TRUE if successful
@@ -71,7 +72,7 @@ gcs_save <- function(...,
 }
 
 
-#' Load an R session from the Google Cloud
+#' Load .RData objects or sessions from the Google Cloud
 #'
 #' Load R objects that have been saved using \link{gcs_save} or \link{gcs_save_image}
 #'
@@ -104,7 +105,7 @@ gcs_load <- function(file = ".RData",
 
 #' Source an R script from the Google Cloud
 #'
-#' Source an R script and run via \link{source}
+#' Download an R script and run it immediately via \link{source}
 #'
 #' @param script The name of the script on GCS
 #' @param bucket Bucket the stored objects are in

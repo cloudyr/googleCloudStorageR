@@ -19,7 +19,7 @@ gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
 \item{detail}{Set level of detail}
 }
 \value{
-data.frame of buckets
+\code{data.frame} of buckets
 }
 \description{
 List the buckets your projectId has access to

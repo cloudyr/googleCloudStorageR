@@ -68,3 +68,36 @@ Requires scopes \code{https://www.googleapis.com/auth/devstorage.read_write}
   or \code{https://www.googleapis.com/auth/devstorage.full_control}
 }
 
+\examples{
+
+\dontrun{
+
+## set global bucket so don't need to keep supplying in future calls
+gcs_global_bucket("my-bucket")
+
+## by default will convert dataframes to csv
+gcs_upload(mtcars)
+
+## mtcars has been renamed to mtcars.csv
+gcs_list_objects()
+
+## to specify the name, use the name argument
+gcs_upload(mtcars, name = "my_mtcars.csv")
+
+## when looping, its best to specify the name else it will take
+## the deparsed function call e.g. X[[i]]
+my_files <- list.files("my_uploads")
+lapply(my_files, function(x) gcs_upload(x, name = x))
+
+## you can supply your own function to transform R objects before upload
+f <- function(input, output){
+  write.csv2(input, file = output)
+}
+
+gcs_upload(mtcars, name = "mtcars_csv2.csv", object_function = f)
+
+}
+
+
+
+}
