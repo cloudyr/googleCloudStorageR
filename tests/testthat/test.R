@@ -43,6 +43,15 @@ test_that("We can create a bucket", {
 
 })
 
+test_that("We can upload to the new bucket", {
+  skip_on_cran()
+
+  upload <- gcs_upload(mtcars, bucket = "blahblahblahfffff")
+
+  expect_equal(class(upload), "gcs_objectmeta")
+
+})
+
 test_that("We can delete a bucket", {
   skip_on_cran()
   deleted <- gcs_delete_bucket("blahblahblahfffff")
@@ -236,9 +245,9 @@ test_that("We can list objects", {
 test_that("We can list objects with a prefix", {
   skip_on_cran()
   obj_list <- gcs_list_objects(prefix = "a")
-  
+
   expect_s3_class(obj_list, "data.frame")
-  
+
 })
 
 context("R session functions")

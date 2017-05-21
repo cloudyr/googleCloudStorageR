@@ -6,11 +6,11 @@
 \usage{
 gcs_create_bucket(name, projectId, location = "US",
   storageClass = c("STANDARD", "NEARLINE", "DURABLE_REDUCED_AVAILABILITY"),
-  predefinedAcl = c("authenticatedRead", "private", "projectPrivate",
+  predefinedAcl = c("projectPrivate", "authenticatedRead", "private",
   "publicRead", "publicReadWrite"),
-  predefinedDefaultObjectAcl = c("authenticatedRead", "private",
-  "projectPrivate", "publicRead", "publicReadWrite"), projection = c("noAcl",
-  "full"), versioning = FALSE, lifecycle = NULL)
+  predefinedDefaultObjectAcl = c("bucketOwnerFullControl", "bucketOwnerRead",
+  "authenticatedRead", "private", "projectPrivate", "publicRead"),
+  projection = c("noAcl", "full"), versioning = FALSE, lifecycle = NULL)
 }
 \arguments{
 \item{name}{Globally unique name of bucket to create}
