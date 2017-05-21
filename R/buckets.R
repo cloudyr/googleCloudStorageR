@@ -75,6 +75,17 @@ gcs_get_global_bucket <- function(){
 #'
 #' @return data.frame of buckets
 #'
+#' @examples
+#'
+#' \dontrun{
+#'
+#' buckets <- gcs_list_buckets("your-project")
+#'
+#' ## use the name of the bucket to get more meta data
+#' bucket_meta <- gcs_get_bucket(buckets$name[[1]])
+#'
+#' }
+#'
 #' @family bucket functions
 #' @export
 gcs_list_buckets <- function(projectId,
@@ -117,6 +128,7 @@ gcs_list_buckets <- function(projectId,
 
   out[,out_names]
 
+
 }
 
 #' Get bucket info
@@ -127,6 +139,17 @@ gcs_list_buckets <- function(projectId,
 #' @param ifMetagenerationMatch Return only if metageneration matches
 #' @param ifMetagenerationNotMatch Return only if metageneration does not match
 #' @param projection Properties to return. Default noAcl omits acl properties
+#'
+#' @examples
+#'
+#' \dontrun{
+#'
+#' buckets <- gcs_list_buckets("your-project")
+#'
+#' ## use the name of the bucket to get more meta data
+#' bucket_meta <- gcs_get_bucket(buckets$name[[1]])
+#'
+#' }
 #'
 #' @return A bucket resource object
 #' @family bucket functions

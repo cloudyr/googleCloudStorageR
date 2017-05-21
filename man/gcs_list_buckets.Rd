@@ -32,6 +32,18 @@ Columns returned by \code{detail} are:
   \item \code{full} - as above plus: id, selfLink, projectNumber, timeCreated, metageneration, etag
  }
 }
+\examples{
+
+\dontrun{
+
+buckets <- gcs_list_buckets("your-project")
+
+## use the name of the bucket to get more meta data
+bucket_meta <- gcs_get_bucket(buckets$name[[1]])
+
+}
+
+}
 \seealso{
 Other bucket functions: \code{\link{gcs_create_bucket}},
   \code{\link{gcs_create_lifecycle}},
