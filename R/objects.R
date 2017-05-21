@@ -54,14 +54,13 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
   if(!is.null(attr(req, "nextPageToken"))){
     npt <- attr(req, "nextPageToken")
 
-    lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                         path_args = list(b = bucket,
-                                                          o = ""),
-                                         pars_args = c(pars, list(pageToken = npt)),
-                                         data_parse_function = parse_lo)
-
     while(!is.null(npt)){
       myMessage("Paging through results: ", npt, level = 3)
+      lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
+                                            path_args = list(b = bucket,
+                                                             o = ""),
+                                            pars_args = c(pars, list(pageToken = npt)),
+                                            data_parse_function = parse_lo)
       more_req <- lo2(pars_arguments = npt)
       npt <- attr(more_req, "nextPageToken")
       req <- rbind(req, more_req)
