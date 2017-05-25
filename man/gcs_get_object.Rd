@@ -5,7 +5,7 @@
 \title{Get an object in a bucket directly}
 \usage{
 gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
-  saveToDisk = NULL, parseObject = TRUE,
+  saveToDisk = NULL, overwrite = FALSE, parseObject = TRUE,
   parseFunction = gcs_parse_download)
 }
 \arguments{
@@ -15,7 +15,9 @@ gcs_get_object(object_name, bucket = gcs_get_global_bucket(), meta = FALSE,
 
 \item{meta}{If TRUE then get info about the object, not the object itself}
 
-\item{saveToDisk}{Specify a filename to save directly to disk.}
+\item{saveToDisk}{Specify a filename to save directly to disk}
+
+\item{overwrite}{If saving to a file, whether to overwrite it}
 
 \item{parseObject}{If saveToDisk is NULL, whether to parse with \code{parseFunction}}
 

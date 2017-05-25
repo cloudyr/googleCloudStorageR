@@ -139,7 +139,8 @@ gcs_parse_gsurls <- function(gsurl){
 #' @param object_name name of object in the bucket that will be URL encoded, or a \code{gs://} URL
 #' @param bucket bucket containing the objects. Not needed if using a \code{gs://} URL
 #' @param meta If TRUE then get info about the object, not the object itself
-#' @param saveToDisk Specify a filename to save directly to disk.
+#' @param saveToDisk Specify a filename to save directly to disk
+#' @param overwrite If saving to a file, whether to overwrite it
 #' @param parseObject If saveToDisk is NULL, whether to parse with \code{parseFunction}
 #' @param parseFunction If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}
 #'
@@ -190,12 +191,14 @@ gcs_get_object <- function(object_name,
                            bucket = gcs_get_global_bucket(),
                            meta = FALSE,
                            saveToDisk = NULL,
+                           overwrite = FALSE,
                            parseObject = TRUE,
                            parseFunction = gcs_parse_download){
 
   assertthat::assert_that(
     is.character(object_name),
-    is.unit(object_name)
+    is.unit(object_name),
+    is.logical(overwrite)
   )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
@@ -220,10 +223,20 @@ gcs_get_object <- function(object_name,
     alt = "media"
   }
 
+  ## download directly to disk
+  if(!is.null(saveToDisk)){
+    customConfig <- list(httr::write_disk(saveToDisk, overwrite = overwrite))
+  } else {
+    customConfig <- NULL
+  }
+
+
+
   ob <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                        path_args = list(b = bucket,
                                                         o = object_name),
-                                       pars_args = list(alt = alt))
+                                       pars_args = list(alt = alt),
+                                       customConfig = customConfig)
   req <- ob()
 
 
@@ -235,8 +248,6 @@ gcs_get_object <- function(object_name,
 
     if(!is.null(saveToDisk)){
 
-      bin <- httr::content(req, "raw")
-      writeBin(bin, saveToDisk)
       message("Saved ", object_name, " to ", saveToDisk)
       out <- TRUE
 
