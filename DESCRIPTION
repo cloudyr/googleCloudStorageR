@@ -16,9 +16,11 @@ Imports:
     jsonlite (>= 1.0)
 Suggests:
     covr,
+    curl,
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    openssl
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr

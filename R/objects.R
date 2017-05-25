@@ -194,7 +194,8 @@ gcs_get_object <- function(object_name,
   assertthat::assert_that(
     is.character(object_name),
     is.unit(object_name),
-    is.logical(overwrite)
+    is.logical(meta),
+    is.logical(parseObject)
   )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
@@ -221,12 +222,14 @@ gcs_get_object <- function(object_name,
 
   ## download directly to disk
   if(!is.null(saveToDisk)){
+
+    assertthat::assert_that(assertthat::is.writeable(saveToDisk),
+                            is.logical(overwrite))
+
     customConfig <- list(httr::write_disk(saveToDisk, overwrite = overwrite))
   } else {
     customConfig <- NULL
   }
-
-
 
   ob <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                        path_args = list(b = bucket,

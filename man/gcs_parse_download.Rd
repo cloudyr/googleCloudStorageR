@@ -17,5 +17,6 @@ Wrapper for \code{httr}'s \link[httr]{content}.  This is the default function us
 \seealso{
 gcs_get_object
 
-Other download functions: \code{\link{gcs_download_url}}
+Other download functions: \code{\link{gcs_download_url}},
+  \code{\link{gcs_signed_url}}
 }

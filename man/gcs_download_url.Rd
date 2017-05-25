@@ -30,5 +30,6 @@ Use the \code{public = TRUE} to return the URL accessible to all, which changes 
   \code{storage.cloud.google.com} to \code{storage.googleapis.com}
 }
 \seealso{
-Other download functions: \code{\link{gcs_parse_download}}
+Other download functions: \code{\link{gcs_parse_download}},
+  \code{\link{gcs_signed_url}}
 }

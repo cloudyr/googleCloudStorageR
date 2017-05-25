@@ -59,3 +59,74 @@ gcs_parse_download <- function(object, encoding = "UTF-8"){
   message("Object parsed to class: ", paste(class(out), collapse = " "))
   out
 }
+
+create_signature <- function(path,
+                             json_key,
+                             my_content_type,
+                             expiration_ts,
+                             extension_headers = NULL,
+                             md5hash = NULL){
+
+  assertthat::assert_that(
+    is.character(my_content_type),
+    is.unit(my_content_type),
+    is.character(json_key),
+    as.numeric(Sys.time()) < as.numeric(expiration_ts),
+    is.character(path),
+    is.unit(path)
+  )
+
+  sig_string <- paste("GET",
+                      md5hash,
+                      my_content_type,
+                      as.numeric(expiration_ts),
+                      # extension_headers,
+                      path,
+                      sep = "\n")
+  myMessage(sig_string, level = 2)
+
+  curl::curl_escape(openssl::base64_encode(openssl::signature_create(data=charToRaw(sig_string),
+                                                                     key=json_key,
+                                                                     hash=openssl::sha256)))
+}
+
+#' Create a signed URL
+#'
+#' Create a URL with a time-limited read and write to an object, regardless whether they have a Google account
+#'
+#' @param meta_obj A meta object from \link{gcs_get_object}
+#' @param expiration_ts A timestamp of class \code{"POSIXct"} such as from \code{Sys.time()} or a numeric in seconds from Unix Epoch.  Default is 60 mins.
+#' @param md5hash An optional md5 digest value
+#'
+#' @seealso \url{https://cloud.google.com/storage/docs/access-control/signed-urls}
+#'
+#' @description
+#'
+#' This creates a signed URL which you can share with others who may or may not have a Google account.
+#' The object will be available until the specified timestamp.
+#'
+#' @export
+#' @family download functions
+gcs_signed_url <- function(meta_obj, expiration_ts = Sys.time() + 3600, md5hash = NULL){
+
+  assertthat::assert_that(
+    inherits(meta_obj, "gcs_objectmeta"),
+    assertthat::is.readable(Sys.getenv("GCS_AUTH_FILE"))
+  )
+
+  json_file <- jsonlite::fromJSON(Sys.getenv("GCS_AUTH_FILE"))
+
+  sig <- create_signature(paste0(meta_obj$bucket, "/", meta_obj$name),
+                          json_key = json_file$private_key,
+                          my_content_type = meta_obj$contentType,
+                          expiration_ts = round(as.numeric(expiration_ts)),
+                          md5hash = md5hash)
+
+  dl_url <- gcs_download_url(meta_obj$name)
+
+  sprintf("%s?GoogleAccessId=%s&Expires=%s&Signature=%s",
+          dl_url, json_file$client_email, round(as.numeric(expiration_ts)), sig)
+
+}
+
+
