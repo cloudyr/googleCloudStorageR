@@ -10,6 +10,7 @@
 * Supply your own parse function to `gcs_get_object()` (#63 - thanks @nkeriks)
 * Support for `prefix` and `delimiter` in `gcs_object_list` to filter objects listed (#68)
 * Default permissions on new buckets lets you write to them afterwards `projectPrivate (#62)
+* `gcs_get_object` now supports downloads over 2GB (#69)
 
 # 0.2.0
 
