@@ -15,5 +15,4 @@ after_success:
   drat.sh
 before_install:
 - openssl aes-256-cbc -K $encrypted_fdd803ee6427_key -iv $encrypted_fdd803ee6427_iv
-  -in auth.json.enc -out auth.json -d
-- cp auth.json tests/testthat/auth.json
+  -in tests/testthat/auth.json.enc -out tests/testthat/auth.json -d
