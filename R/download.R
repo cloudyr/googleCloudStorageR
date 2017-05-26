@@ -65,8 +65,8 @@ create_signature <- function(path,
                              my_content_type,
                              expiration_ts,
                              verb = "GET",
-                             extension_headers = NULL,
-                             md5hash = NULL){
+                             # extension_headers = "",
+                             md5hash = ""){
 
   assertthat::assert_that(
     is.character(json_key),
@@ -74,17 +74,10 @@ create_signature <- function(path,
     is.character(path),
     is.unit(path),
     is.character(verb),
-    is.unit(verb)
+    is.unit(verb),
+    is.character(my_content_type),
+    is.unit(my_content_type)
   )
-
-  if(!is.null(my_content_type)){
-    assertthat::assert_that(
-      is.character(my_content_type),
-      is.unit(my_content_type)
-      )
-  }
-
-  my_content_type = ""
 
   sig_string <- paste(verb,
                       md5hash,
@@ -93,6 +86,7 @@ create_signature <- function(path,
                       # extension_headers,
                       path,
                       sep = "\n")
+
   if(getOption("googleAuthR.verbose") < 3){
     myMessage("StringToSign\n", level = 2)
     print(sig_string)
@@ -113,6 +107,7 @@ create_signature <- function(path,
 #' @param expiration_ts A timestamp of class \code{"POSIXct"} such as from \code{Sys.time()} or a numeric in seconds from Unix Epoch.  Default is 60 mins.
 #' @param verb The URL verb of access e.g. \code{GET} or \code{PUT}. Default \code{GET}
 #' @param md5hash An optional md5 digest value
+#' @param includeContentType For getting the URL via browsers this should be set to \code{FALSE} (the default).  Otherwise, set to \code{TRUE} to include the content type of the object in the request needed.
 #'
 #' @seealso \url{https://cloud.google.com/storage/docs/access-control/signed-urls}
 #'
@@ -127,14 +122,15 @@ create_signature <- function(path,
 gcs_signed_url <- function(meta_obj,
                            expiration_ts = Sys.time() + 3600,
                            verb = "GET",
-                           md5hash = NULL){
+                           md5hash = NULL,
+                           includeContentType = FALSE){
 
   assertthat::assert_that(
     inherits(meta_obj, "gcs_objectmeta"),
     assertthat::is.readable(Sys.getenv("GCS_AUTH_FILE"))
   )
 
-  my_content_type <- meta_obj$contentType
+  my_content_type <- if(includeContentType) meta_obj$contentType else ""
 
   json_file <- jsonlite::fromJSON(Sys.getenv("GCS_AUTH_FILE"))
 

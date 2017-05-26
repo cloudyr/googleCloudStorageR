@@ -267,6 +267,26 @@ test_that("We can list objects with a prefix and delimiter", {
 
 })
 
+context("Signed URLs")
+
+test_that("We can create a signed URL", {
+  skip_on_cran()
+
+  obj <- gcs_get_object("LICENSE", meta = TRUE)
+
+  signed <- gcs_signed_url(obj)
+
+  expect_true(is.character(signed))
+
+  temp <- tempfile()
+  on.exit(unlink(temp))
+
+  download.file(signed, destfile = temp)
+  ll <- readLines(temp)
+  expect_equal(ll[[1]], "YEAR: 2016")
+
+})
+
 context("R session functions")
 
 test_that("We can save an R object list", {

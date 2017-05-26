@@ -5,7 +5,7 @@
 \title{Create a signed URL}
 \usage{
 gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600, verb = "GET",
-  md5hash = NULL)
+  md5hash = NULL, includeContentType = FALSE)
 }
 \arguments{
 \item{meta_obj}{A meta object from \link{gcs_get_object}}
@@ -15,6 +15,8 @@ gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600, verb = "GET",
 \item{verb}{The URL verb of access e.g. \code{GET} or \code{PUT}. Default \code{GET}}
 
 \item{md5hash}{An optional md5 digest value}
+
+\item{includeContentType}{For getting the URL via browsers this should be set to \code{FALSE} (the default).  Otherwise, set to \code{TRUE} to include the content type of the object in the request needed.}
 }
 \description{
 This creates a signed URL which you can share with others who may or may not have a Google account.
