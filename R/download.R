@@ -64,6 +64,7 @@ create_signature <- function(path,
                              json_key,
                              my_content_type,
                              expiration_ts,
+                             verb = "GET",
                              extension_headers = NULL,
                              md5hash = NULL){
 
@@ -73,17 +74,19 @@ create_signature <- function(path,
     is.character(json_key),
     as.numeric(Sys.time()) < as.numeric(expiration_ts),
     is.character(path),
-    is.unit(path)
+    is.unit(path),
+    is.character(verb),
+    is.unit(verb)
   )
 
-  sig_string <- paste("GET",
+  sig_string <- paste(verb,
                       md5hash,
                       my_content_type,
                       as.numeric(expiration_ts),
                       # extension_headers,
                       path,
                       sep = "\n")
-  myMessage(sig_string, level = 2)
+  myMessage("\n",sig_string, level = 2)
 
   curl::curl_escape(openssl::base64_encode(openssl::signature_create(data=charToRaw(sig_string),
                                                                      key=json_key,
@@ -96,6 +99,7 @@ create_signature <- function(path,
 #'
 #' @param meta_obj A meta object from \link{gcs_get_object}
 #' @param expiration_ts A timestamp of class \code{"POSIXct"} such as from \code{Sys.time()} or a numeric in seconds from Unix Epoch.  Default is 60 mins.
+#' @param verb The URL verb of access e.g. \code{GET} or \code{PUT}. Default \code{GET}
 #' @param md5hash An optional md5 digest value
 #'
 #' @seealso \url{https://cloud.google.com/storage/docs/access-control/signed-urls}
@@ -107,7 +111,10 @@ create_signature <- function(path,
 #'
 #' @export
 #' @family download functions
-gcs_signed_url <- function(meta_obj, expiration_ts = Sys.time() + 3600, md5hash = NULL){
+gcs_signed_url <- function(meta_obj,
+                           expiration_ts = Sys.time() + 3600,
+                           verb = "GET",
+                           md5hash = NULL){
 
   assertthat::assert_that(
     inherits(meta_obj, "gcs_objectmeta"),
@@ -120,9 +127,10 @@ gcs_signed_url <- function(meta_obj, expiration_ts = Sys.time() + 3600, md5hash 
                           json_key = json_file$private_key,
                           my_content_type = meta_obj$contentType,
                           expiration_ts = round(as.numeric(expiration_ts)),
+                          verb = verb,
                           md5hash = md5hash)
 
-  dl_url <- gcs_download_url(meta_obj$name)
+  dl_url <- gcs_download_url(meta_obj$name, public = TRUE)
 
   sprintf("%s?GoogleAccessId=%s&Expires=%s&Signature=%s",
           dl_url, json_file$client_email, round(as.numeric(expiration_ts)), sig)

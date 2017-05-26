@@ -4,12 +4,15 @@
 \alias{gcs_signed_url}
 \title{Create a signed URL}
 \usage{
-gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600, md5hash = NULL)
+gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600, verb = "GET",
+  md5hash = NULL)
 }
 \arguments{
 \item{meta_obj}{A meta object from \link{gcs_get_object}}
 
 \item{expiration_ts}{A timestamp of class \code{"POSIXct"} such as from \code{Sys.time()} or a numeric in seconds from Unix Epoch.  Default is 60 mins.}
+
+\item{verb}{The URL verb of access e.g. \code{GET} or \code{PUT}. Default \code{GET}}
 
 \item{md5hash}{An optional md5 digest value}
 }
