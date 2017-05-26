@@ -116,6 +116,21 @@ create_signature <- function(path,
 #' This creates a signed URL which you can share with others who may or may not have a Google account.
 #' The object will be available until the specified timestamp.
 #'
+#' @examples
+#'
+#' \dontrun {
+#'
+#' obj <- gcs_get_object("your_file", meta = TRUE)
+#'
+#' signed <- gcs_signed_url(obj)
+#'
+#' temp <- tempfile()
+#' on.exit(unlink(temp))
+#'
+#' download.file(signed, destfile = temp)
+#' file.exists(temp)
+#'
+#' }
 #'
 #' @export
 #' @family download functions

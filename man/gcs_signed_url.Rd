@@ -25,6 +25,23 @@ The object will be available until the specified timestamp.
 \details{
 Create a URL with a time-limited read and write to an object, regardless whether they have a Google account
 }
+\examples{
+
+\dontrun {
+
+obj <- gcs_get_object("your_file", meta = TRUE)
+
+signed <- gcs_signed_url(obj)
+
+temp <- tempfile()
+on.exit(unlink(temp))
+
+download.file(signed, destfile = temp)
+file.exists(temp)
+
+}
+
+}
 \seealso{
 \url{https://cloud.google.com/storage/docs/access-control/signed-urls}
 

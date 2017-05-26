@@ -11,6 +11,7 @@
 * Support for `prefix` and `delimiter` in `gcs_object_list` to filter objects listed (#68)
 * Default permissions on new buckets lets you write to them afterwards `projectPrivate (#62)
 * `gcs_get_object` now supports downloads over 2GB (#69)
+* Add support for signed URLs (#54 - thanks seandavi)
 
 # 0.2.0
 
