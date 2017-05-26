@@ -286,6 +286,23 @@ download_url
 [1] "https://storage.cloud.google.com/your-project/your-object.csv"
 ```
 
+### Signed URLs
+
+You can create temporary links for users who may not have a Google account, but still need to be private.  This is achieved using the `gcs_signed_url` function, which you pass a meta object too. 
+
+```r
+obj <- gcs_get_object("your_file", meta = TRUE)
+
+signed <- gcs_signed_url(obj)
+```
+
+The default is for the link to be accessible for an hour, but you can alter that:
+
+```r
+## a link that will expire in 24 hours (86400 seconds) from now.
+24hours_signed <- gcs_signed_url(obj, expiration_ts = Sys.time() + 86400)
+```
+
 ## R Session helpers
 
 Versions of `save.image()`, `save()` and `load()` are implemented called `gcs_save_image()`, `gcs_save()` and `gcs_load()`.  These functions save and load the global R session to the cloud.
