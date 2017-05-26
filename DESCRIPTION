@@ -13,7 +13,8 @@ Imports:
     assertthat (>= 0.2.0),
     googleAuthR (>= 0.5.1),
     httr (>= 1.2.1),
-    jsonlite (>= 1.0)
+    jsonlite (>= 1.0),
+    readr
 Suggests:
     covr,
     curl,
