@@ -223,8 +223,7 @@ gcs_get_object <- function(object_name,
   ## download directly to disk
   if(!is.null(saveToDisk)){
 
-    assertthat::assert_that(assertthat::is.writeable(saveToDisk),
-                            is.logical(overwrite))
+    assertthat::assert_that(is.logical(overwrite))
 
     customConfig <- list(httr::write_disk(saveToDisk, overwrite = overwrite))
   } else {

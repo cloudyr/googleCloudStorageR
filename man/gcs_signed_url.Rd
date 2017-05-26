@@ -27,7 +27,7 @@ Create a URL with a time-limited read and write to an object, regardless whether
 }
 \examples{
 
-\dontrun {
+\dontrun{
 
 obj <- gcs_get_object("your_file", meta = TRUE)
 

@@ -9,18 +9,10 @@ r_packages:
 - knitr
 - covr
 - drat
-r_github_packages:
-- MarkEdmondson1234/googleAuthR
 after_success:
 - Rscript -e 'library("covr");codecov()'
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
   drat.sh
-env:
-  global:
-  - secure: luwMllDljVHTABhBYEsVPrwQeQsLoWOEMCaTzXTDVwhPScB0PUIW3NwH2XowkADkjRMDQFKUzKierKaE84tFpQ01mQIVelnebquP42QqAVBxyZdVjciz6PRzBdFSK6+Hvm78XX2lNvvgh82buhOiCTs261Dm6SCB/3HIOrJdEcHkWplaVUrlAmdU4hirBpPFnT2OZFoFyzNsj+UeqVPD/ZK85Mgf8zwnvzqYJuhTkuonqqeYJ3CUSzE51PDdX1uVBOtPaeBC5vL/9zuHPTwh8vmAtyDxqaSgRpIfdUJUx+Bp2QcIaBgw3KeTjB6RF7lKKJEMHIoRfipYv9/yJKQ0R6YNCsJ6zz/oSyL8koT4qkYBzQsAfpIx3lDH6if+U6ORA8w0m2JzN9esxB7NwPaOjrK/FvX64ciySenKZsYHyTevzVTBBB58xW1RzMbXxEWKrz6YhwKzD186MDFLnc8DpO+4ea+ftM3oe3O/zFewJnZ0vdCSFHDf11P2kXK8DEHdo64WUy+AgWPkM0w1X7kjcsLhnvT8uEjjxqvQt59+pa9Tp04WB9NJIIlKXCkx+AQYOVS2afof1mJojx0in8+D8CHW9ClV8mLvpYkx4A/KOsu1fAtLQhYpYKkhdA1cewkXfG4P9s2gkP6HuRHnMX0lFfpM+faZNltrX/vtECPFihI=
-  - secure: F4WDu5PsWDLtKRlgnSAh9RqQtKIYztIfSqcXjLBRw38tbWi3HqLshzoXDC7kKX+sTMQiUqwquA/LrjT45SxgZPUMjavRny/74RGBDYnUUDhHX7pkO4divZapj/gfzC2s4S487Bsiwao+G6fZwNmWJ2K/dJEYDbC+7iUKtWlN0ybLqQ8X5Auc6X/SX2aGwmNRl4w7O4VfXIVdP+vMRcm0Z4Wiv7vZ5zxZDAR1NkPrAnYDu2BiY4GgwoPpOsS6eghs43cPjlvyNTCyICwsBT5UHaox8ZreaMgO4P6YKBY/YIojzLDqjtrZcUlJst5zSET4NH/VdtXZFwEdO1kiPYbnCw1TAA7OTJTPOtNta1rxnYCHpDy/mP0HuBtteCmjZtnptf9i02gD2OJf2Ch/TEONExjEYscS7ZIwHPG1K94zlszK5nLv01i0GGS8h3quhgvv61TIbVawK3w5fIU/zW6GPWpJaTsceluU//3rNhdD699iLlQlnWRU1tK624DKLbQSh+lJRhAnrzQCU5ROWJghepsIglXjxvEvz89E8IUS2N/5RJ/DV1VRvBc/iCnRchI0AdKMZkZ0kRGYEupUW4kIKx+nXRr/xMPPdA1is10SDgggatV2VrB1JiAJewHDwSsyMSvdg/3J+0XKEQt1xy5oHRA1xy4vn4FpYyvRTITwTlU=
 before_install:
-- openssl aes-256-cbc -K $encrypted_d4ad93fbc68d_key -iv $encrypted_d4ad93fbc68d_iv
-  -in auth.json.enc -out auth.json -d
-- openssl aes-256-cbc -K $encrypted_d4ad93fbc68d_key -iv $encrypted_d4ad93fbc68d_iv
+- openssl aes-256-cbc -K $encrypted_fdd803ee6427_key -iv $encrypted_fdd803ee6427_iv
   -in auth.json.enc -out tests/testthat/auth.json -d

@@ -7,6 +7,7 @@ test_that("We can login", {
   skip_on_cran()
   ## requires pre-auth at /tests/testthat/.httr-oauth
   ## or setting environment var GCS_AUTH_FILE and TRAVIS_GCS_AUTH_FILE
+  Sys.setenv(TRAVIS_GCS_AUTH_FILE = "tests/testthat/auth.json")
   expect_is(gcs_auth(), "Token2.0")
 
 })
@@ -61,12 +62,7 @@ test_that("We can delete upload to the new bucket", {
 
 })
 
-test_that("We can delete a bucket", {
-  skip_on_cran()
-  deleted <- gcs_delete_bucket("blahblahblahfffff")
-  expect_true(deleted)
 
-})
 
 test_that("We can make a bucket with lifecycle and versioning set",{
   skip_on_cran()
@@ -147,7 +143,7 @@ context("Downloading")
 
 test_that("We can download a file to disk", {
   skip_on_cran()
-  worked <- gcs_get_object("mtcars_meta.csv", saveToDisk = "mtcars.csv")
+  worked <- gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff", saveToDisk = "mtcars.csv", overwrite = TRUE)
   expect_true(worked)
   unlink("mtcars.csv")
 
@@ -155,9 +151,9 @@ test_that("We can download a file to disk", {
 
 test_that("We can download a file directly", {
   skip_on_cran()
-  expect_warning(gcs_get_object("mtcars_meta.csv"))
 
-  dl <- suppressWarnings(gcs_get_object("mtcars_meta.csv"))
+  dl <- suppressWarnings(gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff"))
+
   expect_s3_class(dl, "data.frame")
 
 })
@@ -172,6 +168,18 @@ test_that("We can supply our own parseFunction to downloads", {
 
   dl <- gcs_get_object("mtcars_meta.csv", parseFunction = f)
   expect_s3_class(dl, "data.frame")
+
+})
+
+test_that("We can download via a gs:// link", {
+  skip_on_cran()
+
+  meta <- gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff", meta = TRUE)
+  dl <- suppressWarnings(gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff"))
+  gs <- suppressWarnings(gcs_get_object(paste0("gs://",meta$bucket,"/", meta$name)))
+
+  expect_equal(dl, gs)
+
 
 })
 
@@ -317,7 +325,22 @@ test_that("We can save the R session", {
   saved <- gcs_save_image(file = ".RData_test")
   expect_true(saved)
   unlink(".RData_test")
+  Sys.sleep(5)
 })
+
+
+context("Source files")
+
+test_that("We can upload a source file", {
+  skip_on_cran()
+  cat("x <- 'hello world!'\nx", file = "example.R")
+  up <- gcs_upload("example.R")
+  expect_true(up$kind == "storage#object")
+  unlink("example.R")
+  Sys.sleep(5)
+
+})
+
 
 
 test_that("We can load the R session", {
@@ -332,17 +355,6 @@ test_that("We can load the R session", {
 
 })
 
-context("Source files")
-
-test_that("We can upload a source file", {
-  skip_on_cran()
-  cat("x <- 'hello world!'\nx", file = "example.R")
-  up <- gcs_upload("example.R")
-  expect_true(up$kind == "storage#object")
-  unlink("example.R")
-
-})
-
 test_that("We can source the uploaded file", {
   skip_on_cran()
   gcs_source("example.R")
@@ -351,6 +363,13 @@ test_that("We can source the uploaded file", {
 })
 
 context("Deleting")
+
+test_that("We can delete a bucket", {
+  skip_on_cran()
+  deleted <- gcs_delete_bucket("blahblahblahfffff")
+  expect_true(deleted)
+
+})
 
 test_that("We can delete all test files", {
   skip_on_cran()

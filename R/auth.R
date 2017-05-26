@@ -5,6 +5,8 @@
 #' @param new_user If TRUE, reauthenticate via Google login screen
 #' @param no_auto Will ignore auto-authentication settings if TRUE
 #'
+#' @details
+#'
 #' If you have set the environment variable \code{GCS_AUTH_FILE} to a valid file location,
 #'   the function will look there for authentication details.
 #' Otherwise it will look in the working directory for the `.httr-oauth` file, which if not present

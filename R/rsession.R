@@ -118,9 +118,12 @@ gcs_source <- function(script,
                        bucket = gcs_get_global_bucket(),
                        ...){
 
-  file <- tempfile()
+  file <- tempfile(fileext = ".R")
   on.exit(unlink(file))
 
-  suppressMessages(gcs_get_object(script, bucket = bucket, saveToDisk = file))
+  gcs_get_object(script, bucket = bucket, saveToDisk = file)
+
+  assertthat::assert_that(assertthat::is.readable(file))
+
   source(file, ...)
 }

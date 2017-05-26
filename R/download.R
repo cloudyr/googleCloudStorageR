@@ -118,7 +118,7 @@ create_signature <- function(path,
 #'
 #' @examples
 #'
-#' \dontrun {
+#' \dontrun{
 #'
 #' obj <- gcs_get_object("your_file", meta = TRUE)
 #'
