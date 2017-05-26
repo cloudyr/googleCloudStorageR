@@ -69,8 +69,6 @@ create_signature <- function(path,
                              md5hash = NULL){
 
   assertthat::assert_that(
-    is.character(my_content_type),
-    is.unit(my_content_type),
     is.character(json_key),
     as.numeric(Sys.time()) < as.numeric(expiration_ts),
     is.character(path),
@@ -79,6 +77,15 @@ create_signature <- function(path,
     is.unit(verb)
   )
 
+  if(!is.null(my_content_type)){
+    assertthat::assert_that(
+      is.character(my_content_type),
+      is.unit(my_content_type)
+      )
+  }
+
+  my_content_type = ""
+
   sig_string <- paste(verb,
                       md5hash,
                       my_content_type,
@@ -86,7 +93,12 @@ create_signature <- function(path,
                       # extension_headers,
                       path,
                       sep = "\n")
-  myMessage("\n",sig_string, level = 2)
+  if(getOption("googleAuthR.verbose") < 3){
+    myMessage("StringToSign\n", level = 2)
+    print(sig_string)
+    myMessage("--", level = 2)
+  }
+
 
   curl::curl_escape(openssl::base64_encode(openssl::signature_create(data=charToRaw(sig_string),
                                                                      key=json_key,
@@ -109,6 +121,7 @@ create_signature <- function(path,
 #' This creates a signed URL which you can share with others who may or may not have a Google account.
 #' The object will be available until the specified timestamp.
 #'
+#'
 #' @export
 #' @family download functions
 gcs_signed_url <- function(meta_obj,
@@ -121,11 +134,13 @@ gcs_signed_url <- function(meta_obj,
     assertthat::is.readable(Sys.getenv("GCS_AUTH_FILE"))
   )
 
+  my_content_type <- meta_obj$contentType
+
   json_file <- jsonlite::fromJSON(Sys.getenv("GCS_AUTH_FILE"))
 
-  sig <- create_signature(paste0(meta_obj$bucket, "/", meta_obj$name),
+  sig <- create_signature(paste0("/",meta_obj$bucket, "/", meta_obj$name),
                           json_key = json_file$private_key,
-                          my_content_type = meta_obj$contentType,
+                          my_content_type = my_content_type,
                           expiration_ts = round(as.numeric(expiration_ts)),
                           verb = verb,
                           md5hash = md5hash)
