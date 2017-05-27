@@ -1,3 +1,7 @@
+# 0.3.0.9000
+
+* ..
+
 # 0.3.0
 
 * Correct metadata upload (#55 - thanks AndrewMarritt)
