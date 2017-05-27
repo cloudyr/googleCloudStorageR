@@ -143,16 +143,16 @@ context("Downloading")
 
 test_that("We can download a file to disk", {
   skip_on_cran()
-  worked <- gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff", saveToDisk = "mtcars.csv", overwrite = TRUE)
+  worked <- gcs_get_object("CONTRIBUTING.md", saveToDisk = "CONTRIBUTING.md", overwrite = TRUE)
   expect_true(worked)
-  unlink("mtcars.csv")
+  unlink("CONTRIBUTING.md")
 
 })
 
 test_that("We can download a file directly", {
   skip_on_cran()
 
-  dl <- suppressWarnings(gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff"))
+  dl <- suppressWarnings(gcs_get_object("tests/testthat/test_mtcars.csv"))
 
   expect_s3_class(dl, "data.frame")
 
@@ -174,8 +174,8 @@ test_that("We can supply our own parseFunction to downloads", {
 test_that("We can download via a gs:// link", {
   skip_on_cran()
 
-  meta <- gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff", meta = TRUE)
-  dl <- suppressWarnings(gcs_get_object("mtcars.csv", bucket = "blahblahblahfffff"))
+  meta <- gcs_get_object("tests/testthat/test_mtcars.csv", meta = TRUE)
+  dl <- suppressWarnings(gcs_get_object("tests/testthat/test_mtcars.csv"))
   gs <- suppressWarnings(gcs_get_object(paste0("gs://",meta$bucket,"/", meta$name)))
 
   expect_equal(dl, gs)
@@ -282,6 +282,8 @@ test_that("We can create a signed URL", {
 
   obj <- gcs_get_object("LICENSE", meta = TRUE)
 
+  ## hack to get the auth file where expected on Travis
+  Sys.setenv("GCS_AUTH_FILE" = Sys.getenv("TRAVIS_GCS_AUTH_FILE"))
   signed <- gcs_signed_url(obj)
 
   expect_true(is.character(signed))
