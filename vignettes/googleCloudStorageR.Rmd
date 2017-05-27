@@ -29,7 +29,7 @@ Sys.setenv("GCS_CLIENT_ID" = "mykey",
            "GCS_AUTH_FILE" = "/fullpath/to/service-auth.json")
 ```
 
-These can alternatively be set on the command line or via an Renviron.site or .Renviron file ([see here for instructions](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html)).
+These can alternatively be set on the command line or via an Renviron.site or .Renviron file (`https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html`).
 
 ## Authentication
 
