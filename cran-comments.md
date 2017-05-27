@@ -13,3 +13,12 @@ Possibly mis-spelled words in DESCRIPTION:
 * API is spelt correctly
 
 ---
+
+## Reverse dependencies
+
+I have checked the two packages that depend on this package: 
+
+* googleAnalyticsR
+* bigQueryR  
+
+There were no issues. 
