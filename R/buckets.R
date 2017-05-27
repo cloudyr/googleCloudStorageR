@@ -59,7 +59,7 @@ gcs_get_global_bucket <- function(){
 #' List the buckets your projectId has access to
 #'
 #' @param projectId Project containing buckets to list
-#' @param prefix Filter results to names begnning with this prefix
+#' @param prefix Filter results to names beginning with this prefix
 #' @param projection Properties to return. Default noAcl omits acl properties
 #' @param maxResults Max number of results
 #' @param detail Set level of detail
@@ -332,7 +332,7 @@ gcs_delete_bucket <- function(bucket,
 #' @param age Age in days before objects are deleted
 #' @param createdBefore Deletes all objects before this date
 #' @param numNewerVersions Deletes all newer versions of this object
-#' @param isLive If TRUE deletes all live objects, if FALSE delets all archived versions
+#' @param isLive If TRUE deletes all live objects, if FALSE deletes all archived versions
 #'
 #' \code{numNewerVersions} and \code{isLive} works only for buckets with object versioning
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/upload.R
 \name{gcs_upload}
 \alias{gcs_upload}
-\title{Upload a file of arbitary type}
+\title{Upload a file of arbitrary type}
 \usage{
 gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
   name = deparse(substitute(file)), object_function = NULL,

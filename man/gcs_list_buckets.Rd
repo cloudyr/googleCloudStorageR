@@ -10,7 +10,7 @@ gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
 \arguments{
 \item{projectId}{Project containing buckets to list}
 
-\item{prefix}{Filter results to names begnning with this prefix}
+\item{prefix}{Filter results to names beginning with this prefix}
 
 \item{projection}{Properties to return. Default noAcl omits acl properties}
 

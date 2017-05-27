@@ -1,4 +1,4 @@
-#' Upload a file of arbitary type
+#' Upload a file of arbitrary type
 #'
 #' Upload up to 5TB
 #'
