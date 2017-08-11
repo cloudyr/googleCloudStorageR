@@ -36,6 +36,11 @@
 #' @export
 gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
 
+  if(bucket == ""){
+    message("No bucket set at GCS_DEFAULT_BUCKET, not attempt to load workspace")
+    return()
+  }
+
   local({
     if(interactive()){
       options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
@@ -43,7 +48,11 @@ gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
       if(is.null(auth_try)){
         gcs_auth()
       }
-      o <- gcs_list_objects(prefix = getwd(), bucket = bucket)
+      o <- tryCatch(gcs_list_objects(prefix = getwd(), bucket = bucket),
+                    error = function(ex){
+                      message("Couldn't connect to Google Cloud Storage")
+                      return()
+                    })
       gcs_rdata <- paste0(getwd(),"/.RData")
       if(gcs_rdata %in% o$name){
         message("\n[Workspace loaded from \n",
@@ -66,6 +75,11 @@ gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
 #' @export
 #' @rdname gcs_first
 gcs_last <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
+
+  if(bucket == ""){
+    message("No bucket set at GCS_DEFAULT_BUCKET, not attempt to save workspace")
+    return()
+  }
 
   if(interactive()){
     options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
