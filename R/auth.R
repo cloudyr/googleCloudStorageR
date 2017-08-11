@@ -26,7 +26,8 @@
 gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
 
   required_scopes <- c("https://www.googleapis.com/auth/devstorage.full_control",
-                       "https://www.googleapis.com/auth/devstorage.read_write")
+                       "https://www.googleapis.com/auth/devstorage.read_write",
+                       "https://www.googleapis.com/auth/cloud-platform")
 
   googleAuthR::gar_auto_auth(required_scopes,
                              new_user = new_user,

@@ -17,7 +17,7 @@ gcs_save_image(file = ".RData", bucket = gcs_get_global_bucket(),
 \item{envir}{Environment to save from}
 }
 \value{
-TRUE if successful
+The GCS object
 }
 \description{
 Performs \link{save.image} then saves it to Google Cloud Storage.

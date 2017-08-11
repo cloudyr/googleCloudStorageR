@@ -17,7 +17,7 @@ gcs_save(..., file, bucket = gcs_get_global_bucket(),
 \item{envir}{Environment to search for objects to be saved}
 }
 \value{
-TRUE if successful
+The GCS object
 }
 \description{
 Performs \link{save} then saves it to Google Cloud Storage.

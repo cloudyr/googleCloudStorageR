@@ -17,21 +17,21 @@
 #' This will overwrite any data with the same name in your current local environment.
 #'
 #' @family R session data functions
-#' @return TRUE if successful
+#' @return The GCS object
 #' @export
 gcs_save_image <- function(file = ".RData",
                            bucket = gcs_get_global_bucket(),
                            saveLocation = NULL,
                            envir = parent.frame()){
 
-  file <- paste0(saveLocation, "/", file)
+  if(!is.null(saveLocation)){
+    file <- paste0(saveLocation, "/", file)
+  }
 
   gcs_save(list = ls(all.names = TRUE, envir = envir),
            file = file,
            bucket = bucket,
            envir = envir)
-
-  TRUE
 
 }
 
@@ -57,7 +57,7 @@ gcs_save_image <- function(file = ".RData",
 #' This will overwrite any data within your local environment with the same name.
 #'
 #' @family R session data functions
-#' @return TRUE if successful
+#' @return The GCS object
 #' @export
 gcs_save <- function(...,
                      file,
@@ -70,8 +70,6 @@ gcs_save <- function(...,
   save(..., file = tmp, envir = envir)
 
   gcs_upload(tmp, bucket = bucket, name = file)
-
-  TRUE
 
 }
 
