@@ -5,7 +5,8 @@
 \title{Create a new bucket}
 \usage{
 gcs_create_bucket(name, projectId, location = "US",
-  storageClass = c("STANDARD", "NEARLINE", "DURABLE_REDUCED_AVAILABILITY"),
+  storageClass = c("MULTI_REGIONAL", "REGIONAL", "STANDARD", "NEARLINE",
+  "COLDLINE", "DURABLE_REDUCED_AVAILABILITY"),
   predefinedAcl = c("projectPrivate", "authenticatedRead", "private",
   "publicRead", "publicReadWrite"),
   predefinedDefaultObjectAcl = c("bucketOwnerFullControl", "bucketOwnerRead",

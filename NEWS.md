@@ -1,6 +1,7 @@
 # 0.3.0.9000
 
 * Update Bucket storageClass to include `MULTI_REGIONAL`, `REGIONAL`, and `COLDLINE`
+* Fix bug where `gcs_load` wouldn't work if file name not ".RData"
 
 # 0.3.0
 

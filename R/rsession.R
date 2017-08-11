@@ -4,6 +4,7 @@
 #'
 #' @param file Where to save the file in GCS and locally
 #' @param bucket Bucket to store objects in
+#' @param saveLocation Which folder in the bucket to save file
 #' @param envir Environment to save from
 #'
 #' @details
@@ -20,7 +21,10 @@
 #' @export
 gcs_save_image <- function(file = ".RData",
                            bucket = gcs_get_global_bucket(),
+                           saveLocation = NULL,
                            envir = parent.frame()){
+
+  file <- paste0(saveLocation, "/", file)
 
   gcs_save(list = ls(all.names = TRUE, envir = envir),
            file = file,
@@ -80,6 +84,7 @@ gcs_save <- function(...,
 #' @param bucket Bucket the stored objects are in
 #' @param envir Environment to load objects into
 #' @param saveToDisk Where to save the loaded file.  Default same file name
+#' @param overwrite If file exists, overwrite. Default TRUE.
 #'
 #' @details
 #'
@@ -95,10 +100,12 @@ gcs_save <- function(...,
 gcs_load <- function(file = ".RData",
                      bucket = gcs_get_global_bucket(),
                      envir = .GlobalEnv,
-                     saveToDisk = file){
+                     saveToDisk = file,
+                     overwrite = TRUE){
 
-  gcs_get_object(file, bucket = bucket, saveToDisk = saveToDisk)
-  load(file, envir = envir)
+  gcs_get_object(file, bucket = bucket,
+                 saveToDisk = saveToDisk, overwrite = overwrite)
+  load(saveToDisk, envir = envir)
 
   TRUE
 }

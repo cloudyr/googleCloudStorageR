@@ -5,7 +5,7 @@
 \title{Load .RData objects or sessions from the Google Cloud}
 \usage{
 gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
-  envir = .GlobalEnv, saveToDisk = file)
+  envir = .GlobalEnv, saveToDisk = file, overwrite = TRUE)
 }
 \arguments{
 \item{file}{Where the files are stored}
@@ -15,6 +15,8 @@ gcs_load(file = ".RData", bucket = gcs_get_global_bucket(),
 \item{envir}{Environment to load objects into}
 
 \item{saveToDisk}{Where to save the loaded file.  Default same file name}
+
+\item{overwrite}{If file exists, overwrite. Default TRUE.}
 }
 \value{
 TRUE if successful
