@@ -1,6 +1,6 @@
 # 0.3.0.9000
 
-* ...
+* Update Bucket storageClass to include `MULTI_REGIONAL`, `REGIONAL`, and `COLDLINE`
 
 # 0.3.0
 
