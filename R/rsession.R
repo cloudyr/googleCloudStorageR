@@ -132,3 +132,70 @@ gcs_source <- function(script,
 
   source(file, ...)
 }
+
+#' Save/Load all files in directory to Google Cloud Storage
+#'
+#' This function takes all the files in the directory, zips them, and saves them to the cloud.  The upload name will be the directory name.
+#'
+#' @param directory The folder to upload/download
+#' @param bucket Bucket to store within
+#' @param pattern an optional regular expression. Only file names which match the regular expression will be saved.
+#' @param exdir When downloading, specify a destination directory if required
+#' @param list When downloading, only list where the files would unzip to
+#'
+#' @details
+#'
+#' Zip/unzip is performed before uplaod and after download.
+#'
+#'
+#' @return When uploading the GCS meta object; when downloading TRUE if successful
+#'
+#' @export
+#' @importFrom utils tar
+#' @family R session data functions
+gcs_save_all <- function(directory = getwd(),
+                         bucket = gcs_get_global_bucket(),
+                         pattern = ""){
+
+  tmp <- tempfile(fileext = ".zip")
+  on.exit(unlink(tmp))
+
+  the_files <- file.path(directory,
+                         list.files(all.files = TRUE,
+                                    recursive = TRUE,
+                                    pattern = pattern))
+
+  zip(tmp, files = the_files)
+  gcs_upload(tmp, bucket = bucket, name = directory)
+
+}
+
+#' @export
+#' @rdname gcs_save_all
+gcs_load_all <- function(directory = getwd(),
+                         bucket = gcs_get_global_bucket(),
+                         exdir = directory,
+                         list = FALSE){
+  tmp <- tempfile(fileext = ".zip")
+  on.exit(unlink(tmp))
+
+  gcs_get_object(directory, bucket = bucket, saveToDisk = tmp)
+
+  tmp2 <- tempdir()
+  on.exit(unlink(tmp2))
+
+  unzipped <- unzip(tmp, exdir = tmp2)
+
+  new_files <- gsub(directory,exdir,gsub(tmp2, "", unzipped))
+
+  if(list){
+    return(new_files)
+  }
+
+  mapply(function(x, name){
+    file.rename(x, name)
+  }, unzipped, new_files)
+
+  TRUE
+
+}

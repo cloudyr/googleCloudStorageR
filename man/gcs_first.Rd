@@ -5,11 +5,13 @@
 \alias{gcs_last}
 \title{Save your R session to the cloud on startup}
 \usage{
-gcs_first(bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
+gcs_first(directory = getwd(), bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
 
-gcs_last(bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
+gcs_last(directory = getwd(), bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
 }
 \arguments{
+\item{directory}{The name of the directory to download from}
+
 \item{bucket}{The bucket holding your session data}
 }
 \description{

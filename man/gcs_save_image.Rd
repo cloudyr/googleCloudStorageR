@@ -32,5 +32,6 @@ This will overwrite any data with the same name in your current local environmen
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},
-  \code{\link{gcs_save}}, \code{\link{gcs_source}}
+  \code{\link{gcs_save_all}}, \code{\link{gcs_save}},
+  \code{\link{gcs_source}}
 }

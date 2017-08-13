@@ -3,6 +3,7 @@
 #' Place within your \code{.Rprofile} to load and save your session data automatically
 #'
 #' @param bucket The bucket holding your session data
+#' @param directory The name of the directory to download from
 #'
 #' @details
 #'
@@ -34,10 +35,11 @@
 #'
 #' }
 #' @export
-gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
+gcs_first <- function(directory = getwd(),
+                      bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
 
   if(bucket == ""){
-    message("No bucket set at GCS_DEFAULT_BUCKET, not attempt to load workspace")
+    message("No Cloud Storage bucket set at GCS_DEFAULT_BUCKET, no attempt to load workspace")
     return()
   }
 
@@ -48,24 +50,24 @@ gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
       if(is.null(auth_try)){
         gcs_auth()
       }
-      o <- tryCatch(gcs_list_objects(prefix = getwd(), bucket = bucket),
+      o <- tryCatch(gcs_list_objects(prefix = directory, bucket = bucket),
                     error = function(ex){
                       message("Couldn't connect to Google Cloud Storage")
                       return()
                     })
-      gcs_rdata <- paste0(getwd(),"/.RData")
+      gcs_rdata <- directory
       if(gcs_rdata %in% o$name){
         message("\n[Workspace loaded from \n",
                 "gs://",bucket,
                 gcs_rdata, "]")
-        tryCatch(suppressMessages(gcs_load(file = gcs_rdata,
-                                           bucket = bucket)),
+        tryCatch(suppressMessages(gcs_load_all(gcs_rdata,
+                                               bucket = bucket)),
                  error = function(ex){
                    warning("# No file found on GCS")
                  })
 
       } else {
-        message("\nNo GCS .RData found for this working directory")
+        message("\nNo cloud data found for this working directory")
       }
     }
   })
@@ -74,10 +76,11 @@ gcs_first <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
 
 #' @export
 #' @rdname gcs_first
-gcs_last <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
+gcs_last <- function(directory = getwd(),
+                     bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
 
   if(bucket == ""){
-    message("No bucket set at GCS_DEFAULT_BUCKET, not attempt to save workspace")
+    message("No Cloud Storage bucket set at GCS_DEFAULT_BUCKET, no attempt to save workspace")
     return()
   }
 
@@ -89,9 +92,7 @@ gcs_last <- function(bucket = Sys.getenv("GCS_DEFAULT_BUCKET")){
     }
     message("\nSaving .RData to Google Cloud Storage:\n",
             bucket)
-    tryCatch(gcs_save_image(bucket = bucket,
-                            saveLocation = getwd(),
-                            envir = .GlobalEnv),
+    tryCatch(gcs_save_all(directory, bucket = bucket),
              error = function(ex){
                warning("Problem saving to GCS")
              })

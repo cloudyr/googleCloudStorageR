@@ -2,7 +2,7 @@
 
 * Update Bucket storageClass to include `MULTI_REGIONAL`, `REGIONAL`, and `COLDLINE`
 * Fix bug where `gcs_load` wouldn't work if file name not ".RData"
-* Add `gcs_first` and `gcs_last` to autosave your .RData workspace to GCS
+* Add `gcs_first` and `gcs_last` to autosave your file workspace to GCS
 
 # 0.3.0
 
