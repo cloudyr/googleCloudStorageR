@@ -151,7 +151,7 @@ gcs_source <- function(script,
 #' @return When uploading the GCS meta object; when downloading TRUE if successful
 #'
 #' @export
-#' @importFrom utils tar
+#' @importFrom zip zip
 #' @family R session data functions
 gcs_save_all <- function(directory = getwd(),
                          bucket = gcs_get_global_bucket(),

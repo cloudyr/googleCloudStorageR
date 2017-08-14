@@ -182,6 +182,7 @@ gcs_parse_gsurls <- function(gsurl){
 #' }
 #'
 #' @family object functions
+#' @importFrom utils URLdecode
 #' @export
 gcs_get_object <- function(object_name,
                            bucket = gcs_get_global_bucket(),
@@ -246,7 +247,10 @@ gcs_get_object <- function(object_name,
 
     if(!is.null(saveToDisk)){
 
-      message("Saved ", object_name, " to ", saveToDisk)
+      myMessage("Saved ", URLdecode(object_name), " to ", saveToDisk,
+                " (",format_object_size(file.size(saveToDisk), "auto"),")",
+                level = 3)
+
       out <- TRUE
 
     } else {
