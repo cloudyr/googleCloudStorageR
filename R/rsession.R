@@ -165,8 +165,14 @@ gcs_save_all <- function(directory = getwd(),
                                     recursive = TRUE,
                                     pattern = pattern))
 
-  zip(tmp, files = the_files)
-  gcs_upload(tmp, bucket = bucket, name = directory)
+  zip::zip(tmp, files = the_files)
+  if(file.exists(tmp)){
+    gcs_upload(tmp, bucket = bucket, name = directory)
+  } else {
+    browser()
+    write(paste0("error in upload: ", Sys.time()), file = "gcs_save_error")
+  }
+
 
 }
 
@@ -193,7 +199,10 @@ gcs_load_all <- function(directory = getwd(),
   }
 
   mapply(function(x, name){
-    file.rename(x, name)
+    suppressWarnings(file.copy(x, name,
+                               overwrite = FALSE,
+                               recursive = TRUE,
+                               copy.date = TRUE))
   }, unzipped, new_files)
 
   TRUE

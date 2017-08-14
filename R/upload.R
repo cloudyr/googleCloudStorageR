@@ -99,7 +99,7 @@ gcs_upload <- function(file,
 
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type <- match.arg(upload_type)
-  upload_limit <- 5000000
+  upload_limit <- 5000000L
   ## so jsonlite::toJSON works
   if(!is.null(object_metadata)) class(object_metadata) <- "list"
 
@@ -158,10 +158,12 @@ gcs_upload <- function(file,
          write function using argument object_function")
   }
 
+  myMessage("File size detected as ",
+            format_object_size(file.size(temp), "auto"), level = 3)
+
   if(upload_type == "resumable" || file.size(temp) > upload_limit){
     ## resumable upload
     myMessage("Resumable upload", level = 2)
-    myMessage("File size detected as ", file.size(temp), level = 3)
 
     up <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",

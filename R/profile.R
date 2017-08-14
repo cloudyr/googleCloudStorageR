@@ -90,7 +90,7 @@ gcs_last <- function(directory = getwd(),
     if(is.null(auth_try)){
       gcs_auth()
     }
-    message("\nSaving .RData to Google Cloud Storage:\n",
+    message("\nSaving data to Google Cloud Storage:\n",
             bucket)
     tryCatch(gcs_save_all(directory, bucket = bucket),
              error = function(ex){

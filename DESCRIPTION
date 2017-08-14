@@ -14,7 +14,8 @@ Imports:
     googleAuthR (>= 0.5.1),
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
-    utils
+    utils,
+    zip
 Suggests:
     covr,
     readr,
