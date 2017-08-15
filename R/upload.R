@@ -79,7 +79,9 @@
 #'
 #'
 #'
-#' @import httr utils
+#' @import httr
+#' @importFrom utils URLencode
+#' @importFrom jsonlite toJSON
 #' @export
 gcs_upload <- function(file,
                        bucket = gcs_get_global_bucket(),
@@ -104,7 +106,7 @@ gcs_upload <- function(file,
   if(!is.null(object_metadata)) class(object_metadata) <- "list"
 
   ## no leading slashes
-  name <- gsub("^/","", utils::URLencode(name, reserved = TRUE))
+  name <- gsub("^/","", URLencode(name, reserved = TRUE))
 
   if(inherits(file, "character")){
     # a filepath
@@ -149,7 +151,7 @@ gcs_upload <- function(file,
     temp <- tempfile(fileext = ".json")
     on.exit(unlink(temp))
 
-    write(jsonlite::toJSON(file), temp)
+    write(toJSON(file), temp)
 
     name <- if(!grepl("\\.json$", name)) paste0(name,".json") else name
 

@@ -1,0 +1,13 @@
+## The GCS bucket to save/load R workspace from
+bucket: gcer-mark-edmondson-gde-2017-08-11
+
+## set to FALSE if you want to load on R session startup
+load_on_startup: TRUE
+
+## on first load, whether to look for a different directory on GCS than present getwd()
+loaddir:
+
+## regex to only save these files to GCS
+pattern:
+
+

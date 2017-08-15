@@ -20,16 +20,18 @@
 #'
 #'
 #' @family download functions
+#' @importFrom utils URLencode
+#' @importFrom assertthat assert_that
 #' @export
 gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), public = FALSE){
 
-  assertthat::assert_that(
+  assert_that(
     is.character(bucket),
     is.character(object_name)
   )
 
   ## no leading slashes
-  object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
+  object_name <- gsub("^/","", URLencode(object_name, reserved = TRUE))
 
   if(length(bucket) != 1 && length(bucket) != length(object_name)){
     stop("bucket must be length 1 or same length as object_name")

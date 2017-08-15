@@ -136,6 +136,7 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
 #'
 #' @return TRUE if successful
 #' @family Access control functions
+#' @importFrom utils URLencode
 #' @export
 gcs_update_object_acl <- function(object_name,
                                   bucket = gcs_get_global_bucket(),
@@ -151,7 +152,7 @@ gcs_update_object_acl <- function(object_name,
   entity_type <- match.arg(entity_type)
   role <- match.arg(role)
 
-  object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
+  object_name <- gsub("^/","", URLencode(object_name, reserved = TRUE))
 
   assertthat::assert_that(
     is.character(bucket),
@@ -203,6 +204,7 @@ gcs_update_object_acl <- function(object_name,
 #' @param generation If present, selects a spcfic revision of the object
 #'
 #' @importFrom googleAuthR gar_api_generator
+#' @importFrom utils URLencode
 #' @family Access control functions
 #' @export
 gcs_get_object_acl <- function(object_name,
@@ -220,7 +222,7 @@ gcs_get_object_acl <- function(object_name,
   entity <- build_entity(entity, entity_type)
 
   ## no leading slashes
-  object_name <- gsub("^/","", utils::URLencode(object_name, reserved = TRUE))
+  object_name <- gsub("^/","", URLencode(object_name, reserved = TRUE))
 
   if(is.null(generation)){
     pa <- NULL

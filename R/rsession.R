@@ -166,18 +166,14 @@ gcs_save_all <- function(directory = getwd(),
                                     pattern = pattern))
 
   zip::zip(tmp, files = the_files)
-  if(file.exists(tmp)){
-    gcs_upload(tmp, bucket = bucket, name = directory)
-  } else {
-    browser()
-    write(paste0("error in upload: ", Sys.time()), file = "gcs_save_error")
-  }
 
+  gcs_upload(tmp, bucket = bucket, name = directory)
 
 }
 
 #' @export
 #' @rdname gcs_save_all
+#' @importFrom utils unzip
 gcs_load_all <- function(directory = getwd(),
                          bucket = gcs_get_global_bucket(),
                          exdir = directory,

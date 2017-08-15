@@ -5,27 +5,40 @@
 \alias{gcs_last}
 \title{Save your R session to the cloud on startup}
 \usage{
-gcs_first(directory = getwd(), bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
+gcs_first(directory = getwd(), bucket = Sys.getenv("GCS_SESSION_BUCKET"))
 
-gcs_last(directory = getwd(), bucket = Sys.getenv("GCS_DEFAULT_BUCKET"))
+gcs_last(bucket = Sys.getenv("GCS_SESSION_BUCKET"))
 }
 \arguments{
 \item{directory}{The name of the directory to download from}
 
-\item{bucket}{The bucket holding your session data}
+\item{bucket}{The bucket holding your session data, default environment arg \code{GCS_SESSION_BUCKET}}
 }
 \description{
 Place within your \code{.Rprofile} to load and save your session data automatically
 }
 \details{
-This will save your R sessions to Google Cloud Storage.  Control which projects via where you place the \code{.Rprofile} - see \code{?Startup} for details.
+The folder you want to save to GCS will also need to have a file called \code{_gcssave.yaml} in the root of the directory.  It can hold the following arguments:
+
+\itemize{
+ \item [Required] \code{bucket} - the GCS bucket to save to
+ \item [Optional] \code{loaddir} - if the folder name is different to the current, where to load the R session from
+ \item [Optional] \code{pattern} - a regex of what files to save at the end of the session
+ \item [Optional] \code{load_on_startup} - if \code{FALSE} will not attempt to load on startup
+}
+
+The bucket name can also be defined via the environment arg \code{GCE_SESSION_BUCKET}. The yaml file name will take precedence.
+
+The folder is named the full working path to the working directory when saved to GCS. e.g. \code{/Users/mark/dev/your-r-project} - if you create a new R project with the same filepath and bucket set the files will download automatically.  If loading from a different filepath (e.g. with \code{loadir} set in yaml), when you exit and save the files will be saved under your new working directory.
+
+Files with the same name will not be overwritten.  If you want them to be, delete or rename them then reload the R session.
 
 If using RStudio in Google Compute Engine, this can be useful to make sure your
   RStudio project data is persistent between sessions.
 
 You will need to authenticate first,
  the easiest way is to make sure your authentication file is
- available in environment file \code{GCS_DEFAULT_BUCKET}
+ available in environment file \code{GCS_AUTH_FILE}, or if on Google Compute Engine it will reuse the Google Cloud authentication via \link[googleAuthR]{gar_gce_auth}
 }
 \examples{
 
