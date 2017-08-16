@@ -81,8 +81,13 @@ gcs_first <- function(directory = getwd(),
       }
 
       if(bucket == ""){
-        message("No Cloud Storage bucket set at GCS_SESSION_BUCKET or yaml, no attempt to load workspace")
-        return()
+        ## attempt load from GCE metadata if possible
+        bucket <- tryCatch(googleComputeEngineR::gce_metadata_env('GCS_SESSION_BUCKET'),
+                           error = function(ex){
+                             message("No GCS_SESSION_BUCKET, yaml or GCE metadata found,
+                                     no attempt to load workspace")
+                             return()
+                           })
       }
 
       options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
