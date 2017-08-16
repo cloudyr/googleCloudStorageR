@@ -53,19 +53,8 @@
 gcs_first <- function(directory = getwd(),
                       bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 
-  if(bucket == ""){
-    message("No Cloud Storage bucket set at GCS_SESSION_BUCKET, no attempt to load workspace")
-    return()
-  }
-
   local({
     if(interactive()){
-      options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
-      auth_try <- gar_gce_auth()
-      if(is.null(auth_try)){
-        gcs_auth()
-      }
-
       if(file.exists("_gcssave.yaml")){
         yaml <- yaml.load_file("_gcssave.yaml")
       } else {
@@ -87,6 +76,17 @@ gcs_first <- function(directory = getwd(),
 
       if(!is.null(yaml$bucket)){
         bucket <- yaml$bucket
+      }
+
+      if(bucket == ""){
+        message("No Cloud Storage bucket set at GCS_SESSION_BUCKET or yaml, no attempt to load workspace")
+        return()
+      }
+
+      options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
+      auth_try <- gar_gce_auth()
+      if(is.null(auth_try)){
+        gcs_auth()
       }
 
       o <- tryCatch(gcs_list_objects(prefix = gcs_rdata, bucket = bucket),
@@ -124,12 +124,16 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
     return()
   }
 
-  if(!file.exists("_gcssave.yaml")){
+  if(!file.exists("_gcssave.yaml") & !file.exists("_gcssave.yml")){
     message("No Cloud Storage bucket set as no _gcssave.yaml file found, no attempt to save workspace")
     return()
+  } else { #ridic yml or yaml
+    if(file.exists("_gcssave.yaml")){
+      yaml <- yaml.load_file("_gcssave.yaml")
+    } else {
+      yaml <- yaml.load_file("_gcssave.yml")
+    }
   }
-
-  yaml <- yaml.load_file("_gcssave.yaml")
 
   if(!is.null(yaml$bucket)){
     bucket <- yaml$bucket
@@ -140,6 +144,7 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
   } else{
     pattern = ""
   }
+
 
   if(bucket == ""){
     message("No Cloud Storage bucket set at GCS_SESSION_BUCKET, no attempt to save workspace")
