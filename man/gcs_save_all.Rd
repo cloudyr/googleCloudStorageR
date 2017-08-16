@@ -3,6 +3,7 @@
 \name{gcs_save_all}
 \alias{gcs_save_all}
 \alias{gcs_load_all}
+\alias{gcs_delete_all}
 \title{Save/Load all files in directory to Google Cloud Storage}
 \usage{
 gcs_save_all(directory = getwd(), bucket = gcs_get_global_bucket(),
@@ -10,6 +11,8 @@ gcs_save_all(directory = getwd(), bucket = gcs_get_global_bucket(),
 
 gcs_load_all(directory = getwd(), bucket = gcs_get_global_bucket(),
   exdir = directory, list = FALSE)
+
+gcs_delete_all(directory = getwd(), bucket = gcs_get_global_bucket())
 }
 \arguments{
 \item{directory}{The folder to upload/download}

@@ -204,3 +204,18 @@ gcs_load_all <- function(directory = getwd(),
   TRUE
 
 }
+
+#' @export
+#' @rdname gcs_save_all
+gcs_delete_all <- function(directory = getwd(),
+                           bucket = gcs_get_global_bucket()){
+
+  o <- gcs_list_objects(bucket, prefix = directory)
+
+  if(!is.null(o$name) && directory %in% o$name){
+    gcs_delete_object(o$name, bucket = bucket)
+  } else {
+    message("No files found to delete for ", directory, " in ", bucket)
+  }
+
+}

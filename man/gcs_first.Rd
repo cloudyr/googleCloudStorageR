@@ -48,11 +48,13 @@ You will need to authenticate first,
 .First <- function(){
   cat("\\n# Welcome Mark! Today is ", date(), "\\n")
 
+  ## will look for download if GCS_SESSION_BUCKET env arg set
   googleCloudStorageR::gcs_first()
 }
 
 
 .Last <- function(){
+  # will only upload if a _gcssave.yaml in directory with bucketname
   googleCloudStorageR::gcs_last()
   message("\\nGoodbye Mark at ", date(), "\\n")
 }
