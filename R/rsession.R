@@ -161,7 +161,8 @@ gcs_save_all <- function(directory = getwd(),
   on.exit(unlink(tmp))
 
   the_files <- file.path(directory,
-                         list.files(all.files = TRUE,
+                         list.files(path = directory,
+                                    all.files = TRUE,
                                     recursive = TRUE,
                                     pattern = pattern))
 
