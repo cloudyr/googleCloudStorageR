@@ -19,20 +19,20 @@ gcs_delete_all(directory = getwd(), bucket = gcs_get_global_bucket())
 
 \item{bucket}{Bucket to store within}
 
-\item{pattern}{an optional regular expression. Only file names which match the regular expression will be saved.}
+\item{pattern}{An optional regular expression. Only file names which match the regular expression will be saved.}
 
 \item{exdir}{When downloading, specify a destination directory if required}
 
 \item{list}{When downloading, only list where the files would unzip to}
 }
 \value{
-When uploading the GCS meta object; when downloading TRUE if successful
+When uploading the GCS meta object; when downloading \code{TRUE} if successful
 }
 \description{
-This function takes all the files in the directory, zips them, and saves them to the cloud.  The upload name will be the directory name.
+This function takes all the files in the directory, zips them, and saves/loads/deletes them to the cloud.  The upload name will be the directory name.
 }
 \details{
-Zip/unzip is performed before uplaod and after download.
+Zip/unzip is performed before upload and after download.
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},

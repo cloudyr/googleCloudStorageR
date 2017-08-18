@@ -10,20 +10,6 @@ gcs_metadata_object(object_name = NULL, metadata = NULL, md5Hash = NULL,
 }
 \arguments{
 \item{object_name}{Name of the object. GCS uses this version if also set elsewhere.}
-
-\item{metadata}{User-provided metadata, in key/value pairs}
-
-\item{md5Hash}{MD5 hash of the data; encoded using base64}
-
-\item{crc32c}{CRC32c checksum, as described in RFC 4960, Appendix B; encoded using base64 in big-endian byte order}
-
-\item{contentLanguage}{Content-Language of the object data}
-
-\item{contentEncoding}{Content-Encoding of the object data}
-
-\item{contentDisposition}{Content-Disposition of the object data}
-
-\item{cacheControl}{Cache-Control directive for the object data}
 }
 \value{
 Object metadata for uploading of class \code{gar_Object}

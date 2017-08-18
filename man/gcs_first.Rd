@@ -3,22 +3,20 @@
 \name{gcs_first}
 \alias{gcs_first}
 \alias{gcs_last}
-\title{Save your R session to the cloud on startup}
+\title{Save your R session to the cloud on startup/exit}
 \usage{
-gcs_first(directory = getwd(), bucket = Sys.getenv("GCS_SESSION_BUCKET"))
+gcs_first(bucket = Sys.getenv("GCS_SESSION_BUCKET"))
 
 gcs_last(bucket = Sys.getenv("GCS_SESSION_BUCKET"))
 }
 \arguments{
-\item{directory}{The name of the directory to download from}
-
-\item{bucket}{The bucket holding your session data, default environment arg \code{GCS_SESSION_BUCKET}}
+\item{bucket}{The bucket holding your session data. See Details.}
 }
 \description{
 Place within your \code{.Rprofile} to load and save your session data automatically
 }
 \details{
-The folder you want to save to GCS will also need to have a file called \code{_gcssave.yaml} in the root of the directory.  It can hold the following arguments:
+The folder you want to save to Google Cloud Storage will also need to have a yaml file called \code{_gcssave.yaml} in the root of the directory.  It can hold the following arguments:
 
 \itemize{
  \item [Required] \code{bucket} - the GCS bucket to save to
@@ -27,18 +25,22 @@ The folder you want to save to GCS will also need to have a file called \code{_g
  \item [Optional] \code{load_on_startup} - if \code{FALSE} will not attempt to load on startup
 }
 
-The bucket name can also be defined via the environment arg \code{GCE_SESSION_BUCKET}. The yaml file name will take precedence.
+The bucket name is also set via the environment arg \code{GCE_SESSION_BUCKET}. The yaml bucket name will take precedence if both are set.
 
-The folder is named the full working path to the working directory when saved to GCS. e.g. \code{/Users/mark/dev/your-r-project} - if you create a new R project with the same filepath and bucket set the files will download automatically.  If loading from a different filepath (e.g. with \code{loadir} set in yaml), when you exit and save the files will be saved under your new working directory.
+The folder is named on GCS the full working path to the working directory e.g. \code{/Users/mark/dev/your-r-project} which is what is looked for on startuæ.  If you create a new R project with the same filepath and bucket as an existing saved set, the files will download automatically when you load R from that folder (when starting an RStudio project).
+
+If you load from a different filepath (e.g. with \code{loadir} set in yaml), when you exit and save the files will be saved under your new present working directory.
 
 Files with the same name will not be overwritten.  If you want them to be, delete or rename them then reload the R session.
 
-If using RStudio in Google Compute Engine, this can be useful to make sure your
-  RStudio project data is persistent between sessions.
+This function does not act like git, or intended as a replacement - its main use is imagined to be for using RStudio Server within disposable Docker containers on Google Cloud Engine (e.g. via \code{googleComputeEngineR})
 
-You will need to authenticate first,
+
+For authentication for GCS,
  the easiest way is to make sure your authentication file is
- available in environment file \code{GCS_AUTH_FILE}, or if on Google Compute Engine it will reuse the Google Cloud authentication via \link[googleAuthR]{gar_gce_auth}
+ available in environment file \code{GCS_AUTH_FILE},
+ or if on Google Compute Engine it will reuse the Google Cloud authentication
+ via \link[googleAuthR]{gar_gce_auth}
 }
 \examples{
 
@@ -59,5 +61,18 @@ You will need to authenticate first,
   message("\\nGoodbye Mark at ", date(), "\\n")
 }
 
+### example _gcssave.yaml contents -------------
+# The GCS bucket to save/load R workspace from
+bucket: my-bucket-for-r-projects
+# set to FALSE if you don't want to load on R session startup
+load_on_startup: TRUE
+# on first load, whether to look for a different directory on GCS than present getwd()
+loaddir: /Users/mark/other-computer/projectname
+# regex to only save these files to GCS
+pattern: "\\\\.R$"
+
 }
+}
+\seealso{
+\link{gcs_save_all} and \link{gcs_load_all} that these functions call
 }

@@ -135,20 +135,20 @@ gcs_source <- function(script,
 
 #' Save/Load all files in directory to Google Cloud Storage
 #'
-#' This function takes all the files in the directory, zips them, and saves them to the cloud.  The upload name will be the directory name.
+#' This function takes all the files in the directory, zips them, and saves/loads/deletes them to the cloud.  The upload name will be the directory name.
 #'
 #' @param directory The folder to upload/download
 #' @param bucket Bucket to store within
-#' @param pattern an optional regular expression. Only file names which match the regular expression will be saved.
+#' @param pattern An optional regular expression. Only file names which match the regular expression will be saved.
 #' @param exdir When downloading, specify a destination directory if required
 #' @param list When downloading, only list where the files would unzip to
 #'
 #' @details
 #'
-#' Zip/unzip is performed before uplaod and after download.
+#' Zip/unzip is performed before upload and after download.
 #'
 #'
-#' @return When uploading the GCS meta object; when downloading TRUE if successful
+#' @return When uploading the GCS meta object; when downloading \code{TRUE} if successful
 #'
 #' @export
 #' @importFrom zip zip
