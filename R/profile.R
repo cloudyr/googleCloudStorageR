@@ -131,6 +131,8 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
       } else {
         message("\nNo cloud data found for ", gcs_rdata," in bucket ", bucket)
       }
+      ## avoid interaction with loaded session
+      unloadNamespace("googleCloudStorageR")
     }
   })
 
