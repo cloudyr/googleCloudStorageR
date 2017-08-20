@@ -133,6 +133,7 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
       }
       ## avoid interaction with loaded session
       unloadNamespace("googleCloudStorageR")
+      unloadNamespace("googleAuthR")
     }
   })
 
@@ -188,5 +189,9 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
            error = function(ex){
              warning("Problem saving to GCS")
            })
+
+  ## avoid interaction with loaded session
+  unloadNamespace("googleCloudStorageR")
+  unloadNamespace("googleAuthR")
 
 }
