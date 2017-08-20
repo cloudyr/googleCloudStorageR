@@ -69,6 +69,11 @@
 #' @importFrom yaml yaml.load_file
 gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 
+  ## avoid interaction with loaded session
+  on.exit({
+    unloadNamespace("googleCloudStorageR")
+  })
+
   local({
     if(interactive()){
       if(file.exists("_gcssave.yaml")){
@@ -131,9 +136,8 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
       } else {
         message("\nNo cloud data found for ", gcs_rdata," in bucket ", bucket)
       }
-      ## avoid interaction with loaded session
-      unloadNamespace("googleCloudStorageR")
-      unloadNamespace("googleAuthR")
+
+
     }
   })
 
@@ -144,6 +148,11 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 #' @importFrom yaml yaml.load_file
 #' @importFrom googleAuthR gar_gce_auth
 gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
+
+  ## avoid interaction with loaded session
+  on.exit({
+    unloadNamespace("googleCloudStorageR")
+  })
 
   if(!interactive()){
     return()
@@ -189,9 +198,5 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
            error = function(ex){
              warning("Problem saving to GCS")
            })
-
-  ## avoid interaction with loaded session
-  unloadNamespace("googleCloudStorageR")
-  unloadNamespace("googleAuthR")
 
 }
