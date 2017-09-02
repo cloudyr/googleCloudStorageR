@@ -111,8 +111,9 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 
       options(googleAuthR.scopes.selected =
                 "https://www.googleapis.com/auth/devstorage.read_write")
-      auth_try <- gar_gce_auth()
+      auth_try <- googleAuthR::gar_gce_auth()
       if(is.null(auth_try)){
+        message("GCE auth didn't work, looking for GCS_AUTH")
         gcs_auth()
       }
 
@@ -132,6 +133,15 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
                  error = function(ex){
                    warning("# No file found on GCS - ", ex)
                  })
+        
+        ## special case to make sure SSH keys are useable
+        key.private <- "~/.ssh/id_rsa"
+        if(file.exists(key.private)){
+          if(file.mode(key.private) != "400"){
+            message("chmod on ", key.private, " changed to 400")
+            Sys.chmod(key.private, mode = "0400")
+          }
+        }
 
       } else {
         message("\nNo cloud data found for ", gcs_rdata," in bucket ", bucket)
@@ -189,6 +199,7 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
   options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
   auth_try <- gar_gce_auth()
   if(is.null(auth_try)){
+    message("GCE auth didn't work, looking for GCS_AUTH")
     gcs_auth()
   }
 
