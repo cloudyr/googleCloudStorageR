@@ -159,11 +159,6 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 #' @importFrom googleAuthR gar_gce_auth
 gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
 
-  ## avoid interaction with loaded session
-  on.exit({
-    unloadNamespace("googleCloudStorageR")
-  })
-
   if(!interactive()){
     return()
   }
