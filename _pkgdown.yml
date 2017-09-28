@@ -1,0 +1,46 @@
+title: googleCloudStorageR
+url: https://cloudyr.github.io/googleCloudStorageR/
+home:
+  strip_header: true
+authors:
+  Mark Edmondson:
+    href: http://code.markedmondson.me
+template:
+  params:
+    bootswatch: cosmo
+navbar:
+  title: googleCloudStorageR
+  type: inverse
+  right:
+    - icon: fa-google fa-lg
+      href: https://cloud.google.com/storage/
+    - icon: fa-github fa-lg
+      href: https://github.com/cloudyr/googleCloudStorageR
+    - icon: fa-slack fa-lg
+      href: https://docs.google.com/forms/d/e/1FAIpQLSerjirmMpB3b7LmBs_Vx_XPIE9IrhpCpPg1jUcpfBcivA3uBw/viewform
+reference:
+  - title: "Authentication"
+    contents:
+      - gcs_auth
+  - title: "Buckets"
+    desc: >
+      Working with Google Cloud Storage buckets
+    contents:
+      - matches("bucket")
+  - title: "Objects"
+    desc: >
+      Working with objects inside the buckets
+    contents:
+      - matches("object")
+  - title: "Session helpers"
+    desc: >
+      Working with R session objects
+    contents:
+      - gcs_first
+      - gcs_last
+      - gcs_load
+      - gcs_save
+      - gcs_load_all
+      - gcs_save_all
+      - gcs_save_image
+      - gcs_source

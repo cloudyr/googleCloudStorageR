@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,7 +39,7 @@
   <body>
     <div class="container template-news">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -69,7 +69,24 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://cloud.google.com/storage/">
+    <span class="fa fa-google fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/cloudyr/googleCloudStorageR">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSerjirmMpB3b7LmBs_Vx_XPIE9IrhpCpPg1jUcpfBcivA3uBw/viewform">
+    <span class="fa fa-slack fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -86,7 +103,102 @@
     </div>
 
     <div class="contents">
-    NA
+    <div id="googlecloudstorager-0-3-0-9000" class="section level1">
+<h1 class="hasAnchor">
+<a href="#googlecloudstorager-0-3-0-9000" class="anchor"></a>googleCloudStorageR 0.3.0.9000</h1>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<ul>
+<li>Update Bucket storageClass to include <code>MULTI_REGIONAL</code>, <code>REGIONAL</code>, and <code>COLDLINE</code>
+</li>
+<li>Fix bug where <code>gcs_load</code> wouldn’t work if file name not “.RData”</li>
+<li>Add <code>gcs_first</code> and <code>gcs_last</code> to autosave your file workspace to GCS</li>
+<li>Better message feedback on file sizes</li>
+<li>Add <code>gcs_save_all</code> and <code>gcs_load_all</code> which will zip, save/load and upload/download a directory</li>
+<li>Add use of <code>_gcssave.yaml</code> file to control <code>gcs_first/last</code> behaviour</li>
+<li>Allow passing a bucket object to functions that expect a bucket name (#76)</li>
+</ul>
+</div>
+</div>
+    <div id="googlecloudstorager-0-3-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#googlecloudstorager-0-3-0" class="anchor"></a>googleCloudStorageR 0.3.0</h1>
+<div id="major-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes-1" class="anchor"></a>Major changes</h2>
+<ul>
+<li>Correct metadata upload (#55 - thanks AndrewMarritt)</li>
+<li>Let <code>gcs_object_metaname</code> not require name so it can be reused (#56 - thanks seandavi)</li>
+<li>Add support for <code>gs://</code> style URLs for object names (#57 - thanks seandavi)</li>
+<li>Add what the public URL would be to an objects print method (#59 - thanks mwhitaker)</li>
+<li>Add check to <code><a href="../reference/gcs_get_bucket.html">gcs_get_bucket()</a></code> to only expect length 1 character vectors for bucket name. (#60)</li>
+<li>Add paging for <code>gcs_object_list</code> (#58 - thanks @G3rtjan)</li>
+<li>Add <code>saveToDisk</code> option to <code>gcs_load</code> (#52 - thanks @tomsing1)</li>
+<li>Supply your own parse function to <code><a href="../reference/gcs_get_object.html">gcs_get_object()</a></code> (#63 - thanks @nkeriks)</li>
+<li>Support for <code>prefix</code> and <code>delimiter</code> in <code>gcs_object_list</code> to filter objects listed (#68)</li>
+<li>Default permissions on new buckets lets you write to them afterwards `projectPrivate (#62)</li>
+<li>
+<code>gcs_get_object</code> now supports downloads over 2GB (#69)</li>
+<li>Add support for signed URLs (#54 - thanks seandavi)</li>
+</ul>
+</div>
+</div>
+    <div id="googlecloudstorager-0-2-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#googlecloudstorager-0-2-0" class="anchor"></a>googleCloudStorageR 0.2.0</h1>
+<div id="major-changes-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes-2" class="anchor"></a>Major changes</h2>
+<ul>
+<li>Fix bug where you can’t rename objects via name in <code>gcs_upload</code>
+</li>
+<li>Add <code>gcs_save</code> to store R session data in cloud</li>
+<li>Add <code>gcs_load</code> to restore session data stored with <code>gcs_save</code>
+</li>
+<li>Fix resetting of <code>options(googleAuthR.rawResponse = TRUE)</code> when using <code>gcs_get_object</code>
+</li>
+<li>Add URLencoding to <code>object_name</code> in <code>gcs_get_object</code> etc.</li>
+<li>
+<code>gcs_global_bucket</code> and <code>gcs_get_global_bucket</code> to set global bucket name</li>
+<li>Add options to set environment variables for API keys, default buckets etc.</li>
+<li>Add print S3 methods for objects, buckets and ACL</li>
+<li>Add option to use your own write function for R object file uploads in <code>gcs_upload</code>
+</li>
+<li>Add option to include object metadata in uploads via <code>gcs_metadata_object</code>
+</li>
+<li>Add resumable uploads to <code>gcs_upload</code> to allow uploads over 5MB, limit now 5TB</li>
+<li>Add retry uploads via <code>gcs_retry_upload</code>
+</li>
+<li>Add delete object via <code>gcs_delete_object</code>
+</li>
+<li>Add <code>gcs_source</code> to source .R files from GCS</li>
+<li>Add versioning and lifecycle management to create and update bucket functions</li>
+</ul>
+</div>
+</div>
+    <div id="googlecloudstorager-0-1-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#googlecloudstorager-0-1-0" class="anchor"></a>googleCloudStorageR 0.1.0</h1>
+<div id="major-changes-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes-3" class="anchor"></a>Major changes</h2>
+<p>Initial release</p>
+<ul>
+<li><code>gcs_create_bucket</code></li>
+<li><code>gcs_download_url</code></li>
+<li><code>gcs_get_bucket</code></li>
+<li><code>gcs_get_object</code></li>
+<li><code>gcs_get_object_access</code></li>
+<li><code>gcs_list_buckets</code></li>
+<li><code>gcs_list_objects</code></li>
+<li><code>gcs_parse_download</code></li>
+<li><code>gcs_update_acl</code></li>
+<li><code>gcs_update_bucket</code></li>
+<li><code>gcs_upload</code></li>
+</ul>
+</div>
+</div>
     </div>
   </div>
 
@@ -94,7 +206,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#NA">NA</a></li>
+        <li><a href="#googlecloudstorager-0-3-0-9000">0.3.0.9000</a></li>
+        <li><a href="#googlecloudstorager-0-3-0">0.3.0</a></li>
+        <li><a href="#googlecloudstorager-0-2-0">0.2.0</a></li>
+        <li><a href="#googlecloudstorager-0-1-0">0.1.0</a></li>
       </ul>
     </div>
   </div>
@@ -103,7 +218,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Mark Edmondson.</p>
+  <p>Developed by <a href='http://code.markedmondson.me'>Mark Edmondson</a>.</p>
 </div>
 
 <div class="pkgdown">

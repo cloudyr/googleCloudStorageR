@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-index">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -69,7 +69,24 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://cloud.google.com/storage/">
+    <span class="fa fa-google fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/cloudyr/googleCloudStorageR">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSerjirmMpB3b7LmBs_Vx_XPIE9IrhpCpPg1jUcpfBcivA3uBw/viewform">
+    <span class="fa fa-slack fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -98,7 +115,7 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+            <h2 id="section-authentication" class="hasAnchor"><a href="#section-authentication" class="anchor"></a>Authentication</h2>
             <p class="section-desc"></p>
           </th>
         </tr>
@@ -108,7 +125,15 @@
             <p><code><a href="gcs_auth.html">gcs_auth</a></code> </p>
           </td>
           <td><p>Authenticate this session</p></td>
-        </tr><tr>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-buckets" class="hasAnchor"><a href="#section-buckets" class="anchor"></a>Buckets</h2>
+            <p class="section-desc"><p>Working with Google Cloud Storage buckets</p></p>
+          </th>
+        </tr>
+        <tr>
           <!--  -->
           <td>
             <p><code><a href="gcs_create_bucket_acl.html">gcs_create_bucket_acl</a></code> </p>
@@ -123,33 +148,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="gcs_create_lifecycle.html">gcs_create_lifecycle</a></code> </p>
-          </td>
-          <td><p>Create a lifecycle condition</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="gcs_delete_bucket.html">gcs_delete_bucket</a></code> </p>
           </td>
           <td><p>Delete a bucket</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_delete_object.html">gcs_delete_object</a></code> </p>
-          </td>
-          <td><p>Delete an object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_download_url.html">gcs_download_url</a></code> </p>
-          </td>
-          <td><p>Get the download URL</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_first.html">gcs_first</a></code> <code><a href="gcs_first.html">gcs_last</a></code> </p>
-          </td>
-          <td><p>Save your R session to the cloud on startup/exit</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -171,6 +172,32 @@
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="gcs_global_bucket.html">gcs_global_bucket</a></code> </p>
+          </td>
+          <td><p>Set global bucket name</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="gcs_list_buckets.html">gcs_list_buckets</a></code> </p>
+          </td>
+          <td><p>List buckets</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-objects" class="hasAnchor"><a href="#section-objects" class="anchor"></a>Objects</h2>
+            <p class="section-desc"><p>Working with objects inside the buckets</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="gcs_delete_object.html">gcs_delete_object</a></code> </p>
+          </td>
+          <td><p>Delete an object</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="gcs_get_object_acl.html">gcs_get_object_acl</a></code> </p>
           </td>
           <td><p>Check the access control settings for an object for one entity</p></td>
@@ -183,27 +210,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="gcs_global_bucket.html">gcs_global_bucket</a></code> </p>
-          </td>
-          <td><p>Set global bucket name</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_list_buckets.html">gcs_list_buckets</a></code> </p>
-          </td>
-          <td><p>List buckets</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="gcs_list_objects.html">gcs_list_objects</a></code> </p>
           </td>
           <td><p>List objects in a bucket</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_load.html">gcs_load</a></code> </p>
-          </td>
-          <td><p>Load .RData objects or sessions from the Google Cloud</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -213,15 +222,35 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="gcs_parse_download.html">gcs_parse_download</a></code> </p>
+            <p><code><a href="gcs_update_object_acl.html">gcs_update_object_acl</a></code> </p>
           </td>
-          <td><p>Parse downloaded objects straight into R</p></td>
+          <td><p>Change access to an object in a bucket</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-session-helpers" class="hasAnchor"><a href="#section-session-helpers" class="anchor"></a>Session helpers</h2>
+            <p class="section-desc"><p>Working with R session objects</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="gcs_first.html">gcs_first</a></code> <code><a href="gcs_first.html">gcs_last</a></code> </p>
+          </td>
+          <td><p>Save your R session to the cloud on startup/exit</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="gcs_retry_upload.html">gcs_retry_upload</a></code> </p>
+            <p><code><a href="gcs_load.html">gcs_load</a></code> </p>
           </td>
-          <td><p>Retry a resumeable upload</p></td>
+          <td><p>Load .RData objects or sessions from the Google Cloud</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="gcs_save.html">gcs_save</a></code> </p>
+          </td>
+          <td><p>Save .RData objects to the Google Cloud</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -237,45 +266,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="gcs_save.html">gcs_save</a></code> </p>
-          </td>
-          <td><p>Save .RData objects to the Google Cloud</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_signed_url.html">gcs_signed_url</a></code> </p>
-          </td>
-          <td><p>Create a signed URL</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="gcs_source.html">gcs_source</a></code> </p>
           </td>
           <td><p>Source an R script from the Google Cloud</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_update_object_acl.html">gcs_update_object_acl</a></code> </p>
-          </td>
-          <td><p>Change access to an object in a bucket</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gcs_upload.html">gcs_upload</a></code> </p>
-          </td>
-          <td><p>Upload a file of arbitrary type</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p></p>
-          </td>
-          <td><p>googleCloudStorageR</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Object.html">Object</a></code> </p>
-          </td>
-          <td><p>Object Object</p></td>
         </tr>
       </tbody>
       </table>
@@ -285,14 +278,17 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-authentication">Authentication</a></li>
+      <li><a href="#section-buckets">Buckets</a></li>
+      <li><a href="#section-objects">Objects</a></li>
+      <li><a href="#section-session-helpers">Session helpers</a></li>
     </ul>
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Mark Edmondson.</p>
+  <p>Developed by <a href='http://code.markedmondson.me'>Mark Edmondson</a>.</p>
 </div>
 
 <div class="pkgdown">

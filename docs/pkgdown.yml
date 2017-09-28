@@ -1,0 +1,6 @@
+urls:
+  reference: https://cloudyr.github.io/googleCloudStorageR//reference
+  article: https://cloudyr.github.io/googleCloudStorageR//articles
+articles:
+  googleCloudStorageR: googleCloudStorageR.html
+

@@ -12,3 +12,4 @@ test_signedurls.RData
 ^drat\.sh$
 ^revdep
 ^docs$
+^_pkgdown\.yml$
