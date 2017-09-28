@@ -11,3 +11,4 @@ test_signedurls.RData
 ^auth\.json\.enc$
 ^drat\.sh$
 ^revdep
+^docs$
