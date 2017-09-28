@@ -6,6 +6,7 @@
 * Better message feedback on file sizes
 * Add `gcs_save_all` and `gcs_load_all` which will zip, save/load and upload/download a directory
 * Add use of `_gcssave.yaml` file to control `gcs_first/last` behaviour
+* Allow passing a bucket object to functions that expect a bucket name (#76)
 
 # 0.3.0
 

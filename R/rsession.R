@@ -28,6 +28,8 @@ gcs_save_image <- function(file = ".RData",
     file <- paste0(saveLocation, "/", file)
   }
 
+  bucket <- as.bucket_name(bucket)
+
   gcs_save(list = ls(all.names = TRUE, envir = envir),
            file = file,
            bucket = bucket,
@@ -67,6 +69,8 @@ gcs_save <- function(...,
   tmp <- tempfile()
   on.exit(unlink(tmp))
 
+  bucket <- as.bucket_name(bucket)
+
   save(..., file = tmp, envir = envir)
 
   gcs_upload(tmp, bucket = bucket, name = file)
@@ -101,6 +105,8 @@ gcs_load <- function(file = ".RData",
                      saveToDisk = file,
                      overwrite = TRUE){
 
+  bucket <- as.bucket_name(bucket)
+
   gcs_get_object(file, bucket = bucket,
                  saveToDisk = saveToDisk, overwrite = overwrite)
   load(saveToDisk, envir = envir)
@@ -118,6 +124,7 @@ gcs_load <- function(file = ".RData",
 #'
 #' @family R session data functions
 #' @return TRUE if successful
+#' @import assertthat
 #' @export
 gcs_source <- function(script,
                        bucket = gcs_get_global_bucket(),
@@ -126,9 +133,11 @@ gcs_source <- function(script,
   file <- tempfile(fileext = ".R")
   on.exit(unlink(file))
 
+  bucket <- as.bucket_name(bucket)
+
   gcs_get_object(script, bucket = bucket, saveToDisk = file)
 
-  assertthat::assert_that(assertthat::is.readable(file))
+  assert_that(is.readable(file))
 
   source(file, ...)
 }
@@ -160,6 +169,8 @@ gcs_save_all <- function(directory = getwd(),
   tmp <- tempfile(fileext = ".zip")
   on.exit(unlink(tmp))
 
+  bucket <- as.bucket_name(bucket)
+
   the_files <- file.path(directory,
                          list.files(path = directory,
                                     all.files = TRUE,
@@ -181,6 +192,8 @@ gcs_load_all <- function(directory = getwd(),
                          list = FALSE){
   tmp <- tempfile(fileext = ".zip")
   on.exit(unlink(tmp))
+
+  bucket <- as.bucket_name(bucket)
 
   gcs_get_object(directory, bucket = bucket, saveToDisk = tmp)
 
@@ -210,6 +223,8 @@ gcs_load_all <- function(directory = getwd(),
 #' @rdname gcs_save_all
 gcs_delete_all <- function(directory = getwd(),
                            bucket = gcs_get_global_bucket()){
+
+  bucket <- as.bucket_name(bucket)
 
   o <- gcs_list_objects(bucket, prefix = directory)
 

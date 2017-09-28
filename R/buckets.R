@@ -1,6 +1,31 @@
 ## store bucket name
 .gcs_env <- new.env(parent = emptyenv())
 
+#' Is a bucket
+#' @noRd
+#' @import assertthat
+is.gcs_bucket <- function(x){
+  assert_that(is.string(x))
+  inherits(x, "gcs_bucket")
+}
+
+#' Makes a bucket its bucket name or returns the name
+#' @noRd
+#' @import assertthat
+as.bucket_name <- function(x){
+  if(is.gcs_bucket(x)){
+    out <- x$name
+  } else if(is.string(x)){
+    out <- x
+  } else {
+    stop("Passed bucket is not gcs_bucket or bucket name string", call. = FALSE)
+  }
+
+  assert_that(is.string(out))
+
+  out
+}
+
 #' Set global bucket name
 #'
 #' Set a bucket name used for this R session
@@ -14,17 +39,11 @@
 #' @return The bucket name (invisibly)
 #'
 #' @family bucket functions
+#' @import assertthat
 #' @export
 gcs_global_bucket <- function(bucket){
 
-  if(inherits(bucket, "gcs_bucket")){
-    bucket <- bucket$name
-  }
-
-  assertthat::assert_that(
-    is.character(bucket),
-    is.unit(bucket)
-  )
+  bucket <- as.bucket_name(bucket)
 
   .gcs_env$bucket <- bucket
   message("Set default bucket name to '", bucket,"'")
@@ -87,6 +106,7 @@ gcs_get_global_bucket <- function(){
 #' }
 #'
 #' @family bucket functions
+#' @import assertthat
 #' @export
 gcs_list_buckets <- function(projectId,
                              prefix = "",
@@ -95,12 +115,11 @@ gcs_list_buckets <- function(projectId,
                              detail = c("summary","full")){
 
   projection <- match.arg(projection)
-  detail <- match.arg(detail)
+  detail     <- match.arg(detail)
 
-  assertthat::assert_that(is.character(projectId),
-                          is.unit(projectId),
-                          is.character(prefix),
-                          is.numeric(maxResults))
+  assert_that(is.string(projectId),
+              is.string(prefix),
+              is.count(maxResults))
 
   parse_lb <- function(x){
     x <- x$items
@@ -153,6 +172,7 @@ gcs_list_buckets <- function(projectId,
 #'
 #' @return A bucket resource object
 #' @family bucket functions
+#' @import assertthat
 #' @export
 gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
                            ifMetagenerationMatch = NULL,
@@ -161,13 +181,7 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
 
   projection <- match.arg(projection)
 
-  if(inherits(bucket, "gcs_bucket")){
-    bucket <- bucket$name
-  }
-
-  assertthat::assert_that(is.character(bucket),
-                          is.unit(bucket),
-                          is.character(projection))
+  bucket <- as.bucket_name(bucket)
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch,
@@ -202,6 +216,8 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
 #'   \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
 #'
 #' @family bucket functions
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_create_bucket <-
   function(name,
@@ -228,20 +244,16 @@ gcs_create_bucket <-
            versioning = FALSE,
            lifecycle = NULL){
 
-  projection    <- match.arg(projection)
-  predefinedAcl <- match.arg(predefinedAcl)
-  storageClass  <- match.arg(storageClass)
+  projection                 <- match.arg(projection)
+  predefinedAcl              <- match.arg(predefinedAcl)
+  storageClass               <- match.arg(storageClass)
   predefinedDefaultObjectAcl <- match.arg(predefinedDefaultObjectAcl)
 
-  assertthat::assert_that(
-    is.character(projectId),
-    is.character(name),
-    is.unit(projectId),
-    is.unit(name),
-    is.character(location),
-    is.unit(location),
-    is.character(projection),
-    is.logical(versioning)
+  assert_that(
+    is.string(projectId),
+    is.string(name),
+    is.string(location),
+    is.flag(versioning)
   )
 
   pars_args <- list(project = projectId,
@@ -250,10 +262,9 @@ gcs_create_bucket <-
                     projection = projection)
   pars_args <- rmNullObs(pars_args)
 
-  bb <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/b",
-                                   "POST",
-                                   pars_args = pars_args)
+  bb <- gar_api_generator("https://www.googleapis.com/storage/v1/b",
+                          "POST",
+                          pars_args = pars_args)
 
   body <- list(
     name = name,
@@ -291,27 +302,23 @@ gcs_create_bucket <-
 #' @param ifMetagenerationNotMatch Delete only if metageneration does not match
 #'
 #' @family bucket functions
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_delete_bucket <- function(bucket,
                               ifMetagenerationMatch = NULL,
                               ifMetagenerationNotMatch = NULL){
 
-  if(inherits(bucket, "gcs_bucket")){
-    bucket <- bucket$name
-  }
-
-  assertthat::assert_that(is.character(bucket),
-                          is.unit(bucket))
+  bucket <- as.bucket_name(bucket)
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch)
   pars_args <- rmNullObs(pars_args)
 
-  bb <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                   "DELETE",
-                                   path_args = list(b = bucket),
-                                   pars_args = pars_args)
+  bb <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+                          "DELETE",
+                          path_args = list(b = bucket),
+                          pars_args = pars_args)
 
   ## suppress warnings of no JSON content detected
   res <- suppressWarnings(bb())
@@ -347,6 +354,7 @@ gcs_delete_bucket <- function(bucket,
 #' Lifecycle documentation \url{https://cloud.google.com/storage/docs/lifecycle}
 #'
 #' @export
+#' @import assertthat
 #' @family bucket functions
 gcs_create_lifecycle <- function(age = NULL,
                                  createdBefore = NULL,
@@ -354,24 +362,23 @@ gcs_create_lifecycle <- function(age = NULL,
                                  isLive = NULL){
 
   if(!is.null(age)){
-    assertthat::assert_that(is.numeric(age))
+    assert_that(is.numeric(age))
   }
-
 
   if(!is.null(createdBefore)){
     createdBefore <- as.character(as.Date(createdBefore, format = "%Y-%m-%d"))
     if(is.na(createdBefore)){
       stop("Problem with createdBefore date, converted to ", createdBefore)
     }
-    assertthat::assert_that(is.character(createdBefore))
+    assert_that(is.character(createdBefore))
   }
 
   if(!is.null(numNewerVersions)){
-    assertthat::assert_that(is.numeric(numNewerVersions))
+    assert_that(is.numeric(numNewerVersions))
   }
 
   if(!is.null(isLive)){
-    assertthat::assert_that(is.logical(isLive))
+    assert_that(is.logical(isLive))
   }
 
   rule <- list(

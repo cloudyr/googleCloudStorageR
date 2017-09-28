@@ -20,7 +20,7 @@
 #'   service account JSON ending with file extension \code{.json}
 #'
 #' @return Invisibly, the token that has been saved to the session
-#' @import googleAuthR
+#' @importFrom googleAuthR gar_auto_auth
 #' @importFrom tools file_ext
 #' @export
 gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
@@ -29,9 +29,9 @@ gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
                        "https://www.googleapis.com/auth/devstorage.read_write",
                        "https://www.googleapis.com/auth/cloud-platform")
 
-  googleAuthR::gar_auto_auth(required_scopes,
-                             new_user = new_user,
-                             no_auto = no_auto,
-                             environment_var = "GCS_AUTH_FILE",
-                             travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
+  gar_auto_auth(required_scopes,
+                new_user = new_user,
+                no_auto = no_auto,
+                environment_var = "GCS_AUTH_FILE",
+                travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
 }

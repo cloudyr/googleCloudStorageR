@@ -10,6 +10,8 @@
 #'
 #' @return Bucket access control object
 #' @export
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @family Access control functions
 gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
                                entity = "",
@@ -20,25 +22,22 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
                                                "allUsers",
                                                "allAuthenticatedUsers")){
   entity_type <- match.arg(entity_type)
-
-  if(inherits(bucket, "gcs_bucket")){
-    bucket <- bucket$name
-  }
+  bucket      <- as.bucket_name(bucket)
 
   if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
     stop("Must supply non-empty entity argument")
   }
 
-  assertthat::assert_that(is.character(entity))
+  assert_that(is.character(entity))
 
   entity <- build_entity(entity, entity_type)
 
   ge <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1",
-                                   "GET",
-                                   path_args = list(b = bucket,
-                                                    acl = entity),
-                                   data_parse_function = function(x) x)
+    gar_api_generator("https://www.googleapis.com/storage/v1",
+                      "GET",
+                      path_args = list(b = bucket,
+                                       acl = entity),
+                      data_parse_function = function(x) x)
 
   req <- ge()
 
@@ -59,6 +58,8 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
 #'
 #' @return Bucket access control object
 #' @export
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @family Access control functions
 gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
                                   entity = "",
@@ -71,17 +72,14 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
                                   role = c("READER","OWNER")){
 
   entity_type <- match.arg(entity_type)
-  role <- match.arg(role)
-
-  if(inherits(bucket, "gcs_bucket")){
-    bucket <- bucket$name
-  }
+  role        <- match.arg(role)
+  bucket      <- as.bucket_name(bucket)
 
   if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
     stop("Must supply non-empty entity argument")
   }
 
-  assertthat::assert_that(is.character(entity))
+  assert_that(is.string(entity))
 
   accessControls <- list(
     entity = build_entity(entity, entity_type),
@@ -89,11 +87,11 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
   )
 
   insert <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1",
-                                   "POST",
-                                   path_args = list(b = bucket,
-                                                    acl = ""),
-                                   data_parse_function = function(x) x)
+    gar_api_generator("https://www.googleapis.com/storage/v1",
+                      "POST",
+                      path_args = list(b = bucket,
+                                       acl = ""),
+                      data_parse_function = function(x) x)
 
   req <- insert(the_body = accessControls)
 
@@ -137,6 +135,8 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
 #' @return TRUE if successful
 #' @family Access control functions
 #' @importFrom utils URLencode
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_update_object_acl <- function(object_name,
                                   bucket = gcs_get_global_bucket(),
@@ -150,17 +150,14 @@ gcs_update_object_acl <- function(object_name,
                                   role = c("READER","OWNER")){
 
   entity_type <- match.arg(entity_type)
-  role <- match.arg(role)
+  role        <- match.arg(role)
+  bucket      <- as.bucket_name(bucket)
 
   object_name <- gsub("^/","", URLencode(object_name, reserved = TRUE))
 
-  assertthat::assert_that(
-    is.character(bucket),
-    is.unit(bucket),
-    is.character(object_name),
-    is.unit(object_name),
-    is.character(entity),
-    is.unit(entity)
+  assert_that(
+    is.string(object_name),
+    is.string(entity)
   )
 
   if(entity == "" && !(entity_type %in% c("allUsers","allAuthenticatedUsers"))){
@@ -173,11 +170,11 @@ gcs_update_object_acl <- function(object_name,
   )
 
   insert <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1",
-                                   "POST",
-                                   path_args = list(b = bucket,
-                                                    o = object_name,
-                                                    acl = ""))
+    ggar_api_generator("https://www.googleapis.com/storage/v1",
+                       "POST",
+                       path_args = list(b = bucket,
+                                        o = object_name,
+                                        acl = ""))
 
   req <- insert(path_arguments = list(b = bucket, o = object_name),
                 the_body = accessControls)
@@ -208,18 +205,19 @@ gcs_update_object_acl <- function(object_name,
 #' @family Access control functions
 #' @export
 gcs_get_object_acl <- function(object_name,
-                                  bucket = gcs_get_global_bucket(),
-                                  entity = "",
-                                  entity_type = c("user",
-                                                  "group",
-                                                  "domain",
-                                                  "project",
-                                                  "allUsers",
-                                                  "allAuthenticatedUsers"),
-                                  generation = NULL){
+                               bucket = gcs_get_global_bucket(),
+                               entity = "",
+                               entity_type = c("user",
+                                               "group",
+                                               "domain",
+                                               "project",
+                                               "allUsers",
+                                               "allAuthenticatedUsers"),
+                               generation = NULL){
 
   entity_type <- match.arg(entity_type)
-  entity <- build_entity(entity, entity_type)
+  entity      <- build_entity(entity, entity_type)
+  bucket      <- as.bucket_name(bucket)
 
   ## no leading slashes
   object_name <- gsub("^/","", URLencode(object_name, reserved = TRUE))

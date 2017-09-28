@@ -1,10 +1,7 @@
-is.unit <- function(x){
-  length(x) == 1L
-}
-
 #' if argument is NULL, no line output
 #'
 #' @keywords internal
+#' @noRd
 cat0 <- function(prefix = "", x){
   if(!is.null(x)){
     cat(prefix, x, "\n")
@@ -14,6 +11,7 @@ cat0 <- function(prefix = "", x){
 #' Javascript time to R time
 #'
 #' @keywords internal
+#' @noRd
 js_to_posix <- function(x){
   as.POSIXct(as.numeric(x) / 1000, origin = "1970-01-01")
 }
@@ -21,6 +19,7 @@ js_to_posix <- function(x){
 #' taken from utils:::format.object_size
 #'
 #' @keywords internal
+#' @noRd
 format_object_size <- function (x, units = "b", ...)
 {
   units <- match.arg(units, c("b", "auto", "Kb", "Mb", "Gb",
@@ -50,6 +49,7 @@ format_object_size <- function (x, units = "b", ...)
 
 #' Timestamp to R date
 #' @keywords internal
+#' @noRd
 timestamp_to_r <- function(t){
   as.POSIXct(t, format = "%Y-%m-%dT%H:%M:%S")
 }
@@ -59,11 +59,13 @@ timestamp_to_r <- function(t){
 #' a list of NULLs
 #'
 #' @keywords internal
+#' @noRd
 is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
 
 #' Recursively step down into list, removing all such objects
 #'
 #' @keywords internal
+#' @noRd
 rmNullObs <- function(x) {
   x <- Filter(Negate(is.NullOb), x)
   lapply(x, function(x) if (is.list(x)) rmNullObs(x) else x)
@@ -78,6 +80,7 @@ rmNullObs <- function(x) {
 #' @return Boolean
 #'
 #' @keywords internal
+#' @noRd
 is.error <- function(test_me){
   inherits(test_me, "try-error")
 }
@@ -89,6 +92,7 @@ is.error <- function(test_me){
 #' @return The error message
 #'
 #' @keywords internal
+#' @noRd
 error.message <- function(test_me){
   if(is.error(test_me)) attr(test_me, "condition")$message
 }
@@ -100,6 +104,7 @@ error.message <- function(test_me){
 #'
 #' @details 0 = everything, 1 = debug, 2=normal, 3=important
 #' @keywords internal
+#' @noRd
 myMessage <- function(..., level = 1){
 
 
@@ -120,6 +125,7 @@ myMessage <- function(..., level = 1){
 #' @return The template with the values substituted.
 #' @keywords internal
 #' If replace_me has list names not in template, the value stays the same.
+#' @noRd
 substitute.list <- function(template, replace_me){
 
   ## remove possible NULL entries
@@ -139,6 +145,7 @@ substitute.list <- function(template, replace_me){
 #' @param func Function to apply if not a list
 #' @keywords internal
 #' @return the function acting on x or an inner element of x
+#' @noRd
 postwalk <- function(x,func){
   if(is.list(x)){
     func(lapply(x,postwalk,func))
@@ -153,6 +160,7 @@ postwalk <- function(x,func){
 #' @param replace a subset of template with same names but replacement values
 #' @keywords internal
 #' @return a list like template but with values replace from replace
+#' @noRd
 replace.kv <- function(template,replace) {
   if(!is.list(template)) return(template)
 
@@ -161,18 +169,4 @@ replace.kv <- function(template,replace) {
 
   replace(template,w,replace[i[w]])
 
-}
-
-
-
-
-
-#' Idempotency
-#'
-#' A random code to ensure no repeats
-#'
-#' @return A random 15 digit hash
-#' @keywords internal
-idempotency <- function(){
-  paste(sample(c(LETTERS, letters, 0:9), 15, TRUE),collapse="")
 }

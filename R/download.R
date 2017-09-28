@@ -21,7 +21,7 @@
 #'
 #' @family download functions
 #' @importFrom utils URLencode
-#' @importFrom assertthat assert_that
+#' @import assertthat
 #' @export
 gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), public = FALSE){
 
@@ -55,13 +55,19 @@ gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), publ
 #'
 #' @family download functions
 #' @seealso gcs_get_object
+#' @importFrom httr content
 #' @export
 gcs_parse_download <- function(object, encoding = "UTF-8"){
-  out <- httr::content(object, encoding = encoding)
+  out <- content(object, encoding = encoding)
   message("Object parsed to class: ", paste(class(out), collapse = " "))
   out
 }
 
+#' Create signature
+#' @noRd
+#' @import assertthat
+#' @importFrom curl curl_escape
+#' @importFrom openssl base64_encode signature_create sha256
 create_signature <- function(path,
                              json_key,
                              my_content_type,
@@ -70,15 +76,12 @@ create_signature <- function(path,
                              # extension_headers = "",
                              md5hash = ""){
 
-  assertthat::assert_that(
+  assert_that(
     is.character(json_key),
     as.numeric(Sys.time()) < as.numeric(expiration_ts),
-    is.character(path),
-    is.unit(path),
-    is.character(verb),
-    is.unit(verb),
-    is.character(my_content_type),
-    is.unit(my_content_type)
+    is.string(path),
+    is.string(verb),
+    is.string(my_content_type)
   )
 
   sig_string <- paste(verb,
@@ -96,9 +99,9 @@ create_signature <- function(path,
   }
 
 
-  curl::curl_escape(openssl::base64_encode(openssl::signature_create(data=charToRaw(sig_string),
-                                                                     key=json_key,
-                                                                     hash=openssl::sha256)))
+  curl_escape(base64_encode(signature_create(data=charToRaw(sig_string),
+                                             key=json_key,
+                                             hash=sha256)))
 }
 
 #' Create a signed URL
@@ -136,20 +139,22 @@ create_signature <- function(path,
 #'
 #' @export
 #' @family download functions
+#' @import assertthat
+#' @importFrom jsonlite fromJSON
 gcs_signed_url <- function(meta_obj,
                            expiration_ts = Sys.time() + 3600,
                            verb = "GET",
                            md5hash = NULL,
                            includeContentType = FALSE){
 
-  assertthat::assert_that(
+  assert_that(
     inherits(meta_obj, "gcs_objectmeta"),
-    assertthat::is.readable(Sys.getenv("GCS_AUTH_FILE"))
+    is.readable(Sys.getenv("GCS_AUTH_FILE"))
   )
 
   my_content_type <- if(includeContentType) meta_obj$contentType else ""
 
-  json_file <- jsonlite::fromJSON(Sys.getenv("GCS_AUTH_FILE"))
+  json_file <- fromJSON(Sys.getenv("GCS_AUTH_FILE"))
 
   sig <- create_signature(paste0("/",meta_obj$bucket, "/", meta_obj$name),
                           json_key = json_file$private_key,

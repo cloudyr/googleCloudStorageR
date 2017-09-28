@@ -34,10 +34,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
   detail <- match.arg(detail)
 
-  assertthat::assert_that(
-    is.character(bucket),
-    is.unit(bucket)
-  )
+  bucket <- as.bucket_name(bucket)
 
   pars <- list(prefix = prefix,
                delimiter = delimiter)
@@ -183,6 +180,9 @@ gcs_parse_gsurls <- function(gsurl){
 #'
 #' @family object functions
 #' @importFrom utils URLdecode
+#' @import assertthat
+#' @importFrom httr write_disk
+#' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_get_object <- function(object_name,
                            bucket = gcs_get_global_bucket(),
@@ -192,11 +192,10 @@ gcs_get_object <- function(object_name,
                            parseObject = TRUE,
                            parseFunction = gcs_parse_download){
 
-  assertthat::assert_that(
-    is.character(object_name),
-    is.unit(object_name),
-    is.logical(meta),
-    is.logical(parseObject)
+  assert_that(
+    is.string(object_name),
+    is.flag(meta),
+    is.flag(parseObject)
   )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
@@ -205,11 +204,7 @@ gcs_get_object <- function(object_name,
     bucket <- parse_gsurl$bucket
   }
 
-  ## here as the bucket can be inferred from a gs URL
-  assertthat::assert_that(
-    is.character(bucket),
-    is.unit(bucket)
-    )
+  bucket <- as.bucket_name(bucket)
 
   object_name <- URLencode(object_name, reserved = TRUE)
 
@@ -224,18 +219,18 @@ gcs_get_object <- function(object_name,
   ## download directly to disk
   if(!is.null(saveToDisk)){
 
-    assertthat::assert_that(is.logical(overwrite))
+    assert_that(is.logical(overwrite))
 
-    customConfig <- list(httr::write_disk(saveToDisk, overwrite = overwrite))
+    customConfig <- list(write_disk(saveToDisk, overwrite = overwrite))
   } else {
     customConfig <- NULL
   }
 
-  ob <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                       path_args = list(b = bucket,
-                                                        o = object_name),
-                                       pars_args = list(alt = alt),
-                                       customConfig = customConfig)
+  ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+                          path_args = list(b = bucket,
+                                           o = object_name),
+                          pars_args = list(alt = alt),
+                          customConfig = customConfig)
   req <- ob()
 
 
@@ -297,7 +292,6 @@ gcs_metadata_object <- function(object_name = NULL,
   parse_gsurl <- gcs_parse_gsurls(object_name)
   if(!is.null(parse_gsurl)){
     object_name <- parse_gsurl$obj
-    # bucket <- parse_gsurl$bucket
   }
 
   object_name <- if(!is.null(object_name)) URLencode(object_name, reserved = TRUE)
@@ -328,16 +322,15 @@ gcs_metadata_object <- function(object_name = NULL,
 #'
 #' @return If successful, TRUE.
 #' @family object functions
+#' @import assertthat
+#' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_delete_object <- function(object_name,
                               bucket = gcs_get_global_bucket(),
                               generation = NULL){
 
-  assertthat::assert_that(
-    is.character(bucket),
-    is.unit(bucket),
-    is.character(object_name),
-    is.unit(object_name)
+  assert_that(
+    is.string(object_name)
   )
 
   parse_gsurl <- gcs_parse_gsurls(object_name)
@@ -346,16 +339,18 @@ gcs_delete_object <- function(object_name,
     bucket <- parse_gsurl$bucket
   }
 
+  bucket <- as.bucket_name(bucket)
+
   object_name <- URLencode(object_name, reserved = TRUE)
 
   pars <- list(generation = generation)
   pars <- rmNullObs(pars)
 
-  ob <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                       "DELETE",
-                                       path_args = list(b = bucket,
-                                                        o = object_name),
-                                       pars_args = pars)
+  ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+                          "DELETE",
+                          path_args = list(b = bucket,
+                                           o = object_name),
+                          pars_args = pars)
 
   ## suppress warnings of no JSON content detected
   suppressWarnings(ob())
