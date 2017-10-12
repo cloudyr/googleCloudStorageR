@@ -32,6 +32,5 @@ gcs_auth <- function(new_user = FALSE, no_auto = FALSE){
   gar_auto_auth(required_scopes,
                 new_user = new_user,
                 no_auto = no_auto,
-                environment_var = "GCS_AUTH_FILE",
-                travis_environment_var = "TRAVIS_GCS_AUTH_FILE")
+                environment_var = "GCS_AUTH_FILE")
 }
