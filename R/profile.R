@@ -72,6 +72,7 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
   ## avoid interaction with loaded session
   on.exit({
     unloadNamespace("googleCloudStorageR")
+    options(googleAuthR.scopes.selected = NULL)
   })
 
   local({
@@ -133,7 +134,7 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
                  error = function(ex){
                    warning("# No file found on GCS - ", ex)
                  })
-        
+
         ## special case to make sure SSH keys are useable
         key.private <- "~/.ssh/id_rsa"
         if(file.exists(key.private)){
