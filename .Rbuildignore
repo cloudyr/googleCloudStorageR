@@ -13,3 +13,5 @@ test_signedurls.RData
 ^revdep
 ^docs$
 ^_pkgdown\.yml$
+^_gcssave\.yaml$
+^.Rhistory$
