@@ -114,7 +114,7 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
                 "https://www.googleapis.com/auth/devstorage.read_write")
       auth_try <- googleAuthR::gar_gce_auth()
       if(is.null(auth_try)){
-        message("GCE auth didn't work, looking for GCS_AUTH")
+        message("GCE auth didn't work, looking for GCS_AUTH_FILE")
         gcs_auth()
       }
 

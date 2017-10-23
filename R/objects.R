@@ -52,7 +52,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
     npt <- attr(req, "nextPageToken")
 
     while(!is.null(npt)){
-      myMessage("Paging through results: ", npt, level = 3)
+      myMessage("Paging through results...", level = 3)
       lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
                                             path_args = list(b = bucket,
                                                              o = ""),
@@ -70,7 +70,8 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
   if(nrow(req) > 0){
     out_names <- switch(detail,
                         summary = c("name", "size", "updated"),
-                        more = c("name", "size", "bucket", "contentType", "timeCreated", "updated", "storageClass"),
+                        more = c("name", "size", "bucket", "contentType",
+                                 "timeCreated", "updated", "storageClass"),
                         full = TRUE
     )
     req[,out_names]
@@ -98,6 +99,10 @@ parse_lo <- function(x){
   x$updated <- timestamp_to_r(x$updated)
   x$kind <- NULL
   x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
+
+  ## extra columns for composite objects (#73)
+  x$componentCount  <- if(is.null(x$componentCount)) NA else x$componentCount
+  x$contentLanguage <- if(is.null(x$contentLanguage)) NA else x$contentLanguage
 
   attr(x, "nextPageToken") <- nextPageToken
   attr(x, "prefixes") <- prefixes
