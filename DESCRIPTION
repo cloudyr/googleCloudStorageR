@@ -11,7 +11,7 @@ Depends:
     R (>= 3.2.0)
 Imports:
     assertthat (>= 0.2.0),
-    googleAuthR (>= 0.6.0),
+    googleAuthR (>= 0.6.2),
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
     utils,
