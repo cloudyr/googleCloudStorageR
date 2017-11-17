@@ -34,34 +34,21 @@
 #'
 #' @seealso \link{gcs_save_all} and \link{gcs_load_all} that these functions call
 #'
+#'
 #' @examples
 #'
 #' \dontrun{
 #'
 #' ## within your .Rprofile file
 #' .First <- function(){
-#'   cat("\n# Welcome Mark! Today is ", date(), "\n")
-#'
-#'   ## will look for download if GCS_SESSION_BUCKET env arg set
 #'   googleCloudStorageR::gcs_first()
 #' }
 #'
 #'
 #' .Last <- function(){
-#'   # will only upload if a _gcssave.yaml in directory with bucketname
 #'   googleCloudStorageR::gcs_last()
-#'   message("\nGoodbye Mark at ", date(), "\n")
 #' }
 #'
-#' ### example _gcssave.yaml contents -------------
-#' # The GCS bucket to save/load R workspace from
-#' bucket: my-bucket-for-r-projects
-#' # set to FALSE if you don't want to load on R session startup
-#' load_on_startup: TRUE
-#' # on first load, whether to look for a different directory on GCS than present getwd()
-#' loaddir: /Users/mark/other-computer/projectname
-#' # regex to only save these files to GCS
-#' pattern: "\\.R$"
 #'
 #' }
 #' @export

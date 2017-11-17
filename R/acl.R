@@ -170,7 +170,7 @@ gcs_update_object_acl <- function(object_name,
   )
 
   insert <-
-    ggar_api_generator("https://www.googleapis.com/storage/v1",
+    gar_api_generator("https://www.googleapis.com/storage/v1",
                        "POST",
                        path_args = list(b = bucket,
                                         o = object_name,

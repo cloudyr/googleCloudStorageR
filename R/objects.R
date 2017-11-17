@@ -400,7 +400,6 @@ gcs_delete_object <- function(object_name,
 #'
 #' @family Object functions
 #' @keywords internal
-#' @noRd
 Object <- function(acl = NULL,
                    bucket = NULL,
                    cacheControl = NULL,

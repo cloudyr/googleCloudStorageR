@@ -1,6 +1,6 @@
 Package: googleCloudStorageR
 Type: Package
-Version: 0.3.0.9000
+Version: 0.4.0
 Title: R Interface with Google Cloud Storage
 Description: Interact with Google Cloud Storage API in R. Part of the 'cloudyr' project.
 Authors@R: c(person("Mark", "Edmondson",email = "r@sunholo.com",
@@ -11,18 +11,18 @@ Depends:
     R (>= 3.2.0)
 Imports:
     assertthat (>= 0.2.0),
+    curl,
     googleAuthR (>= 0.6.2),
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
+    openssl,
     utils,
     yaml,
     zip
 Suggests:
     covr,
-    curl,
     googleComputeEngineR,
     knitr,
-    openssl,
     readr,
     rmarkdown,
     testthat
