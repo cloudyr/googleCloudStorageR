@@ -80,7 +80,7 @@
 #'
 #'
 #' @importFrom httr add_headers upload_file
-#' @importFrom utils URLencode
+#' @importFrom utils URLencode write.csv
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom googleAuthR gar_api_generator
 #'
