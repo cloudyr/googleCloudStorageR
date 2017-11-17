@@ -1,4 +1,4 @@
-# googleCloudStorageR 0.3.0.9000
+# googleCloudStorageR 0.4.0
 
 ## Major changes
 
@@ -10,6 +10,7 @@
 * Add use of `_gcssave.yaml` file to control `gcs_first/last` behaviour
 * Allow passing a bucket object to functions that expect a bucket name (#76)
 * remove now unsupported travis environment argument
+* Add support for subscribing bucket changes to Google Pub/Sub
 
 # googleCloudStorageR 0.3.0
 
