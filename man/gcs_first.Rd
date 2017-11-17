@@ -27,7 +27,7 @@ The folder you want to save to Google Cloud Storage will also need to have a yam
 
 The bucket name is also set via the environment arg \code{GCE_SESSION_BUCKET}. The yaml bucket name will take precedence if both are set.
 
-The folder is named on GCS the full working path to the working directory e.g. \code{/Users/mark/dev/your-r-project} which is what is looked for on startuæ.  If you create a new R project with the same filepath and bucket as an existing saved set, the files will download automatically when you load R from that folder (when starting an RStudio project).
+The folder is named on GCS the full working path to the working directory e.g. \code{/Users/mark/dev/your-r-project} which is what is looked for on startup.  If you create a new R project with the same filepath and bucket as an existing saved set, the files will download automatically when you load R from that folder (when starting an RStudio project).
 
 If you load from a different filepath (e.g. with \code{loadir} set in yaml), when you exit and save the files will be saved under your new present working directory.
 
@@ -46,7 +46,6 @@ For authentication for GCS,
 
 \dontrun{
 
-## within your .Rprofile file
 .First <- function(){
   googleCloudStorageR::gcs_first()
 }
@@ -58,7 +57,10 @@ For authentication for GCS,
 
 
 }
+
 }
 \seealso{
+\link{gcs_save_all} and \link{gcs_load_all} that these functions call
+
 \link{gcs_save_all} and \link{gcs_load_all} that these functions call
 }
