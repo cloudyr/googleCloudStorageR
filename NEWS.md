@@ -1,3 +1,7 @@
+# googleCloudStorage 0.4.0.9000
+
+* ...
+
 # googleCloudStorageR 0.4.0
 
 ## Major changes
