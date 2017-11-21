@@ -4,7 +4,7 @@
 \alias{gcs_auth}
 \title{Authenticate this session}
 \usage{
-gcs_auth(new_user = FALSE, no_auto = FALSE)
+gcs_auth(token = NULL, new_user = FALSE, no_auto = FALSE)
 }
 \arguments{
 \item{new_user}{If TRUE, reauthenticate via Google login screen}
