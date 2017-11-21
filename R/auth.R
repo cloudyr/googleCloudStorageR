@@ -2,6 +2,7 @@
 #'
 #' A wrapper for \link[googleAuthR]{gar_auth} and \link[googleAuthR]{gar_auth_service}
 #'
+#' @param token An existing token object, or filepath to one
 #' @param new_user If TRUE, reauthenticate via Google login screen
 #' @param no_auto Will ignore auto-authentication settings if TRUE
 #'

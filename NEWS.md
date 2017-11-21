@@ -1,6 +1,6 @@
 # googleCloudStorage 0.4.0.9000
 
-* ...
+* Make `gcs_auth()` more forgiving
 
 # googleCloudStorageR 0.4.0
 
