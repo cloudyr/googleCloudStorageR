@@ -5,3 +5,4 @@
 .httr-oauth-SUSPENDED
 inst/doc
 auth.json
+gcs.oauth

@@ -15,3 +15,4 @@ test_signedurls.RData
 ^_pkgdown\.yml$
 ^_gcssave\.yaml$
 ^.Rhistory$
+^gcs\.oauth$

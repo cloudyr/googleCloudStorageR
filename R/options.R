@@ -5,9 +5,19 @@
 }
 
 .onAttach <- function(libname, pkgname){
+  
+  suppressMessages(
+    googleAuthR::gar_set_client(system.file("client","googleAuthR_nobilling_client.json",
+                                          package = "googleCloudStorageR"),
+                              scopes = "https://www.googleapis.com/auth/devstorage.full_control")
+    )
+  
+  options(googleAuthR.httr_oauth_cache = "gcs.oauth")
 
-  attempt <- try(googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
-                                    environment_var = "GCS_AUTH_FILE"))
+  attempt <- try(
+    googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
+                                      environment_var = "GCS_AUTH_FILE")
+    )
 
   if(inherits(attempt, "try-error")){
     warning("Problem using auto-authentication when loading from GCS_AUTH_FILE: \n", attempt, "

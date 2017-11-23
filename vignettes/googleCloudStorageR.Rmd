@@ -31,29 +31,11 @@ Sys.setenv("GCS_CLIENT_ID" = "mykey",
 
 These can alternatively be set on the command line or via an Renviron.site or .Renviron file (`https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html`).
 
-## Authentication
 
-Authentication can be carried out each session via `gcs_auth`.  The first time you run this you will be sent to a Google login prompt in your browser to allow the `googleCloudStorageR` project access (or the Google project you configure). 
-
-Once authenticated a file named `.httr-oauth` is saved to your working directory.  On subsequent authentication this file will hold your authentication details, and you won't need to go via the browser.  Deleting this file, or setting `new_user=TRUE` will start the authentication flow again.
-
-```r
-library(googleCloudStorageR)
-## first time this will send you to the browser to authenticate
-gcs_auth()
-
-## to authenticate with a fresh user, delete .httr-oauth or run with new_user=TRUE
-gcs_auth(new_user = TRUE)
-
-...call functions...etc...
-
-```
-
-Each new R session will need to run `gcs_auth()` to authenticate future API calls.
 
 ### Auto-authentication
 
-Alternatively, you can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created `.httr-oauth` token in a system environment:
+The best method for authentication is to use your own Google Cloud Project.  You can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created `gcs.oauth` token in a system environment:
 
         Sys.setenv("GCS_AUTH_FILE" = "/fullpath/to/auth.json")
 
@@ -65,8 +47,29 @@ library(googleCloudStorageR)
 
 ## no need for gcs_auth()
 gcs_get_bucket("your-bucket")
+```
+
+If using your own `gcs.oauth` file you will also need to set the client ID and secret.  This is easiest done using `googleAuthR::gar_set_client()` - see its help for details. 
+
+## Manual Authentication
+
+Authentication can be carried out each session via `gcs_auth`.  The first time you run this you will be sent to a Google login prompt in your browser to allow the `googleCloudStorageR` project access (or the Google project you configure). 
+
+Once authenticated a file named `gcs.oauth` is saved to your working directory.  On subsequent authentication this file will hold your authentication details, and you won't need to go via the browser.  Deleting this file, or setting `new_user=TRUE` will start the authentication flow again.
+
+```r
+library(googleCloudStorageR)
+## first time this will send you to the browser to authenticate
+gcs_auth()
+
+## to authenticate with a fresh user, delete gcs.oauth or run with new_user=TRUE
+gcs_auth(new_user = TRUE)
+
+...call functions...etc...
 
 ```
+
+Each new R session will need to run `gcs_auth()` to authenticate future API calls.
 
 ## Examples
 

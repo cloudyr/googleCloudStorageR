@@ -1,6 +1,7 @@
 # googleCloudStorage 0.4.0.9000
 
 * Make `gcs_auth()` more forgiving
+* Add a default google cloud project
 
 # googleCloudStorageR 0.4.0
 
