@@ -97,7 +97,8 @@ gcs_upload <- function(file,
                          "bucketOwnerFullControl",
                          "bucketOwnerRead",
                          "projectPrivate",
-                         "publicRead"
+                         "publicRead",
+                         "default"
                        ),
                        upload_type = c("simple","resumable")){
 
@@ -170,14 +171,18 @@ gcs_upload <- function(file,
     ## resumable upload
     myMessage("Resumable upload", level = 2)
 
+    pars_args <- list(uploadType="resumable",
+                      name=name)
+    if(predefinedAcl != "default"){
+      pars_args[["predefinedAcl"]] <- predefinedAcl
+    }
+
     up <-
       googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
                                      "POST",
                                      path_args = list(b = "myBucket",
                                                       o = ""),
-                                     pars_args = list(uploadType="resumable",
-                                                      name=name,
-                                                      predefinedAcl=predefinedAcl),
+                                     pars_args = pars_args,
                                      customConfig = list(
                                        add_headers("X-Upload-Content-Type" = type),
                                        add_headers("X-Upload-Content-Length" = file.size(temp))
@@ -244,14 +249,18 @@ gcs_upload <- function(file,
       content = upload_file(temp, type = type)
     )
 
+    pars_args <- list(uploadType="multipart",
+                      name=name)
+    if(predefinedAcl != "default"){
+      pars_args[["predefinedAcl"]] <- predefinedAcl
+    }
+
     up <-
       gar_api_generator("https://www.googleapis.com/upload/storage/v1",
                         "POST",
                         path_args = list(b = "myBucket",
                                          o = ""),
-                        pars_args = list(uploadType="multipart",
-                                         name=name,
-                                         predefinedAcl=predefinedAcl),
+                        pars_args = pars_args,
                         customConfig = list(
                           encode = "multipart",
                           httr::add_headers("Content-Type" =  "multipart/related")
@@ -267,14 +276,18 @@ gcs_upload <- function(file,
     bb <- httr::upload_file(temp, type = type)
     myMessage("Simple upload", level = 2)
 
+    pars_args <- list(uploadType="media",
+                      name=name)
+    if(predefinedAcl != "default"){
+      pars_args[["predefinedAcl"]] <- predefinedAcl
+    }
+
     up <-
       gar_api_generator("https://www.googleapis.com/upload/storage/v1",
                         "POST",
                         path_args = list(b = "myBucket",
                                          o = ""),
-                        pars_args = list(uploadType="media",
-                                         name=name,
-                                         predefinedAcl=predefinedAcl))
+                        pars_args = pars_args)
 
     req <- up(path_arguments = list(b = bucket),
               pars_arguments = list(name = name),
