@@ -1,3 +1,7 @@
+# googleCloudStorage 0.4.1
+
+* Allow default acls of uploaded objects
+
 # googleCloudStorage 0.4.0.9000
 
 * Make `gcs_auth()` more forgiving
