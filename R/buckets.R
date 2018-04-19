@@ -15,10 +15,10 @@ is.gcs_bucket <- function(x){
 as.bucket_name <- function(x){
   if(is.gcs_bucket(x)){
     out <- x$name
-  } else if(is.string(x)){
+  } else if(is.string(x) && x != ""){
     out <- x
   } else {
-    stop("Passed bucket is not gcs_bucket or bucket name string", call. = FALSE)
+    stop("Bucket name is invalid", call. = FALSE)
   }
 
   assert_that(is.string(out))

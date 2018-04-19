@@ -10,7 +10,7 @@
     googleAuthR::gar_set_client(system.file("client","googleAuthR_nobilling_client.json",
                                           package = "googleCloudStorageR"),
                               scopes = "https://www.googleapis.com/auth/devstorage.full_control")
-    )
+   )
   
   options(googleAuthR.httr_oauth_cache = "gcs.oauth")
 
