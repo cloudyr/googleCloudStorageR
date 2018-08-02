@@ -83,6 +83,7 @@
 #' @importFrom utils URLencode write.csv
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom googleAuthR gar_api_generator
+#' @importFrom tools file_ext
 #'
 #' @export
 gcs_upload <- function(file,
@@ -129,8 +130,9 @@ gcs_upload <- function(file,
     if(all(names(formals(object_function)) != c("input","output"))){
       stop("object_function should carry only two arguments - 'input' and 'output'")
     }
-
-    temp <- tempfile()
+    
+    ## take file extension of name, fix #91
+    temp <- tempfile(fileext = tools::file_ext(name))
     on.exit(unlink(temp))
 
     object_function(input = file, output = temp)
