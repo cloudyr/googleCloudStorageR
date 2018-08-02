@@ -84,6 +84,7 @@
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom googleAuthR gar_api_generator
 #' @importFrom tools file_ext
+#' @import assertthat
 #'
 #' @export
 gcs_upload <- function(file,
@@ -102,45 +103,59 @@ gcs_upload <- function(file,
                          "default"
                        ),
                        upload_type = c("simple","resumable")){
-
+  
   bucket        <- as.bucket_name(bucket)
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type   <- match.arg(upload_type)
-
-  ## so jsonlite::toJSON works
-  if(!is.null(object_metadata)) class(object_metadata) <- "list"
-
+  
   ## no leading slashes
   name <- gsub("^/","", URLencode(name, reserved = TRUE))
   
   ## method dispatch for custom function
   if(!is.null(object_function)){
     class(file) <- c("gcs_cf", class(file))
-    }
+  }
   
-  UseMethod("gcs_upload")
+  ## so jsonlite::toJSON works
+  if(!is.null(object_metadata)) class(object_metadata) <- "list"
+  
+  # hack to get around method dispatch class for file
+  gcs_upload_s3(file = file,
+                bucket = bucket,
+                type = type,
+                name = name,
+                object_function = object_function,
+                object_metadata = object_metadata,
+                predefinedAcl = predefinedAcl,
+                upload_type = upload_type)
+  
+  
 }
 
-#' @export
-gcs_upload.character <- function(file,
-                                 bucket = gcs_get_global_bucket(),
-                                 type = NULL,
-                                 name = deparse(substitute(file)),
-                                 object_function = NULL,
-                                 object_metadata = NULL,
-                                 predefinedAcl = c(
-                                   "private",
-                                   "authenticatedRead",
-                                   "bucketOwnerFullControl",
-                                   "bucketOwnerRead",
-                                   "projectPrivate",
-                                   "publicRead",
-                                   "default"
-                                 ),
-                                 upload_type = c("simple","resumable")){
-  if(!file.exists(file)){
-    stop("No file found at ", file)
-  }
+gcs_upload_s3 <- function(file,
+                          bucket,
+                          type,
+                          name,
+                          object_function,
+                          object_metadata,
+                          predefinedAcl,
+                          upload_type){
+  
+  UseMethod("gcs_upload_s3")
+}
+
+
+gcs_upload_s3.character <- function(file,
+                                    bucket,
+                                    type,
+                                    name,
+                                    object_function,
+                                    object_metadata,
+                                    predefinedAcl,
+                                    upload_type){
+  myMessage("gcs_upload.character", level = 1)
+  
+  assert_that(is.readable(file))
   
   temp <- file
   ## get rid of " marks
@@ -155,24 +170,18 @@ gcs_upload.character <- function(file,
             upload_type = upload_type)
 }
 
-#' @export
-gcs_upload.gcs_cf <- function(file,
-                              bucket = gcs_get_global_bucket(),
-                              type = NULL,
-                              name = deparse(substitute(file)),
-                              object_function = NULL,
-                              object_metadata = NULL,
-                              predefinedAcl = c(
-                                "private",
-                                "authenticatedRead",
-                                "bucketOwnerFullControl",
-                                "bucketOwnerRead",
-                                "projectPrivate",
-                                "publicRead",
-                                "default"
-                              ),
-                              upload_type = c("simple","resumable")){
-  
+
+gcs_upload_s3.gcs_cf <- function(file,
+                                 bucket,
+                                 type,
+                                 name,
+                                 object_function,
+                                 object_metadata,
+                                 predefinedAcl,
+                                 upload_type){
+  myMessage("gcs_upload.gcs_cf", level = 1)
+
+  assert_that(is.function(object_function))
   
   if(all(names(formals(object_function)) != c("input","output"))){
     stop("object_function should carry only two arguments - 'input' and 'output'")
@@ -182,10 +191,14 @@ gcs_upload.gcs_cf <- function(file,
   temp <- tempfile(fileext = tools::file_ext(name))
   on.exit(unlink(temp))
   
-  object_function(input = file, output = temp)
+  tryCatch({
+    object_function(input = file, output = temp)
+  }, error = function(ex) {
+    stop("object_function error: ", ex$message)
+  }) 
   
-  if(!file.exists(temp)){
-    stop("Problem writing file using object_function")
+  if(!is.readable(temp)){
+    stop("Can not read file created by passed object_function()")
   }
   
   do_upload(name = name,
@@ -199,25 +212,16 @@ gcs_upload.gcs_cf <- function(file,
   
 }
 
-#' @export
-gcs_upload.data.frame <- function(file,
-                                  bucket = gcs_get_global_bucket(),
-                                  type = NULL,
-                                  name = deparse(substitute(file)),
-                                  object_function = NULL,
-                                  object_metadata = NULL,
-                                  predefinedAcl = c(
-                                    "private",
-                                    "authenticatedRead",
-                                    "bucketOwnerFullControl",
-                                    "bucketOwnerRead",
-                                    "projectPrivate",
-                                    "publicRead",
-                                    "default"
-                                  ),
-                                  upload_type = c("simple","resumable")){
-  
-  # data.frame via write.csv
+
+gcs_upload_s3.data.frame <- function(file,
+                                     bucket,
+                                     type,
+                                     name,
+                                     object_function,
+                                     object_metadata,
+                                     predefinedAcl,
+                                     upload_type){
+  myMessage("gcs_upload.data.frame", level = 1)
   
   temp <- tempfile(fileext = ".csv")
   on.exit(unlink(temp))
@@ -236,23 +240,16 @@ gcs_upload.data.frame <- function(file,
   
 }
 
-#' @export
-gcs_upload.list <- function(file,
-                            bucket = gcs_get_global_bucket(),
-                            type = NULL,
-                            name = deparse(substitute(file)),
-                            object_function = NULL,
-                            object_metadata = NULL,
-                            predefinedAcl = c(
-                              "private",
-                              "authenticatedRead",
-                              "bucketOwnerFullControl",
-                              "bucketOwnerRead",
-                              "projectPrivate",
-                              "publicRead",
-                              "default"
-                            ),
-                            upload_type = c("simple","resumable")){
+
+gcs_upload_s3.list <- function(file,
+                               bucket,
+                               type,
+                               name,
+                               object_function,
+                               object_metadata,
+                               predefinedAcl,
+                               upload_type){
+  myMessage("gcs_upload.list", level = 1)
   
   temp <- tempfile(fileext = ".json")
   on.exit(unlink(temp))
@@ -271,26 +268,18 @@ gcs_upload.list <- function(file,
   
 }
 
-#' @export
-gcs_upload.default <- function(file,
-                            bucket = gcs_get_global_bucket(),
-                            type = NULL,
-                            name = deparse(substitute(file)),
-                            object_function = NULL,
-                            object_metadata = NULL,
-                            predefinedAcl = c(
-                              "private",
-                              "authenticatedRead",
-                              "bucketOwnerFullControl",
-                              "bucketOwnerRead",
-                              "projectPrivate",
-                              "publicRead",
-                              "default"
-                            ),
-                            upload_type = c("simple","resumable")){
+
+gcs_upload_s3.default <- function(file,
+                                  bucket,
+                                  type,
+                                  name,
+                                  object_function,
+                                  object_metadata,
+                                  predefinedAcl,
+                                  upload_type){
   
   stop("Unsupported object type passed in argument file: specify filepath or define a
-         write function using argument object_function", .call = FALSE)
+         write function using argument object_function", call. = FALSE)
 }
 
 
@@ -342,7 +331,6 @@ do_simple_upload <- function(name,
   ## simple upload <5MB
   bb <- httr::upload_file(temp, type = type)
   myMessage("Simple upload", level = 2)
-  
   
   pars_args <- list(uploadType="media",
                     name=name)
