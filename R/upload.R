@@ -170,7 +170,6 @@ gcs_upload_s3.character <- function(file,
             upload_type = upload_type)
 }
 
-
 gcs_upload_s3.gcs_cf <- function(file,
                                  bucket,
                                  type,
