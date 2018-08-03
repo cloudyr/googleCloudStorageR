@@ -293,7 +293,7 @@ do_upload <- function(name,
   myMessage("File size detected as ",
             format_object_size(file.size(temp), "auto"), level = 3)
   
-  # 5TB limit
+  # 5MB simple upload limit
   UPLOAD_LIMIT <- 5000000L
   
   if(upload_type == "resumable" || file.size(temp) > UPLOAD_LIMIT){
