@@ -132,7 +132,7 @@ gcs_upload <- function(file,
     }
     
     ## take file extension of name, fix #91
-    temp <- tempfile(fileext = tools::file_ext(name))
+    temp <- tempfile(fileext = paste0(".",tools::file_ext(name)))
     on.exit(unlink(temp))
 
     object_function(input = file, output = temp)
