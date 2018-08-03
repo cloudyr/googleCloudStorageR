@@ -188,7 +188,7 @@ gcs_upload_s3.gcs_cf <- function(file,
   }
   
   ## take file extension of name, fix #91
-  temp <- tempfile(fileext = tools::file_ext(name))
+  temp <- tempfile(fileext = paste0(".",tools::file_ext(name)))
   on.exit(unlink(temp))
   
   tryCatch({
