@@ -84,6 +84,7 @@
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom googleAuthR gar_api_generator
 #' @importFrom tools file_ext
+#' @import assertthat
 #'
 #' @export
 gcs_upload <- function(file,
@@ -102,205 +103,379 @@ gcs_upload <- function(file,
                          "default"
                        ),
                        upload_type = c("simple","resumable")){
-
+  
   bucket        <- as.bucket_name(bucket)
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type   <- match.arg(upload_type)
-  upload_limit  <- 5000000L
-  ## so jsonlite::toJSON works
-  if(!is.null(object_metadata)) class(object_metadata) <- "list"
-
+  
   ## no leading slashes
   name <- gsub("^/","", URLencode(name, reserved = TRUE))
-
-  if(inherits(file, "character")){
-    # a filepath
-
-    if(!file.exists(file)){
-      stop("No file found at ", file)
-    }
-
-    temp <- file
-    ## get rid of " marks
-    name <- gsub("%22","", name)
-
-  } else if(!is.null(object_function)){
-    # user specified object write function
-
-    if(all(names(formals(object_function)) != c("input","output"))){
-      stop("object_function should carry only two arguments - 'input' and 'output'")
-    }
-    
-    ## take file extension of name, fix #91
-    temp <- tempfile(fileext = paste0(".",tools::file_ext(name)))
-    on.exit(unlink(temp))
-
-    object_function(input = file, output = temp)
-
-    if(!file.exists(temp)){
-      stop("Problem writing file using object_function")
-    }
-
-  } else if(inherits(file, "data.frame")){
-    # data.frame via write.csv
-
-    temp <- tempfile(fileext = ".csv")
-    on.exit(unlink(temp))
-
-    write.csv(file, file = temp)
-
-    name <- if(!grepl("\\.csv$", name)) paste0(name,".csv") else name
-
-  } else if(inherits(file, "list")){
-    # JSON via toJSON
-
-    temp <- tempfile(fileext = ".json")
-    on.exit(unlink(temp))
-
-    write(toJSON(file), temp)
-
-    name <- if(!grepl("\\.json$", name)) paste0(name,".json") else name
-
-  } else {
-    stop("Unsupported object type passed in argument file: specify filepath or define a
-         write function using argument object_function")
+  
+  ## method dispatch for custom function
+  if(!is.null(object_function)){
+    class(file) <- c("gcs_cf", class(file))
   }
+  
+  ## so jsonlite::toJSON works
+  if(!is.null(object_metadata)) class(object_metadata) <- "list"
+  
+  # hack to get around method dispatch class for file
+  gcs_upload_s3(file = file,
+                bucket = bucket,
+                type = type,
+                name = name,
+                object_function = object_function,
+                object_metadata = object_metadata,
+                predefinedAcl = predefinedAcl,
+                upload_type = upload_type)
+  
+  
+}
 
+gcs_upload_s3 <- function(file,
+                          bucket,
+                          type,
+                          name,
+                          object_function,
+                          object_metadata,
+                          predefinedAcl,
+                          upload_type){
+  
+  UseMethod("gcs_upload_s3")
+}
+
+
+gcs_upload_s3.character <- function(file,
+                                    bucket,
+                                    type,
+                                    name,
+                                    object_function,
+                                    object_metadata,
+                                    predefinedAcl,
+                                    upload_type){
+  myMessage("gcs_upload.character", level = 1)
+  
+  assert_that(is.readable(file))
+  
+  temp <- file
+  ## get rid of " marks
+  name <- gsub("%22","", name)
+  
+  do_upload(name = name,
+            bucket = bucket,
+            predefinedAcl = predefinedAcl,
+            object_metadata = object_metadata,
+            temp = temp,
+            type = type,
+            upload_type = upload_type)
+}
+
+gcs_upload_s3.gcs_cf <- function(file,
+                                 bucket,
+                                 type,
+                                 name,
+                                 object_function,
+                                 object_metadata,
+                                 predefinedAcl,
+                                 upload_type){
+  myMessage("gcs_upload.gcs_cf", level = 1)
+
+  assert_that(is.function(object_function))
+  
+  if(all(names(formals(object_function)) != c("input","output"))){
+    stop("object_function should carry only two arguments - 'input' and 'output'")
+  }
+  
+  ## take file extension of name, fix #91
+  temp <- tempfile(fileext = paste0(".",tools::file_ext(name)))
+  on.exit(unlink(temp))
+  
+  tryCatch({
+    object_function(input = file, output = temp)
+  }, error = function(ex) {
+    stop("object_function error: ", ex$message)
+  }) 
+  
+  if(!is.readable(temp)){
+    stop("Can not read file created by passed object_function()")
+  }
+  
+  do_upload(name = name,
+            bucket = bucket,
+            predefinedAcl = predefinedAcl,
+            object_metadata = object_metadata,
+            temp = temp,
+            type = type,
+            upload_type = upload_type)
+  
+  
+}
+
+
+gcs_upload_s3.data.frame <- function(file,
+                                     bucket,
+                                     type,
+                                     name,
+                                     object_function,
+                                     object_metadata,
+                                     predefinedAcl,
+                                     upload_type){
+  myMessage("gcs_upload.data.frame", level = 1)
+  
+  temp <- tempfile(fileext = ".csv")
+  on.exit(unlink(temp))
+  
+  write.csv(file, file = temp)
+  
+  name <- if(!grepl("\\.csv$", name)) paste0(name,".csv") else name
+  
+  do_upload(name = name,
+            bucket = bucket,
+            predefinedAcl = predefinedAcl,
+            object_metadata = object_metadata,
+            temp = temp,
+            type = type,
+            upload_type = upload_type)
+  
+}
+
+
+gcs_upload_s3.list <- function(file,
+                               bucket,
+                               type,
+                               name,
+                               object_function,
+                               object_metadata,
+                               predefinedAcl,
+                               upload_type){
+  myMessage("gcs_upload.list", level = 1)
+  
+  temp <- tempfile(fileext = ".json")
+  on.exit(unlink(temp))
+  
+  write(toJSON(file), temp)
+  
+  name <- if(!tools::file_ext(name) == "json") paste0(name,".json") else name
+  
+  do_upload(name = name,
+            bucket = bucket,
+            predefinedAcl = predefinedAcl,
+            object_metadata = object_metadata,
+            temp = temp,
+            type = type,
+            upload_type = upload_type)
+  
+}
+
+
+gcs_upload_s3.default <- function(file,
+                                  bucket,
+                                  type,
+                                  name,
+                                  object_function,
+                                  object_metadata,
+                                  predefinedAcl,
+                                  upload_type){
+  
+  stop("Unsupported object type passed in argument file: specify filepath or define a
+         write function using argument object_function", call. = FALSE)
+}
+
+
+do_upload <- function(name,
+                      bucket,
+                      predefinedAcl,
+                      object_metadata,
+                      temp,
+                      type,
+                      upload_type){
+  
   myMessage("File size detected as ",
             format_object_size(file.size(temp), "auto"), level = 3)
+  
+  # 5TB limit
+  UPLOAD_LIMIT <- 5000000L
+  
+  if(upload_type == "resumable" || file.size(temp) > UPLOAD_LIMIT){
+    do_resumable_upload(name = name,
+                        bucket = bucket,
+                        predefinedAcl = predefinedAcl,
+                        object_metadata = object_metadata,
+                        temp = temp,
+                        type = type)
+  } else if(!is.null(object_metadata)){
+    do_multipart_upload(name = name,
+                        bucket = bucket,
+                        predefinedAcl = predefinedAcl,
+                        object_metadata = object_metadata,
+                        temp = temp,
+                        type = type)
+  } else {
+    do_simple_upload(name = name,
+                     bucket = bucket,
+                     predefinedAcl = predefinedAcl,
+                     object_metadata = object_metadata,
+                     temp = temp,
+                     type = type)
+  }
+  
+}
 
-  if(upload_type == "resumable" || file.size(temp) > upload_limit){
-    ## resumable upload
-    myMessage("Resumable upload", level = 2)
+do_simple_upload <- function(name,
+                             bucket,
+                             predefinedAcl,
+                             object_metadata,
+                             temp,
+                             type){
+  ## simple upload <5MB
+  bb <- httr::upload_file(temp, type = type)
+  myMessage("Simple upload", level = 2)
+  
+  pars_args <- list(uploadType="media",
+                    name=name)
+  
+  if(predefinedAcl != "default"){
+    pars_args[["predefinedAcl"]] <- predefinedAcl
+  }
+  
+  up <-
+    gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+                      "POST",
+                      path_args = list(b = bucket,
+                                       o = ""),
+                      pars_args = pars_args)
+  
+  req <- up(the_body = bb)
+  
+  structure(req$content, class = "gcs_objectmeta")
+  
+}
 
-    pars_args <- list(uploadType="resumable",
-                      name=name)
-    if(predefinedAcl != "default"){
-      pars_args[["predefinedAcl"]] <- predefinedAcl
-    }
+do_multipart_upload <- function(name,
+                                bucket,
+                                predefinedAcl,
+                                object_metadata,
+                                temp,
+                                type){
+  
+  ## multipart upload
+  myMessage("Multi-part upload", level = 2)
+  if(!is.null(object_metadata$name)){
+    name <- object_metadata$name
+  }
+  
+  temp2 <- tempfile(fileext = ".json")
+  on.exit(unlink(temp2))
+  
+  ## http://stackoverflow.com/questions/31080363/how-to-post-multipart-related-content-with-httr-for-google-drive-api
+  writeLines(toJSON(object_metadata, auto_unbox = TRUE), temp2)
+  
+  bb <- list(
+    metadata = upload_file(temp2, type = "application/json; charset=UTF-8"),
+    content = upload_file(temp, type = type)
+  )
+  
+  pars_args <- list(uploadType="multipart",
+                    name=name)
+  if(predefinedAcl != "default"){
+    pars_args[["predefinedAcl"]] <- predefinedAcl
+  }
+  
+  up <-
+    gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+                      "POST",
+                      path_args = list(b = bucket,
+                                       o = ""),
+                      pars_args = pars_args,
+                      customConfig = list(
+                        encode = "multipart",
+                        httr::add_headers("Content-Type" =  "multipart/related")
+                      ))
+  
+  req <- up(the_body = bb)
+  
+  structure(req$content, class = "gcs_objectmeta")
+  
+}
 
-    up <-
-      googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
-                                     "POST",
-                                     path_args = list(b = "myBucket",
-                                                      o = ""),
-                                     pars_args = pars_args,
-                                     customConfig = list(
-                                       add_headers("X-Upload-Content-Type" = type),
-                                       add_headers("X-Upload-Content-Length" = file.size(temp))
 
-                                     ))
+do_resumable_upload <- function(name,
+                                bucket,
+                                predefinedAcl,
+                                object_metadata,
+                                temp,
+                                type){
+  myMessage("Resumable upload", level = 2)
+  
+  pars_args <- list(uploadType="resumable",
+                    name=name)
+  if(predefinedAcl != "default"){
+    pars_args[["predefinedAcl"]] <- predefinedAcl
+  }
+  
+  up <-
+    googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+                                   "POST",
+                                   path_args = list(b = bucket,
+                                                    o = ""),
+                                   pars_args = pars_args,
+                                   customConfig = list(
+                                     add_headers("X-Upload-Content-Type" = type),
+                                     add_headers("X-Upload-Content-Length" = file.size(temp))
+                                     
+                                   ))
+  
+  req <- up(the_body = object_metadata)
+  
+  ## extract the upload URL
+  if(req$status_code == 200){
+    
+    upload_url <- req$headers$location
+    myMessage("Found resumeable upload URL: ", upload_url, level = 3)
+    
+  } else {
+    stop("Couldn't find resumeable upload URL")
+  }
+  
+  up2 <- PUTme(upload_url,
+               body = upload_file(temp, type = type))
+  
+  if(up2$status_code %in% c(200,201)){
+    
+    out <- structure(fromJSON(content(up2, as ="text")), 
+                     class = "gcs_objectmeta")
+  } else {
 
-    req <- suppressWarnings(up(path_arguments = list(b = bucket),
-                               pars_arguments = list(name = name),
-                               the_body = object_metadata))
-    ## extract the upload URL
-    if(req$status_code == 200){
+    myMessage("File upload failed, trying to resume...", level = 3)
 
-      upload_url <- req$headers$location
-      myMessage("Found upload URL: ", upload_url, level = 2)
-
-    } else {
-      stop("Couldn't find upload URL")
-    }
-
-    up2 <- PUTme(upload_url,
-                 body = upload_file(temp, type = type))
-
-    if(up2$status_code %in% c(200,201)){
-      out <- structure(fromJSON(content(up2, as ="text")), class = "gcs_objectmeta")
-    } else {
-
-      message("File upload failed, trying to resume...")
-      message("Try 2 of 3...")
-      Sys.sleep(2)
-      try2 <- gcs_retry_upload(upload_url = upload_url, file = temp, type = type)
-      if(inherits(try2, "gcs_objectmeta")){
-        out <- try2
+    retry <- 3
+    while(retry > 0){
+      myMessage(sprintf("Retry %s of 3", retry), level = 3)
+      Sys.sleep(10)
+      try <- gcs_retry_upload(upload_url = upload_url, file = temp, type = type)
+      if(inherits(try, "gcs_objectmeta")){
+        # success
+        return(try)
       } else {
-        message("Try 3 of 3...")
-        Sys.sleep(8)
-        try3 <- gcs_retry_upload(try2)
-        if(inherits(try3, "gcs_objectmeta")){
-          out <- try3
-        } else {
-          message("All attempts failed.
-                  Returning gcs_upload_retry object for you to use in gcs_retry_upload() later.")
-          out <- try3
-        }
+        retry <- retry - 1
       }
     }
-
-  } else if (!is.null(object_metadata)){
-    ## multipart upload
-    myMessage("Multi-part upload", level = 2)
-    if(!is.null(object_metadata$name)){
-      name <- object_metadata$name
+    
+    if(inherits(out, "gcs_upload_retry")){
+      myMessage("All attempts failed.
+                Returning gcs_upload_retry object for you to use in gcs_retry_upload() later.", level = 3)
+      return(try)
+    } else {
+      stop("Unknown class of object returned on retry")
     }
-
-
-
-    temp2 <- tempfile()
-    on.exit(unlink(temp2))
-
-    ## http://stackoverflow.com/questions/31080363/how-to-post-multipart-related-content-with-httr-for-google-drive-api
-    writeLines(toJSON(object_metadata, auto_unbox = TRUE), temp2)
-
-    bb <- list(
-      metadata = upload_file(temp2, type = "application/json; charset=UTF-8"),
-      content = upload_file(temp, type = type)
-    )
-
-    pars_args <- list(uploadType="multipart",
-                      name=name)
-    if(predefinedAcl != "default"){
-      pars_args[["predefinedAcl"]] <- predefinedAcl
-    }
-
-    up <-
-      gar_api_generator("https://www.googleapis.com/upload/storage/v1",
-                        "POST",
-                        path_args = list(b = "myBucket",
-                                         o = ""),
-                        pars_args = pars_args,
-                        customConfig = list(
-                          encode = "multipart",
-                          httr::add_headers("Content-Type" =  "multipart/related")
-                        ))
-
-    req <- up(path_arguments = list(b = bucket),
-              pars_arguments = list(name = name),
-              the_body = bb)
-    out <- structure(req$content, class = "gcs_objectmeta")
-
-  } else {
-    ## simple upload <5MB
-    bb <- httr::upload_file(temp, type = type)
-    myMessage("Simple upload", level = 2)
-
-    pars_args <- list(uploadType="media",
-                      name=name)
-    if(predefinedAcl != "default"){
-      pars_args[["predefinedAcl"]] <- predefinedAcl
-    }
-
-    up <-
-      gar_api_generator("https://www.googleapis.com/upload/storage/v1",
-                        "POST",
-                        path_args = list(b = "myBucket",
-                                         o = ""),
-                        pars_args = pars_args)
-
-    req <- up(path_arguments = list(b = bucket),
-              pars_arguments = list(name = name),
-              the_body = bb)
-
-    out <- structure(req$content, class = "gcs_objectmeta")
+    
   }
-
-  out
-
+  
 }
+
+
+
+
 
 #' Retry a resumeable upload
 #'
