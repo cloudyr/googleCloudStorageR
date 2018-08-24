@@ -1,44 +1,22 @@
 .onLoad <- function(libname, pkgname) {
 
+  op <- options()
+  op.googleCloudStorageR <- list(
+    googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/devstorage.full_control")
+  )
+  
+  toset <- !(names(op.googleCloudStorageR) %in% names(op))
+  
+  if(any(toset)) options(op.googleCloudStorageR[toset])
+  
   invisible()
 
 }
 
 .onAttach <- function(libname, pkgname){
-  
-  suppressMessages(
-    googleAuthR::gar_set_client(system.file("client","googleAuthR_nobilling_client.json",
-                                          package = "googleCloudStorageR"),
-                              scopes = "https://www.googleapis.com/auth/devstorage.full_control")
-   )
-  
-  options(googleAuthR.httr_oauth_cache = "gcs.oauth")
 
-  attempt <- try(
-    googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
+  googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
                                       environment_var = "GCS_AUTH_FILE")
-    )
-
-  if(inherits(attempt, "try-error")){
-    warning("Problem using auto-authentication when loading from GCS_AUTH_FILE: \n", attempt, "
-            Run googleAuthR::gar_auth() or googleAuthR::gar_auth_service() instead.")
-  }
-
-  if(Sys.getenv("GCS_CLIENT_ID") != ""){
-    options(googleAuthR.client_id = Sys.getenv("GCS_CLIENT_ID"))
-  }
-
-  if(Sys.getenv("GCS_CLIENT_SECRET") != ""){
-    options(googleAuthR.client_secret = Sys.getenv("GCS_CLIENT_SECRET"))
-  }
-
-  if(Sys.getenv("GCS_WEB_CLIENT_ID") != ""){
-    options(googleAuthR.webapp.client_id = Sys.getenv("GCS_WEB_CLIENT_ID"))
-  }
-
-  if(Sys.getenv("GCS_WEB_CLIENT_SECRET") != ""){
-    options(googleAuthR.webapp.client_id = Sys.getenv("GCS_WEB_CLIENT_SECRET"))
-  }
 
   if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
     .gcs_env$bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")

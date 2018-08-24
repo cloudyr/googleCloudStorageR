@@ -1,7 +1,6 @@
 # googleCloudStorage 0.4.0.9000
 
-* Make `gcs_auth()` more forgiving
-* Add a default google cloud project
+* Refactor authentication to favour json file and fix auth hangs (#87)
 * Prevent error if bucket name is empty string (#90)
 * `gcs_upload()` will use file extension of `name` in its temporary file (#91)
 
