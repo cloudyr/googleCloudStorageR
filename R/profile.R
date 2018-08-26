@@ -104,7 +104,7 @@ gcs_first <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
       auth_try <- googleAuthR::gar_gce_auth()
       if(is.null(auth_try)){
         message("GCE auth didn't work, looking for GCS_AUTH_FILE")
-        gcs_auth()
+        gcs_auth(Sys.getenv("GCS_AUTH_FILE"))
       }
 
       o <- tryCatch(gcs_list_objects(prefix = gcs_rdata, bucket = bucket),
@@ -184,8 +184,8 @@ gcs_last <- function(bucket = Sys.getenv("GCS_SESSION_BUCKET")){
   options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.read_write")
   auth_try <- gar_gce_auth()
   if(is.null(auth_try)){
-    message("GCE auth didn't work, looking for GCS_AUTH")
-    gcs_auth()
+    message("GCE auth didn't work, looking for GCS_AUTH_FILE")
+    gcs_auth(Sys.getenv("GCS_AUTH_FILE"))
   }
 
   message("\nSaving data to Google Cloud Storage:\n",
