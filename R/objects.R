@@ -46,6 +46,8 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                       pars_args = pars,
                                       data_parse_function = parse_lo)
   req <- lo()
+  
+  req <- limit_columns(req, detail = detail)
 
   ## page through list if necessary
   if(!is.null(attr(req, "nextPageToken"))){
@@ -59,26 +61,30 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                             pars_args = c(pars, list(pageToken = npt)),
                                             data_parse_function = parse_lo)
       more_req <- lo2(pars_arguments = npt)
-
+      more_req <- limit_columns(more_req, detail = detail)
+      
       npt <- attr(more_req, "nextPageToken")
       req <- rbind(req, more_req)
     }
   }
 
-
-
-  if(nrow(req) > 0){
-    out_names <- switch(detail,
-                        summary = c("name", "size", "updated"),
-                        more = c("name", "size", "bucket", "contentType",
-                                 "timeCreated", "updated", "storageClass"),
-                        full = TRUE
-    )
-    req[,out_names]
-  }
-
   req
 
+}
+
+limit_columns <- function(req, detail){
+  
+  if(nrow(req) == 0){
+    return(data.frame())
+  }
+  
+  out_names <- switch(detail,
+                      summary = c("name", "size", "updated"),
+                      more = c("name", "size", "bucket", "contentType",
+                               "timeCreated", "updated", "storageClass"),
+                      full = TRUE)
+  
+  req[,out_names]
 }
 
 ## parse
