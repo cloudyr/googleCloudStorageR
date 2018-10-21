@@ -7,21 +7,21 @@
 #' @importFrom googleAuthR gar_api_generator
 #' @family managementAPI functions
 #' @export
-gcs_version_bucket <- function(bucket, action = "status") {
+gcs_version_bucket <- function(bucket, action = c("status","enable","disable","list")) {
   
-  # support the case where user enters bucket with gs:// prefix
-  bucket <- gsub("^gs://", "", bucket)
+  action <- match.arg(action)
+  
+  bucket <- as.bucket_name(bucket)
+  
   # check that it is a valid bucket that user has access to
   tryCatch({
     gcs_get_bucket(bucket)
     # cat(sprintf("\n \"%s\" is a valid bucket.\n", bucket))
   }, error = function(e) {
-    e
     stop("Bucket not found. Check bucket name and if you have read permissions.
-    Looked for ", bucket)
+    Looked for ", bucket,  call. = FALSE)
   })
   
-  # options(googleAuthR.verbose = 0)
   # will only be different for list
   url <- sprintf(
     "https://www.googleapis.com/storage/v1/b/%s",
@@ -53,13 +53,9 @@ gcs_version_bucket <- function(bucket, action = "status") {
   # on or off
   else if (action %in% c("enable","disable")) {
     
-    trueorfalse <- ifelse(action == "enable", "true", "false")
+    trueorfalse <- ifelse(action == "enable", TRUE, FALSE)
     
-    body <- list(x = jsonlite::toJSON(sprintf('{
-      "versioning": {
-        "enabled": %s
-      }
-    }', trueorfalse)))
+    body <- list(versioning = list(enabled = trueorfalse))
     
     api <- googleAuthR::gar_api_generator(url,
                                           "PATCH",
@@ -72,5 +68,5 @@ gcs_version_bucket <- function(bucket, action = "status") {
     
   }
   
-  #TO DO: on, off, or list
+  #TO DO: list
 }
