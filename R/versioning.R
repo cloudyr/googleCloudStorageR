@@ -85,7 +85,6 @@ gcs_version_bucket <- function(bucket, action = "status") {
                                           pars_args = pars_args,
                                           data_parse_function = function(x) x,
                                           checkTrailingSlash = FALSE,
-                                          customConfig = list(httr::add_headers("Content-Type" = "application/json"),
 )
     )
     
