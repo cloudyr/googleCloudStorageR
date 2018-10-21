@@ -13,9 +13,11 @@ is.gcs_bucket <- function(x){
 #' @noRd
 #' @import assertthat
 as.bucket_name <- function(x){
+  
   if(is.gcs_bucket(x)){
     out <- x$name
-  } else if(is.string(x) && x != ""){
+  } else if(is.string(x) && x != ""){ 
+    x <- gsub("^gs://", "", x) #remove prefix if one exists
     out <- x
   } else {
     stop("Bucket name is invalid", call. = FALSE)
