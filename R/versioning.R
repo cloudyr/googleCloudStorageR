@@ -62,7 +62,7 @@ gcs_version_bucket <- function(bucket, action = c("status","enable","disable","l
                                           pars_args = pars_args,
                                           data_parse_function = function(x) x,
                                           checkTrailingSlash = FALSE
-)
+    )
     
     api(the_body = body)
     
