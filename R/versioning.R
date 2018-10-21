@@ -67,6 +67,22 @@ gcs_version_bucket <- function(bucket, action = c("status","enable","disable","l
     api(the_body = body)
     
   }
-  
-  #TO DO: list
+  else if (action == "list") {
+    
+    url <- sprintf(
+      "https://www.googleapis.com/storage/v1/b/%s/o",
+      bucket
+    )
+    pars_args <- list(versions = "true")
+    
+    api <- googleAuthR::gar_api_generator(url,
+                                          "GET",
+                                          pars_args = pars_args,
+                                          data_parse_function = function(x) x,
+                                          checkTrailingSlash = FALSE
+    )
+    
+    api()
+    
+  }
 }
