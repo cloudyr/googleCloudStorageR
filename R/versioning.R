@@ -1,5 +1,8 @@
 #' Turn bucket versioning on or off, check status (default), or
-#' list both live and archived versions of objects in the bucket
+#' list both live and archived versions of objects in the bucket 
+#' and view their generation numbers. Archived versions of objects have a 
+#' `timeDeleted` property. 
+#'
 #' @param action "status", "enable", "disable", or "list"
 #' @param bucket gcs bucket
 #'
@@ -68,6 +71,8 @@ gcs_version_bucket <- function(bucket, action = c("status","enable","disable","l
     
   }
   else if (action == "list") {
+    # To list both live and archived versions of an object and view their generation numbers:
+    # Archived versions of objects have a `timeDeleted` property.
     
     url <- sprintf(
       "https://www.googleapis.com/storage/v1/b/%s/o",
@@ -78,7 +83,7 @@ gcs_version_bucket <- function(bucket, action = c("status","enable","disable","l
     api <- googleAuthR::gar_api_generator(url,
                                           "GET",
                                           pars_args = pars_args,
-                                          data_parse_function = function(x) x,
+                                          data_parse_function = function(x) x$items,
                                           checkTrailingSlash = FALSE
     )
     
