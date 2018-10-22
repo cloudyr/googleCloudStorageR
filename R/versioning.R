@@ -55,7 +55,7 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
 
     body <- list(versioning = list(enabled = trueorfalse))
 
-    api <- googleAuthR::gar_api_generator(url,
+    api <- gar_api_generator(url,
       "PATCH",
       pars_args = pars_args,
       data_parse_function = function(x) x,
