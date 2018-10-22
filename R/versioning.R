@@ -32,7 +32,7 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
 
   # Default is to check status
   if (action == "status") {
-    api <- googleAuthR::gar_api_generator(url,
+    api <- gar_api_generator(url,
       "GET",
       pars_args = pars_args,
       data_parse_function = function(x) x,
@@ -51,11 +51,10 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
   }
   # on or off
   else if (action %in% c("enable", "disable")) {
-    trueorfalse <- ifelse(action == "enable", TRUE, FALSE)
 
-    body <- list(versioning = list(enabled = trueorfalse))
+    body <- list(versioning = list(enabled = (action == "enable")))
 
-    api <- googleAuthR::gar_api_generator(url,
+    api <- gar_api_generator(url,
       "PATCH",
       pars_args = pars_args,
       data_parse_function = function(x) x,
@@ -75,7 +74,7 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
     )
     pars_args <- list(versions = "true")
 
-    api <- googleAuthR::gar_api_generator(url,
+    api <- gar_api_generator(url,
       "GET",
       pars_args = pars_args,
       data_parse_function = function(x) x$items,
