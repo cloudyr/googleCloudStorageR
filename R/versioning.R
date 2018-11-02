@@ -83,7 +83,8 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
     if (!("timeDeleted" %in% colnames(api()))) {
       stop("`timeDeleted` property not found. No archived versions currently in bucket: ", bucket, call. = FALSE)
     } else {
-      dplyr::filter(api(), !is.na(timeDeleted))
+      api <- api()
+      api[!is.na(api$timeDeleted), ]
     }
   }
 }
