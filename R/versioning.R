@@ -35,14 +35,20 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
     api <- gar_api_generator(url,
       "GET",
       pars_args = pars_args,
-      data_parse_function = function(x) x,
+      data_parse_function = function(x) {
+        if (length(x) == 0) { 
+          x 
+        } else {
+          x$versioning$enabled
+        }
+      },
       checkTrailingSlash = FALSE
     )
 
     if (length(api()) == 0) { # If versioning has never been enabled before
-      cat(sprintf("Versioning is NOT ENABLED for \"%s\"", bucket))
+      cat(sprintf("Versioning in NOT ENABLED for \"%s\"", bucket))
     } else {
-      if (api()$versioning$enabled == TRUE) {
+      if (api() == TRUE) {
         cat(sprintf("Versioning is ENABLED for \"%s\"", bucket))
       } else {
         cat(sprintf("Versioning is NOT ENABLED for \"%s\"", bucket))
