@@ -46,14 +46,14 @@ gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable",
     )
 
     if (length(api()) == 0) { # If versioning has never been enabled before
-      cat(sprintf("Versioning in NOT ENABLED for \"%s\"", bucket))
+      cat(sprintf("Versioning in NOT ENABLED for \"%s\"\n", bucket))
       return(FALSE)
     } else {
       if (api() == TRUE) {
-        cat(sprintf("Versioning is ENABLED for \"%s\"", bucket))
+        cat(sprintf("Versioning is ENABLED for \"%s\"\n", bucket))
         return(TRUE)
       } else {
-        cat(sprintf("Versioning is NOT ENABLED for \"%s\"", bucket))
+        cat(sprintf("Versioning is NOT ENABLED for \"%s\"\n", bucket))
         return(FALSE)
       }
     }
