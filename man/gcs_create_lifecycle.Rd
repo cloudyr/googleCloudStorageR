@@ -23,6 +23,19 @@ For multiple conditions, pass this object in as a list.}
 \description{
 Use this to set rules for how long objects last in a bucket in \link{gcs_create_bucket}
 }
+\examples{
+\dontrun{
+  lifecycle <- gcs_create_lifecycle(age = 30)
+  
+  gcs_create_bucket("your-bucket-lifecycle",
+                     projectId = "your-project",
+                     location = "EUROPE-NORTH1",
+                     storageClass = "REGIONAL",
+                     lifecycle = list(lifecycle))
+
+
+}
+}
 \seealso{
 Lifecycle documentation \url{https://cloud.google.com/storage/docs/lifecycle}
 

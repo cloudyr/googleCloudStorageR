@@ -358,6 +358,18 @@ gcs_delete_bucket <- function(bucket,
 #' @export
 #' @import assertthat
 #' @family bucket functions
+#' @examples 
+#' \dontrun{
+#'   lifecycle <- gcs_create_lifecycle(age = 30)
+#'   
+#'   gcs_create_bucket("your-bucket-lifecycle",
+#'                      projectId = "your-project",
+#'                      location = "EUROPE-NORTH1",
+#'                      storageClass = "REGIONAL",
+#'                      lifecycle = list(lifecycle))
+#' 
+#' 
+#' }
 gcs_create_lifecycle <- function(age = NULL,
                                  createdBefore = NULL,
                                  numNewerVersions = NULL,
