@@ -45,13 +45,13 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                                        o = ""),
                                       pars_args = pars,
                                       data_parse_function = parse_lo)
-  req <- lo()
+  req1 <- lo()
   
-  req <- limit_columns(req, detail = detail)
+  req <- limit_columns(req1, detail = detail)
 
   ## page through list if necessary
-  if(!is.null(attr(req, "nextPageToken"))){
-    npt <- attr(req, "nextPageToken")
+  if(!is.null(attr(req1, "nextPageToken"))){
+    npt <- attr(req1, "nextPageToken")
 
     while(!is.null(npt)){
       myMessage("Paging through results...", level = 3)
@@ -60,10 +60,10 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                                                              o = ""),
                                             pars_args = c(pars, list(pageToken = npt)),
                                             data_parse_function = parse_lo)
-      more_req <- lo2(pars_arguments = npt)
-      more_req <- limit_columns(more_req, detail = detail)
+      more_req1 <- lo2(pars_arguments = npt)
+      more_req <- limit_columns(more_req1, detail = detail)
       
-      npt <- attr(more_req, "nextPageToken")
+      npt <- attr(more_req1, "nextPageToken")
       req <- rbind(req, more_req)
     }
   }
