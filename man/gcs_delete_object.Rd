@@ -8,7 +8,7 @@ gcs_delete_object(object_name, bucket = gcs_get_global_bucket(),
   generation = NULL)
 }
 \arguments{
-\item{object_name}{Object to be deleted}
+\item{object_name}{Object to be deleted, or a \code{gs://} URL}
 
 \item{bucket}{Bucket to delete object from}
 
@@ -23,7 +23,8 @@ If successful, TRUE.
 Deletes an object from a bucket
 }
 \seealso{
-Other object functions: \code{\link{gcs_get_object}},
+Other object functions: \code{\link{gcs_copy_object}},
+  \code{\link{gcs_get_object}},
   \code{\link{gcs_list_objects}},
   \code{\link{gcs_metadata_object}}
 }
