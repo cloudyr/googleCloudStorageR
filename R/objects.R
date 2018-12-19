@@ -399,20 +399,20 @@ gcs_copy_object <- function(source_object,
     is.string(destination_object)
   )
   
-  source_object <- gcs_parse_gsurls(source_object)
-  if(!is.null(source_object)){
-    source_object <- source_object$obj
-    source_bucket <- source_object$bucket
+  source_gcs <- gcs_parse_gsurls(source_object)
+  if(!is.null(source_gcs)){
+    source_object <- source_gcs$obj
+    source_bucket <- source_gcs$bucket
   }
-  destination_object <- gcs_parse_gsurls(destination_object)
-  if(!is.null(destination_object)){
-    destination_object <- destination_object$obj
-    destination_bucket <- destination_object$bucket
+  destination_gcs <- gcs_parse_gsurls(destination_object)
+  if(!is.null(destination_gcs)){
+    destination_object <- destination_gcs$obj
+    destination_bucket <- destination_gcs$bucket
   }
   
   source_bucket <- as.bucket_name(source_bucket)
   destination_bucket <- as.bucket_name(destination_bucket)
-  
+
   source_object <- URLencode(source_object, reserved = TRUE)
   destination_object <- URLencode(destination_object, reserved = TRUE)
   
