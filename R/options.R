@@ -15,7 +15,8 @@
 
 .onAttach <- function(libname, pkgname){
 
-  googleAuthR::gar_attach_auto_auth("https://www.googleapis.com/auth/devstorage.full_control",
+  googleAuthR::gar_attach_auto_auth(c("https://www.googleapis.com/auth/devstorage.full_control",
+                                      "https://www.googleapis.com/auth/cloud-platform"),
                                       environment_var = "GCS_AUTH_FILE")
 
   if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
