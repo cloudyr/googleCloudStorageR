@@ -18,6 +18,10 @@
 #' \dontrun{
 #'  gcs_global_bucket("your-bucket")
 #'  objs <- gcs_list_objects()
+#'  
+#'  compose_me <- objs$name[1:30]
+#'  
+#'  gcs_compose_objects(compose_me, "composed/test.json")
 #' 
 #' }
 gcs_compose_objects <- function(objects,
@@ -30,14 +34,14 @@ gcs_compose_objects <- function(objects,
     length(objects) <= 32
   )
   
-  objects <- unlist(lapply(objects, URLencode, reserved = TRUE))
+  objects <- lapply(objects, function(x){
+    list(name = URLencode(x,reserved = TRUE))
+  })
   destination <- URLencode(destination, reserved = TRUE)
   
   body <- list(
     kind = "storage#composeRequest",
-    sourceObjects = list(
-      objects
-    ),
+    sourceObjects = objects,
     destination = list(
       kind = "storage#object",
       name = destination,

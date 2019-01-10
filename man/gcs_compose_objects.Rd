@@ -24,6 +24,10 @@ This merges objects stored on Cloud Storage into one object.
 \dontrun{
  gcs_global_bucket("your-bucket")
  objs <- gcs_list_objects()
+ 
+ compose_me <- objs$name[1:30]
+ 
+ gcs_compose_objects(compose_me, "composed/test.json")
 
 }
 }
