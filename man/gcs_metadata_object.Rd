@@ -32,7 +32,8 @@ Object metadata for uploading of class \code{gar_Object}
 Use this to pass to uploads in \link{gcs_upload}
 }
 \seealso{
-Other object functions: \code{\link{gcs_copy_object}},
+Other object functions: \code{\link{gcs_compose_objects}},
+  \code{\link{gcs_copy_object}},
   \code{\link{gcs_delete_object}},
   \code{\link{gcs_get_object}},
   \code{\link{gcs_list_objects}}

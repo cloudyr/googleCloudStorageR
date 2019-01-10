@@ -23,7 +23,8 @@ If successful, TRUE.
 Deletes an object from a bucket
 }
 \seealso{
-Other object functions: \code{\link{gcs_copy_object}},
+Other object functions: \code{\link{gcs_compose_objects}},
+  \code{\link{gcs_copy_object}},
   \code{\link{gcs_get_object}},
   \code{\link{gcs_list_objects}},
   \code{\link{gcs_metadata_object}}

@@ -27,6 +27,7 @@
 #'
 #' @family object functions
 #' @export
+#' @importFrom googleAuthR gar_api_generator gar_api_page
 gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                              detail = c("summary","more","full"),
                              prefix = NULL,
@@ -37,39 +38,23 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
   bucket <- as.bucket_name(bucket)
 
   pars <- list(prefix = prefix,
-               delimiter = delimiter)
+               delimiter = delimiter,
+               pageToken = "")
   pars <- rmNullObs(pars)
 
-  lo <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                      path_args = list(b = bucket,
-                                                       o = ""),
-                                      pars_args = pars,
-                                      data_parse_function = parse_lo)
-  req <- lo()
+  lo <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+                          path_args = list(b = bucket,
+                                           o = ""),
+                          pars_args = pars,
+                          data_parse_function = parse_lo)
   
-  req <- limit_columns(req, detail = detail)
-
-  ## page through list if necessary
-  if(!is.null(attr(req, "nextPageToken"))){
-    npt <- attr(req, "nextPageToken")
-
-    while(!is.null(npt)){
-      myMessage("Paging through results...", level = 3)
-      lo2 <- googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
-                                            path_args = list(b = bucket,
-                                                             o = ""),
-                                            pars_args = c(pars, list(pageToken = npt)),
-                                            data_parse_function = parse_lo)
-      more_req <- lo2(pars_arguments = npt)
-      more_req <- limit_columns(more_req, detail = detail)
-      
-      npt <- attr(more_req, "nextPageToken")
-      req <- rbind(req, more_req)
-    }
-  }
-
-  req
-
+  req <- gar_api_page(lo, 
+                      page_f = function(x) attr(x, "nextPageToken"),
+                      page_method = "param", 
+                      page_arg = "pageToken")
+  
+  req <- Reduce(rbind, req)
+  limit_columns(req, detail = detail)
 }
 
 limit_columns <- function(req, detail){

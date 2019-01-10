@@ -40,7 +40,8 @@ Columns returned by \code{detail} are:
     and prefixes \code{"a/" and "e/"}.
 }
 \seealso{
-Other object functions: \code{\link{gcs_copy_object}},
+Other object functions: \code{\link{gcs_compose_objects}},
+  \code{\link{gcs_copy_object}},
   \code{\link{gcs_delete_object}},
   \code{\link{gcs_get_object}},
   \code{\link{gcs_metadata_object}}
