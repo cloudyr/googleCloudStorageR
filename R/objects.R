@@ -53,8 +53,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                       page_method = "param", 
                       page_arg = "pageToken")
   
-  req <- Reduce(rbind, req)
-  limit_columns(req, detail = detail)
+  limit_columns(my_reduce_rbind(req), detail = detail)
 }
 
 limit_columns <- function(req, detail){
@@ -97,6 +96,10 @@ parse_lo <- function(x){
 
   attr(x, "nextPageToken") <- nextPageToken
   attr(x, "prefixes") <- prefixes
+  attr(x, "metadata") <- x$metadata
+  
+  x$metadata <- NULL
+  
   x
 }
 
