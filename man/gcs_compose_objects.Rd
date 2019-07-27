@@ -33,7 +33,7 @@ This merges objects stored on Cloud Storage into one object.
 }
 }
 \seealso{
-\href{Compose objects}{https://cloud.google.com/storage/docs/json_api/v1/objects/compose}
+\href{https://cloud.google.com/storage/docs/json_api/v1/objects/compose}{Compose objects}
 
 Other object functions: \code{\link{gcs_copy_object}},
   \code{\link{gcs_delete_object}},

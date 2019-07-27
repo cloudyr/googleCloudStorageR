@@ -11,7 +11,7 @@
 #' @import assertthat
 #' @importFrom googleAuthR gar_api_generator
 #' @export
-#' @seealso \href{Compose objects}{https://cloud.google.com/storage/docs/json_api/v1/objects/compose}
+#' @seealso \href{https://cloud.google.com/storage/docs/json_api/v1/objects/compose}{Compose objects}
 #' 
 #' @examples 
 #' 

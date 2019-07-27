@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save an R session to the Google Cloud — gcs_save_image • googleCloudStorageR</title>
+<title>Create a pub/sub notification for a bucket — gcs_create_pubsub • googleCloudStorageR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Save an R session to the Google Cloud — gcs_save_image" />
+<meta property="og:title" content="Create a pub/sub notification for a bucket — gcs_create_pubsub" />
 
-<meta property="og:description" content="Performs save.image then saves it to Google Cloud Storage." />
+<meta property="og:description" content="Add a notification configuration that sends notifications for all supported events." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,71 +117,85 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save an R session to the Google Cloud</h1>
+    <h1>Create a pub/sub notification for a bucket</h1>
     
-    <div class="hidden name"><code>gcs_save_image.Rd</code></div>
+    <div class="hidden name"><code>gcs_create_pubsub.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Performs <a href='https://www.rdocumentation.org/packages/base/topics/save'>save.image</a> then saves it to Google Cloud Storage.</p>
+    <p>Add a notification configuration that sends notifications for all supported events.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gcs_save_image</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>".RData"</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
-  <span class='kw'>saveLocation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
+    <pre class="usage"><span class='fu'>gcs_create_pubsub</span>(<span class='no'>topic</span>, <span class='no'>project</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
+  <span class='kw'>event_types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>Where to save the file in GCS and locally</p></td>
+      <th>topic</th>
+      <td><p>The pub/sub topic name</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>The project-id that has the pub/sub topic</p></td>
     </tr>
     <tr>
       <th>bucket</th>
-      <td><p>Bucket to store objects in</p></td>
+      <td><p>The bucket for notifications</p></td>
     </tr>
     <tr>
-      <th>saveLocation</th>
-      <td><p>Which folder in the bucket to save file</p></td>
-    </tr>
-    <tr>
-      <th>envir</th>
-      <td><p>Environment to save from</p></td>
+      <th>event_types</th>
+      <td><p>What events to activate, leave at default for all</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The GCS object</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>gcs_save_image(bucket = "your_bucket")</code> will save all objects in the workspace
-  to <code>.RData</code> folder on Google Cloud Storage within <code>your_bucket</code>.</p>
-<p>Restore the objects using <code><a href='gcs_load.html'>gcs_load(bucket = "your_bucket")</a></code></p>
-<p>This will overwrite any data with the same name in your current local environment.</p>
+    <p>Cloud Pub/Sub notifications allow you to track changes to your Cloud Storage objects.
+As a minimum you wil need: the Cloud Pub/Sub API activated for the project;
+sufficient permissions on the bucket you wish to monitor;
+sufficient permissions on the project to receive notifications;
+an existing pub/sub topic;
+have given your service account at least <code>pubsub.publisher</code> permission.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other R session data functions: <code><a href='gcs_load.html'>gcs_load</a></code>,
-  <code><a href='gcs_save_all.html'>gcs_save_all</a></code>, <code><a href='gcs_save.html'>gcs_save</a></code>,
-  <code><a href='gcs_source.html'>gcs_source</a></code></p></div>
+    <div class='dont-index'><p><a href='https://cloud.google.com/storage/docs/reporting-changes'>https://cloud.google.com/storage/docs/reporting-changes</a></p>
+<p>Other pubsub functions: <code><a href='gcs_delete_pubsub.html'>gcs_delete_pubsub</a></code>,
+  <code><a href='gcs_get_service_email.html'>gcs_get_service_email</a></code>,
+  <code><a href='gcs_list_pubsub.html'>gcs_list_pubsub</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='no'>project</span> <span class='kw'>&lt;-</span> <span class='st'>"myproject"</span>
+<span class='no'>bucket</span> <span class='kw'>&lt;-</span> <span class='st'>"mybucket"</span>
+
+<span class='co'># get the email to give access</span>
+<span class='fu'>gce_get_service_email</span>(<span class='no'>project</span>)
+
+<span class='co'># once email has access, create a new pub/sub topic for your bucket</span>
+<span class='fu'>gcs_create_pubsub</span>(<span class='st'>"gcs_r"</span>, <span class='no'>project</span>, <span class='no'>bucket</span>)
+
+<span class='co'># }</span><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

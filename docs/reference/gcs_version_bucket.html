@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save an R session to the Google Cloud — gcs_save_image • googleCloudStorageR</title>
+<title>Turn bucket versioning on or off, check status (default), or
+list archived versions of objects in the bucket and view their generation numbers. — gcs_version_bucket • googleCloudStorageR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +31,11 @@
 
 
 
-<meta property="og:title" content="Save an R session to the Google Cloud — gcs_save_image" />
+<meta property="og:title" content="Turn bucket versioning on or off, check status (default), or
+list archived versions of objects in the bucket and view their generation numbers. — gcs_version_bucket" />
 
-<meta property="og:description" content="Performs save.image then saves it to Google Cloud Storage." />
+<meta property="og:description" content="Turn bucket versioning on or off, check status (default), or
+list archived versions of objects in the bucket and view their generation numbers." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,57 +120,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save an R session to the Google Cloud</h1>
+    <h1>Turn bucket versioning on or off, check status (default), or
+list archived versions of objects in the bucket and view their generation numbers.</h1>
     
-    <div class="hidden name"><code>gcs_save_image.Rd</code></div>
+    <div class="hidden name"><code>gcs_version_bucket.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Performs <a href='https://www.rdocumentation.org/packages/base/topics/save'>save.image</a> then saves it to Google Cloud Storage.</p>
+    <p>Turn bucket versioning on or off, check status (default), or
+list archived versions of objects in the bucket and view their generation numbers.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gcs_save_image</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>".RData"</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
-  <span class='kw'>saveLocation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
+    <pre class="usage"><span class='fu'>gcs_version_bucket</span>(<span class='no'>bucket</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"status"</span>, <span class='st'>"enable"</span>, <span class='st'>"disable"</span>,
+  <span class='st'>"list"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>Where to save the file in GCS and locally</p></td>
-    </tr>
-    <tr>
       <th>bucket</th>
-      <td><p>Bucket to store objects in</p></td>
+      <td><p>gcs bucket</p></td>
     </tr>
     <tr>
-      <th>saveLocation</th>
-      <td><p>Which folder in the bucket to save file</p></td>
-    </tr>
-    <tr>
-      <th>envir</th>
-      <td><p>Environment to save from</p></td>
+      <th>action</th>
+      <td><p>"status", "enable", "disable", or "list"</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The GCS object</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>gcs_save_image(bucket = "your_bucket")</code> will save all objects in the workspace
-  to <code>.RData</code> folder on Google Cloud Storage within <code>your_bucket</code>.</p>
-<p>Restore the objects using <code><a href='gcs_load.html'>gcs_load(bucket = "your_bucket")</a></code></p>
-<p>This will overwrite any data with the same name in your current local environment.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other R session data functions: <code><a href='gcs_load.html'>gcs_load</a></code>,
-  <code><a href='gcs_save_all.html'>gcs_save_all</a></code>, <code><a href='gcs_save.html'>gcs_save</a></code>,
-  <code><a href='gcs_source.html'>gcs_source</a></code></p></div>
+    <p>versioned_objects dataframe #only if "list" action</p>
     
 
   </div>
@@ -177,10 +161,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

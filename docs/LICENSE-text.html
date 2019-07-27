@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save an R session to the Google Cloud — gcs_save_image • googleCloudStorageR</title>
+<title>License • googleCloudStorageR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -25,15 +25,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Save an R session to the Google Cloud — gcs_save_image" />
-
-<meta property="og:description" content="Performs save.image then saves it to Google Cloud Storage." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="License" />
 
 
 
@@ -50,7 +47,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -62,7 +59,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
+        <a class="navbar-link" href="index.html">googleCloudStorageR</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
@@ -70,19 +67,19 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/googleCloudStorageR.html">Get started</a>
+  <a href="articles/googleCloudStorageR.html">Get started</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -115,76 +112,19 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Save an R session to the Google Cloud</h1>
-    
-    <div class="hidden name"><code>gcs_save_image.Rd</code></div>
+      <h1>License</h1>
     </div>
 
-    <div class="ref-description">
-    
-    <p>Performs <a href='https://www.rdocumentation.org/packages/base/topics/save'>save.image</a> then saves it to Google Cloud Storage.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>gcs_save_image</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>".RData"</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
-  <span class='kw'>saveLocation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>file</th>
-      <td><p>Where to save the file in GCS and locally</p></td>
-    </tr>
-    <tr>
-      <th>bucket</th>
-      <td><p>Bucket to store objects in</p></td>
-    </tr>
-    <tr>
-      <th>saveLocation</th>
-      <td><p>Which folder in the bucket to save file</p></td>
-    </tr>
-    <tr>
-      <th>envir</th>
-      <td><p>Environment to save from</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The GCS object</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>gcs_save_image(bucket = "your_bucket")</code> will save all objects in the workspace
-  to <code>.RData</code> folder on Google Cloud Storage within <code>your_bucket</code>.</p>
-<p>Restore the objects using <code><a href='gcs_load.html'>gcs_load(bucket = "your_bucket")</a></code></p>
-<p>This will overwrite any data with the same name in your current local environment.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other R session data functions: <code><a href='gcs_load.html'>gcs_load</a></code>,
-  <code><a href='gcs_save_all.html'>gcs_save_all</a></code>, <code><a href='gcs_save.html'>gcs_save</a></code>,
-  <code><a href='gcs_source.html'>gcs_source</a></code></p></div>
-    
+<pre>YEAR: 2017
+COPYRIGHT HOLDER: Sunholo Ltd.
+</pre>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
 
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-  </div>
 </div>
+
 
       <footer>
       <div class="copyright">
