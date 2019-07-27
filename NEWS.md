@@ -1,4 +1,4 @@
-# googleCloudStorage 0.4.0.9000
+# googleCloudStorage 0.5.0
 
 * Refactor authentication to favour json file and fix auth hangs (#87)
 * Prevent error if bucket name is empty string (#90)
