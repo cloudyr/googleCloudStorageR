@@ -4,7 +4,8 @@
 \alias{gcs_compose_objects}
 \title{Compose up to 32 objects into one}
 \usage{
-gcs_compose_objects(objects, destination, bucket = gcs_get_global_bucket())
+gcs_compose_objects(objects, destination,
+  bucket = gcs_get_global_bucket())
 }
 \arguments{
 \item{objects}{A character vector of object names to combine}
@@ -40,3 +41,4 @@ Other object functions: \code{\link{gcs_copy_object}},
   \code{\link{gcs_list_objects}},
   \code{\link{gcs_metadata_object}}
 }
+\concept{object functions}

@@ -20,3 +20,4 @@ gcs_get_object
 Other download functions: \code{\link{gcs_download_url}},
   \code{\link{gcs_signed_url}}
 }
+\concept{download functions}

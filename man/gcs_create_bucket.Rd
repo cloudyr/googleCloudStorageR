@@ -9,9 +9,10 @@ gcs_create_bucket(name, projectId, location = "US",
   "COLDLINE", "DURABLE_REDUCED_AVAILABILITY"),
   predefinedAcl = c("projectPrivate", "authenticatedRead", "private",
   "publicRead", "publicReadWrite"),
-  predefinedDefaultObjectAcl = c("bucketOwnerFullControl", "bucketOwnerRead",
-  "authenticatedRead", "private", "projectPrivate", "publicRead"),
-  projection = c("noAcl", "full"), versioning = FALSE, lifecycle = NULL)
+  predefinedDefaultObjectAcl = c("bucketOwnerFullControl",
+  "bucketOwnerRead", "authenticatedRead", "private", "projectPrivate",
+  "publicRead"), projection = c("noAcl", "full"), versioning = FALSE,
+  lifecycle = NULL)
 }
 \arguments{
 \item{name}{Globally unique name of bucket to create}
@@ -46,3 +47,4 @@ Other bucket functions: \code{\link{gcs_create_lifecycle}},
   \code{\link{gcs_global_bucket}},
   \code{\link{gcs_list_buckets}}
 }
+\concept{bucket functions}

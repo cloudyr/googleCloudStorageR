@@ -4,8 +4,8 @@
 \alias{gcs_signed_url}
 \title{Create a signed URL}
 \usage{
-gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600, verb = "GET",
-  md5hash = NULL, includeContentType = FALSE)
+gcs_signed_url(meta_obj, expiration_ts = Sys.time() + 3600,
+  verb = "GET", md5hash = NULL, includeContentType = FALSE)
 }
 \arguments{
 \item{meta_obj}{A meta object from \link{gcs_get_object}}
@@ -48,3 +48,4 @@ file.exists(temp)
 Other download functions: \code{\link{gcs_download_url}},
   \code{\link{gcs_parse_download}}
 }
+\concept{download functions}

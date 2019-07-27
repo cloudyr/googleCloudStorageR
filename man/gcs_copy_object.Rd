@@ -35,3 +35,4 @@ Other object functions: \code{\link{gcs_compose_objects}},
   \code{\link{gcs_list_objects}},
   \code{\link{gcs_metadata_object}}
 }
+\concept{object functions}

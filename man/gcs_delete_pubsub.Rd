@@ -28,3 +28,4 @@ Other pubsub functions: \code{\link{gcs_create_pubsub}},
   \code{\link{gcs_get_service_email}},
   \code{\link{gcs_list_pubsub}}
 }
+\concept{pubsub functions}

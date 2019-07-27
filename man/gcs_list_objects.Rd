@@ -4,8 +4,9 @@
 \alias{gcs_list_objects}
 \title{List objects in a bucket}
 \usage{
-gcs_list_objects(bucket = gcs_get_global_bucket(), detail = c("summary",
-  "more", "full"), prefix = NULL, delimiter = NULL)
+gcs_list_objects(bucket = gcs_get_global_bucket(),
+  detail = c("summary", "more", "full"), prefix = NULL,
+  delimiter = NULL)
 }
 \arguments{
 \item{bucket}{bucket containing the objects}
@@ -46,3 +47,4 @@ Other object functions: \code{\link{gcs_compose_objects}},
   \code{\link{gcs_get_object}},
   \code{\link{gcs_metadata_object}}
 }
+\concept{object functions}

@@ -35,3 +35,4 @@ Other R session data functions: \code{\link{gcs_load}},
   \code{\link{gcs_save_all}}, \code{\link{gcs_save}},
   \code{\link{gcs_source}}
 }
+\concept{R session data functions}

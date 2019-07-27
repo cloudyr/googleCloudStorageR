@@ -5,7 +5,8 @@
 \title{Turn bucket versioning on or off, check status (default), or
 list archived versions of objects in the bucket and view their generation numbers.}
 \usage{
-gcs_version_bucket(bucket, action = c("status", "enable", "disable", "list"))
+gcs_version_bucket(bucket, action = c("status", "enable", "disable",
+  "list"))
 }
 \arguments{
 \item{bucket}{gcs bucket}
@@ -19,3 +20,4 @@ versioned_objects dataframe #only if "list" action
 Turn bucket versioning on or off, check status (default), or
 list archived versions of objects in the bucket and view their generation numbers.
 }
+\concept{managementAPI functions}

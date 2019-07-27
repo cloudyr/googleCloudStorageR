@@ -6,9 +6,10 @@
 \usage{
 gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
   name = deparse(substitute(file)), object_function = NULL,
-  object_metadata = NULL, predefinedAcl = c("private", "authenticatedRead",
-  "bucketOwnerFullControl", "bucketOwnerRead", "projectPrivate", "publicRead",
-  "default"), upload_type = c("simple", "resumable"))
+  object_metadata = NULL, predefinedAcl = c("private",
+  "authenticatedRead", "bucketOwnerFullControl", "bucketOwnerRead",
+  "projectPrivate", "publicRead", "default"), upload_type = c("simple",
+  "resumable"))
 }
 \arguments{
 \item{file}{data.frame, list, R object or filepath (character) to upload file}

@@ -33,3 +33,4 @@ Use the \code{public = TRUE} to return the URL accessible to all, which changes 
 Other download functions: \code{\link{gcs_parse_download}},
   \code{\link{gcs_signed_url}}
 }
+\concept{download functions}

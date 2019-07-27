@@ -4,8 +4,8 @@
 \alias{gcs_list_buckets}
 \title{List buckets}
 \usage{
-gcs_list_buckets(projectId, prefix = "", projection = c("noAcl", "full"),
-  maxResults = 1000, detail = c("summary", "full"))
+gcs_list_buckets(projectId, prefix = "", projection = c("noAcl",
+  "full"), maxResults = 1000, detail = c("summary", "full"))
 }
 \arguments{
 \item{projectId}{Project containing buckets to list}
@@ -52,3 +52,4 @@ Other bucket functions: \code{\link{gcs_create_bucket}},
   \code{\link{gcs_get_global_bucket}},
   \code{\link{gcs_global_bucket}}
 }
+\concept{bucket functions}

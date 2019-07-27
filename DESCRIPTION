@@ -14,7 +14,7 @@ Depends:
 Imports:
     assertthat (>= 0.2.0),
     curl,
-    googleAuthR (>= 0.7.0),
+    googleAuthR (>= 0.8.1),
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
     openssl,
@@ -31,4 +31,4 @@ Suggests:
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

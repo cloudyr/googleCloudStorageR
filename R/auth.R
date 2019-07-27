@@ -22,6 +22,12 @@
 #' @export
 gcs_auth <- function(json_file){
 
+  set_scopes()
+
+  gar_auth_service(json_file = json_file)
+}
+
+set_scopes <- function(){
   required_scopes <- c("https://www.googleapis.com/auth/devstorage.full_control",
                        "https://www.googleapis.com/auth/devstorage.read_write",
                        "https://www.googleapis.com/auth/cloud-platform")
@@ -33,6 +39,4 @@ gcs_auth <- function(json_file){
     myMessage("Adding https://www.googleapis.com/auth/devstorage.full_control to scopes", level = 3)
     options(googleAuthR.scopes.selected = c(op, "https://www.googleapis.com/auth/devstorage.full_control"))
   }
-
-  gar_auth_service(json_file = json_file)
 }
