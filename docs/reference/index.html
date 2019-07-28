@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
       </span>
     </div>
 
@@ -257,6 +257,12 @@ list archived versions of objects in the bucket and view their generation number
           <p><code><a href="gcs_update_object_acl.html">gcs_update_object_acl()</a></code> </p>
         </td>
         <td><p>Change access to an object in a bucket</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_create_lifecycle.html">gcs_create_lifecycle()</a></code> </p>
+        </td>
+        <td><p>Create a lifecycle condition</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -302,6 +308,76 @@ list archived versions of objects in the bucket and view their generation number
         </td>
         <td><p>Source an R script from the Google Cloud</p></td>
       </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-pub-sub" class="hasAnchor"><a href="#section-pub-sub" class="anchor"></a>Pub/Sub</h2>
+          <p class="section-desc"><p>Working with Pub/Sub triggers</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="gcs_create_pubsub.html">gcs_create_pubsub()</a></code> </p>
+        </td>
+        <td><p>Create a pub/sub notification for a bucket</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_delete_pubsub.html">gcs_delete_pubsub()</a></code> </p>
+        </td>
+        <td><p>Delete pub/sub notifications for a bucket</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_list_pubsub.html">gcs_list_pubsub()</a></code> </p>
+        </td>
+        <td><p>List pub/sub notifications for a bucket</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_get_service_email.html">gcs_get_service_email()</a></code> </p>
+        </td>
+        <td><p>Get the email of service account associated with the bucket</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-download-and-upload-helpers" class="hasAnchor"><a href="#section-download-and-upload-helpers" class="anchor"></a>Download and Upload helpers</h2>
+          <p class="section-desc"><p>Working with objects as they download or upload</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="gcs_download_url.html">gcs_download_url()</a></code> </p>
+        </td>
+        <td><p>Get the download URL</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_parse_download.html">gcs_parse_download()</a></code> </p>
+        </td>
+        <td><p>Parse downloaded objects straight into R</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_upload.html">gcs_upload()</a></code> </p>
+        </td>
+        <td><p>Upload a file of arbitrary type</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_retry_upload.html">gcs_retry_upload()</a></code> </p>
+        </td>
+        <td><p>Retry a resumeable upload</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gcs_signed_url.html">gcs_signed_url()</a></code> </p>
+        </td>
+        <td><p>Create a signed URL</p></td>
+      </tr>
     </tbody>
     </table>
   </div>
@@ -313,6 +389,8 @@ list archived versions of objects in the bucket and view their generation number
       <li><a href="#section-buckets">Buckets</a></li>
       <li><a href="#section-objects">Objects</a></li>
       <li><a href="#section-session-helpers">Session helpers</a></li>
+      <li><a href="#section-pub-sub">Pub/Sub</a></li>
+      <li><a href="#section-download-and-upload-helpers">Download and Upload helpers</a></li>
     </ul>
   </div>
 </div>

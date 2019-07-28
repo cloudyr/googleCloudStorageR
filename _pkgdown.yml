@@ -32,6 +32,7 @@ reference:
       Working with objects inside the buckets
     contents:
       - matches("object")
+      - gcs_create_lifecycle
   - title: "Session helpers"
     desc: >
       Working with R session objects
@@ -44,3 +45,18 @@ reference:
       - gcs_save_all
       - gcs_save_image
       - gcs_source
+  - title: "Pub/Sub"
+    desc: >
+      Working with Pub/Sub triggers
+    contents:
+      - matches("pubsub")
+      - gcs_get_service_email
+  - title: Download and Upload helpers
+    desc: >
+      Working with objects as they download or upload
+    contents:
+      - gcs_download_url
+      - gcs_parse_download
+      - gcs_upload
+      - gcs_retry_upload
+      - gcs_signed_url
