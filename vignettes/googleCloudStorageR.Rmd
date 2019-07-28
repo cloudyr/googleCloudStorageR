@@ -8,7 +8,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-R library for interacting with the Google Cloud Storage JSON API ([api docs](https://cloud.google.com/storage/docs/json_api/)).
+
+An R library for interacting with the Google Cloud Storage JSON API ([api docs](https://cloud.google.com/storage/docs/json_api/)).
 
 ## Setup
 
@@ -20,40 +21,14 @@ You can use your own Google Project with a credit card added to create buckets, 
 
 The instructions below are for when you visit the Google API console (`https://console.developers.google.com/apis/`)
 
-### For local use
-
-1. Click 'Create a new Client ID', and choose **"Installed Application"**.
-2. Download the client ID JSON.
-3. Set the client ID via `googleAuthR::gar_set_client()`:
-
-        googleAuthR::gar_set_client("your-json-file.json")
-
-### For Shiny use
-
-1. Click 'Create a new Client ID', and choose **"Web Application"**.
-2. Download the client ID JSON.
-3. Add the URL of where your Shiny app will run, with no port number. e.g. `https://mark.shinyapps.io/searchConsoleRDemo/`
-4. And/Or also put in localhost or 127.0.0.1 with a port number for local testing. Remember the port number you use as you will need it later to launch the app e.g. `http://127.0.0.1:1221`
-5. Set the web client ID via `googleAuthR::gar_set_client()`:
-
-        googleAuthR::gar_set_client(web_json = "your-json-file.json")
-
-6. To run the app locally specifying the port number you used in step 4 e.g. `shiny::runApp(port=1221)` or set a shiny option to default to it: `options(shiny.port = 1221)` and launch via the `RunApp` button in RStudio.
-7. Running on your Shiny Server will work only for the URL from step 3.
-
 ### Activate API
 
 1. Click on "APIs"
-2. Select and activate the Cloud Storage JSON API 
-3. After loading the package via `library(googleCloudStorage)`, it will look to see if `"https://www.googleapis.com/auth/devstorage.full_control"` is set in `getOption("googleAuthR.scopes.selected")` and set it if it is not, adding to the existing scopes.  
-4. Alternativly, set the `googleAuthR` option for Google Cloud storage scope after the library has been loaded but before authentication. 
+2. Select and activate the Cloud Storage JSON API if not already active
 
-        options(googleAuthR.scopes.selected = "https://www.googleapis.com/auth/devstorage.full_control")
+### Set environment variables
 
-
-### Setting environment variables
-
-By default, all cloudyr packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:
+By default, all `cloudyr` packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:
 
 ```r
 Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket",
@@ -62,11 +37,18 @@ Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket",
 
 These can alternatively be set on the command line or via an Renviron.site or .Renviron file (`https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html`).
 
+e.g.
 
+In your `.Renviron`:
+
+```
+GCS_AUTH_FILE="/fullpath/to/service-auth.json"
+GCS_DEFAULT_BUCKET=my-default-bucket
+```
 
 ### Auto-authentication
 
-The best method for authentication is to use your own Google Cloud Project.  You can specify the location of a service account JSON file taken from your Google Project, or the location of a previously created `gcs.oauth` token in a system environment:
+The best method for authentication is to use your own Google Cloud Project.  You can specify the location of a service account JSON file taken from your Google Project:
 
         Sys.setenv("GCS_AUTH_FILE" = "/fullpath/to/auth.json")
 
@@ -76,17 +58,12 @@ This file will then used for authentication via `gcs_auth()` when you load the l
 ## GCS_AUTH_FILE set so auto-authentication
 library(googleCloudStorageR)
 
-## no need for gcs_auth()
 gcs_get_bucket("your-bucket")
 ```
 
-If using your own `gcs.oauth` file you will also need to set the client ID and secret.  This is easiest done using `googleAuthR::gar_set_client()` - see its help for details. 
-
-## Examples
-
 ### Setting a default Bucket
 
-To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function `gcs_global_bucket()`.  See the `Setting environment variables` section below for more details.
+To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function `gcs_global_bucket()`.  See the `Setting environment variables` section for more details.
 
 ```r
 ## set bucket via environment
