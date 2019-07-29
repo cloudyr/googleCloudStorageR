@@ -12,13 +12,6 @@ if (gargle:::secret_can_decrypt("googleCloudStorageR")) {
 test_that("Authentication", {
   skip_if_no_token()
   
-  expect_true(file.exists(Sys.getenv("GCS_AUTH_FILE")))
-  
-  # auto-auth
-  expect_true(googleAuthR::gar_has_token())
-  
-  gcs_auth(Sys.getenv("GCS_AUTH_FILE"))
-  
   # manual auth
   expect_true(googleAuthR::gar_has_token())
 })
