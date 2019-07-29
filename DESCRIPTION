@@ -27,8 +27,10 @@ Suggests:
     knitr,
     readr,
     rmarkdown,
+    sodium,
     testthat
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
+Remotes: MarkEdmondson1234/googleAuthR
