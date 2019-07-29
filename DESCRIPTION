@@ -23,9 +23,12 @@ Imports:
     zip
 Suggests:
     covr,
+    fs,
+    gargle,
     googleComputeEngineR,
     knitr,
     readr,
+    rlang,
     rmarkdown,
     sodium,
     testthat

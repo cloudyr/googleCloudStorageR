@@ -17,3 +17,5 @@ test_signedurls.RData
 ^.Rhistory$
 ^gcs\.oauth$
 ^CRAN-RELEASE$
+^index\.md$
+

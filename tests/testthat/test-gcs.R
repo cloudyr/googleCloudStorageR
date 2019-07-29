@@ -10,9 +10,6 @@ if (gargle:::secret_can_decrypt("googleCloudStorageR")) {
 }
 
 test_that("Authentication", {
-  googleAuthR::skip_if_no_env_auth(
-    "GCS_AUTH_FILE"
-  )
   skip_if_no_token()
   
   expect_true(file.exists(Sys.getenv("GCS_AUTH_FILE")))
@@ -27,9 +24,6 @@ test_that("Authentication", {
 })
 
 test_that("Bucket List", {
-  googleAuthR::skip_if_no_env_auth(
-    "GCS_DEFAULT_PROJECT"
-  )
   skip_if_no_token()
   
   proj <- Sys.getenv("GCS_DEFAULT_PROJECT")
@@ -43,9 +37,6 @@ test_that("Bucket List", {
 })
 
 test_that("Bucket Operations", {
-  googleAuthR::skip_if_no_env_auth(
-    "GCS_DEFAULT_BUCKET"
-  )
   skip_if_no_token()
   
   buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
@@ -58,9 +49,6 @@ test_that("Bucket Operations", {
 })
 
 test_that("Object Operations", {
-  googleAuthR::skip_if_no_env_auth(
-    "GCS_DEFAULT_BUCKET"
-  )
   skip_if_no_token()
   
   buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
