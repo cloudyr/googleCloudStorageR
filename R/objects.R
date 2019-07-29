@@ -208,7 +208,7 @@ gcs_get_object <- function(object_name,
   object_name <- URLencode(object_name, reserved = TRUE)
 
   if(meta){
-    alt = ""
+    alt = "json"
   } else {
     options(googleAuthR.rawResponse = TRUE)
     on.exit(options(googleAuthR.rawResponse = FALSE))
