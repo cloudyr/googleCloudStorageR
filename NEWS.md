@@ -1,6 +1,6 @@
 # googleCloudStorageR 0.5.0.9000
 
-* ...
+* fix unable to return object metadata (#105)
 
 # googleCloudStorageR 0.5.0
 

@@ -84,5 +84,6 @@ test_that("Object Operations", {
   expect_s3_class(mtcars, "data.frame")
   
   mtcars_meta <- gcs_get_object("mtcars.csv", bucket = buck, meta = TRUE)
+  expect_equal(mtcars_meta$kind, "storage#object")
 
 })
