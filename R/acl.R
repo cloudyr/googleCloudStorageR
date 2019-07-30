@@ -13,6 +13,18 @@
 #' @import assertthat
 #' @importFrom googleAuthR gar_api_generator
 #' @family Access control functions
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' 
+#' buck_meta <- gcs_get_bucket(projection = "full")
+#' 
+#' acl <- gcs_get_bucket_acl(entity_type = "project",
+#'                           entity = gsub("project-","",
+#'                                         buck_meta$acl$entity[[1]]))
+#' 
+#' }
 gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
                                entity = "",
                                entity_type = c("user",
@@ -204,6 +216,27 @@ gcs_update_object_acl <- function(object_name,
 #' @importFrom utils URLencode
 #' @family Access control functions
 #' @export
+#' @examples 
+#' 
+#' \dontrun{
+#' 
+#' # single user
+#' gcs_update_object_acl("mtcars.csv", 
+#'      bucket = gcs_get_global_bucket(),
+#'      entity = "joe@blogs.com",
+#'      entity_type = "user"))
+#'      
+#' acl <- gcs_get_object_acl("mtcars.csv", entity = "joe@blogs.com")
+#' 
+#' # all users
+#' gcs_update_object_acl("mtcars.csv", 
+#'     bucket = gcs_get_global_bucket(),
+#'     entity_type = "allUsers"))
+#'     
+#' acl <- gcs_get_object_acl("mtcars.csv", entity_type = "allUsers")
+#' 
+#' 
+#' }
 gcs_get_object_acl <- function(object_name,
                                bucket = gcs_get_global_bucket(),
                                entity = "",

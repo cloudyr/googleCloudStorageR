@@ -22,6 +22,28 @@ gcs_get_object_acl(object_name, bucket = gcs_get_global_bucket(),
 \description{
 Returns the default object ACL entry for the specified entity on the specified bucket.
 }
+\examples{
+
+\dontrun{
+
+# single user
+gcs_update_object_acl("mtcars.csv", 
+     bucket = gcs_get_global_bucket(),
+     entity = "joe@blogs.com",
+     entity_type = "user"))
+     
+acl <- gcs_get_object_acl("mtcars.csv", entity = "joe@blogs.com")
+
+# all users
+gcs_update_object_acl("mtcars.csv", 
+    bucket = gcs_get_global_bucket(),
+    entity_type = "allUsers"))
+    
+acl <- gcs_get_object_acl("mtcars.csv", entity_type = "allUsers")
+
+
+}
+}
 \seealso{
 Other Access control functions: \code{\link{gcs_create_bucket_acl}},
   \code{\link{gcs_get_bucket_acl}},

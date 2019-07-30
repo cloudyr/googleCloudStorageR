@@ -161,6 +161,16 @@
   <code><a href='gcs_update_object_acl.html'>gcs_update_object_acl</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='no'>buck_meta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gcs_get_bucket.html'>gcs_get_bucket</a></span>(<span class='kw'>projection</span> <span class='kw'>=</span> <span class='st'>"full"</span>)
+
+<span class='no'>acl</span> <span class='kw'>&lt;-</span> <span class='fu'>gcs_get_bucket_acl</span>(<span class='kw'>entity_type</span> <span class='kw'>=</span> <span class='st'>"project"</span>,
+                          <span class='kw'>entity</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>gsub</a></span>(<span class='st'>"project-"</span>,<span class='st'>""</span>,
+                                        <span class='no'>buck_meta</span>$<span class='no'>acl</span>$<span class='no'>entity</span><span class='kw'>[[</span><span class='fl'>1</span>]]))
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -170,7 +180,9 @@
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

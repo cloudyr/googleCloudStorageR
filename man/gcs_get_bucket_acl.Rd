@@ -23,6 +23,18 @@ Bucket access control object
 \description{
 Returns the ACL entry for the specified entity on the specified bucket
 }
+\examples{
+
+\dontrun{
+
+buck_meta <- gcs_get_bucket(projection = "full")
+
+acl <- gcs_get_bucket_acl(entity_type = "project",
+                          entity = gsub("project-","",
+                                        buck_meta$acl$entity[[1]]))
+
+}
+}
 \seealso{
 Other Access control functions: \code{\link{gcs_create_bucket_acl}},
   \code{\link{gcs_get_object_acl}},
