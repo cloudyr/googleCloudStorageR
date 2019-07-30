@@ -4,9 +4,9 @@ R library for interacting with the Google Cloud Storage JSON API ([api docs](htt
 
 ## Setup
 
-Please refer to the [googleCloudStorageR](http://cloudyr.github.io/googleCloudStorageR/) website for most up to date documentation:
+Please refer to the [googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/) website for most up to date documentation:
 
-http://cloudyr.github.io/googleCloudStorageR/
+http://code.markedmondson.me/googleCloudStorageR/
 
 ## Installation
 
