@@ -82,3 +82,32 @@ test_that("Object Operations", {
   expect_equal(mtcars_meta$kind, "storage#object")
 
 })
+
+test_that("Signed URLs", {
+  obj1 <- gcs_get_object(
+    "LT08/PRE/015/013/LT80150132013127LGN01/LT80150132013127LGN01_MTL.txt",
+    meta = TRUE,
+    bucket = "gcp-public-data-landsat"
+  )
+  signed <- gcs_signed_url(obj1)
+
+  temp1 <- tempfile()
+  on.exit(unlink(temp1))
+
+  download.file(signed, destfile = temp1)
+  expect_true(file.exists(temp1))
+  
+  obj2 <- gcs_get_object(
+    "mtcars.csv",
+    meta = TRUE,
+    bucket = Sys.getenv("GCS_DEFAULT_BUCKET")
+  )
+  signed <- gcs_signed_url(obj2)
+  
+  temp2 <- tempfile()
+  on.exit(unlink(temp2))
+  
+  download.file(signed, destfile = temp2)
+  expect_true(file.exists(temp2))
+  
+})

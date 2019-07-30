@@ -155,15 +155,20 @@ gcs_signed_url <- function(meta_obj,
   my_content_type <- if(includeContentType) meta_obj$contentType else ""
 
   json_file <- fromJSON(Sys.getenv("GCS_AUTH_FILE"))
+  
+  # URL encode the name
+  meta_name <- URLencode(meta_obj$name, reserved = TRUE)
 
-  sig <- create_signature(paste0("/",meta_obj$bucket, "/", meta_obj$name),
+  sig <- create_signature(paste0("/",meta_obj$bucket, "/", meta_name),
                           json_key = json_file$private_key,
                           my_content_type = my_content_type,
                           expiration_ts = round(as.numeric(expiration_ts)),
                           verb = verb,
                           md5hash = md5hash)
 
-  dl_url <- gcs_download_url(meta_obj$name, public = TRUE)
+  dl_url <- gcs_download_url(meta_obj$name, 
+                             bucket = meta_obj$bucket,
+                             public = TRUE)
 
   sprintf("%s?GoogleAccessId=%s&Expires=%s&Signature=%s",
           dl_url, json_file$client_email, round(as.numeric(expiration_ts)), sig)
