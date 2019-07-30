@@ -33,6 +33,7 @@ reference:
     contents:
       - matches("object")
       - gcs_create_lifecycle
+      - gcs_version_bucket
   - title: "Session helpers"
     desc: >
       Working with R session objects

@@ -2,8 +2,7 @@
 % Please edit documentation in R/versioning.R
 \name{gcs_version_bucket}
 \alias{gcs_version_bucket}
-\title{Turn bucket versioning on or off, check status (default), or
-list archived versions of objects in the bucket and view their generation numbers.}
+\title{Change or fetch bucket version status}
 \usage{
 gcs_version_bucket(bucket, action = c("status", "enable", "disable",
   "list"))
@@ -14,10 +13,29 @@ gcs_version_bucket(bucket, action = c("status", "enable", "disable",
 \item{action}{"status", "enable", "disable", or "list"}
 }
 \value{
-versioned_objects dataframe #only if "list" action
+If \code{action="list"} a versioned_objects dataframe
+        If \code{action="status"} a boolean on if versioning is TRUE or FALSE
+        If \code{action="enable" or "disable"} TRUE if operation is successful
 }
 \description{
 Turn bucket versioning on or off, check status (default), or
 list archived versions of objects in the bucket and view their generation numbers.
 }
-\concept{managementAPI functions}
+\examples{
+
+\dontrun{
+  buck <- gcs_get_global_bucket()
+  gcs_version_bucket(buck, action = "disable")
+  
+  gcs_version_bucket(buck, action = "status")
+  # Versioning is NOT ENABLED for "your-bucket"
+  gcs_version_bucket(buck, action = "enable")
+  # TRUE
+  gcs_version_bucket(buck, action = "status")
+  # Versioning is ENABLED for "your-bucket"
+  gcs_version_bucket(buck, action = "list")
+
+
+}
+
+}

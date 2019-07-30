@@ -111,3 +111,20 @@ test_that("Signed URLs", {
   expect_true(file.exists(temp2))
   
 })
+
+test_that("Versioning buckets", {
+  
+  buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
+  
+  # start with false
+  gcs_version_bucket(buck, action = "disable")
+  
+  expect_false(gcs_version_bucket(buck, action = "status"))
+  expect_true(gcs_version_bucket(buck, action = "enable"))
+  expect_true(gcs_version_bucket(buck, action = "status"))  
+  expect_false(gcs_version_bucket(buck, action = "disable"))  
+  expect_false(gcs_version_bucket(buck, action = "status"))
+  
+  expect_error(gcs_version_bucket(buck, action = "list"),
+               "`timeDeleted` property not found")
+})

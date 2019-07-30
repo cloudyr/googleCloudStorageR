@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Turn bucket versioning on or off, check status (default), or
-list archived versions of objects in the bucket and view their generation numbers. — gcs_version_bucket • googleCloudStorageR</title>
+<title>Change or fetch bucket version status — gcs_version_bucket • googleCloudStorageR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,8 +30,7 @@ list archived versions of objects in the bucket and view their generation number
 
 
 
-<meta property="og:title" content="Turn bucket versioning on or off, check status (default), or
-list archived versions of objects in the bucket and view their generation numbers. — gcs_version_bucket" />
+<meta property="og:title" content="Change or fetch bucket version status — gcs_version_bucket" />
 
 <meta property="og:description" content="Turn bucket versioning on or off, check status (default), or
 list archived versions of objects in the bucket and view their generation numbers." />
@@ -120,8 +118,7 @@ list archived versions of objects in the bucket and view their generation number
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Turn bucket versioning on or off, check status (default), or
-list archived versions of objects in the bucket and view their generation numbers.</h1>
+    <h1>Change or fetch bucket version status</h1>
     
     <div class="hidden name"><code>gcs_version_bucket.Rd</code></div>
     </div>
@@ -151,9 +148,28 @@ list archived versions of objects in the bucket and view their generation number
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>versioned_objects dataframe #only if "list" action</p>
+    <p>If <code>action="list"</code> a versioned_objects dataframe
+        If <code>action="status"</code> a boolean on if versioning is TRUE or FALSE
+        If <code>action="enable" or "disable"</code> TRUE if operation is successful</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+  <span class='no'>buck</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>()
+  <span class='fu'>gcs_version_bucket</span>(<span class='no'>buck</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"disable"</span>)
+
+  <span class='fu'>gcs_version_bucket</span>(<span class='no'>buck</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"status"</span>)
+  <span class='co'># Versioning is NOT ENABLED for "your-bucket"</span>
+  <span class='fu'>gcs_version_bucket</span>(<span class='no'>buck</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"enable"</span>)
+  <span class='co'># TRUE</span>
+  <span class='fu'>gcs_version_bucket</span>(<span class='no'>buck</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"status"</span>)
+  <span class='co'># Versioning is ENABLED for "your-bucket"</span>
+  <span class='fu'>gcs_version_bucket</span>(<span class='no'>buck</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"list"</span>)
+
+
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -161,7 +177,9 @@ list archived versions of objects in the bucket and view their generation number
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

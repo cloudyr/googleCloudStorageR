@@ -1,15 +1,39 @@
+#' Change or fetch bucket version status
+#' 
+#' @description 
+#' 
 #' Turn bucket versioning on or off, check status (default), or
 #' list archived versions of objects in the bucket and view their generation numbers.
-#'
 #'
 #' @param action "status", "enable", "disable", or "list"
 #' @param bucket gcs bucket
 #'
-#' @return versioned_objects dataframe #only if "list" action
+#' @return If \code{action="list"} a versioned_objects dataframe
+#'         If \code{action="status"} a boolean on if versioning is TRUE or FALSE
+#'         If \code{action="enable" or "disable"} TRUE if operation is successful
 #' @importFrom googleAuthR gar_api_generator
-#' @family managementAPI functions
 #' @export
-gcs_version_bucket <- function(bucket, action = c("status", "enable", "disable", "list")) {
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+
+#'   buck <- gcs_get_global_bucket()
+#'   gcs_version_bucket(buck, action = "disable")
+#'   
+#'   gcs_version_bucket(buck, action = "status")
+#'   # Versioning is NOT ENABLED for "your-bucket"
+#'   gcs_version_bucket(buck, action = "enable")
+#'   # TRUE
+#'   gcs_version_bucket(buck, action = "status")
+#'   # Versioning is ENABLED for "your-bucket"
+#'   gcs_version_bucket(buck, action = "list")
+#' 
+#' 
+#' }
+#' 
+gcs_version_bucket <- function(bucket, 
+                               action = c("status", "enable", "disable", "list")) {
   action <- match.arg(action)
 
   bucket <- as.bucket_name(bucket)

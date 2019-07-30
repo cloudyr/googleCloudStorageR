@@ -148,8 +148,7 @@ gcs_signed_url <- function(meta_obj,
                            includeContentType = FALSE){
 
   assert_that(
-    inherits(meta_obj, "gcs_objectmeta"),
-    is.readable(Sys.getenv("GCS_AUTH_FILE"))
+    inherits(meta_obj, "gcs_objectmeta")
   )
 
   my_content_type <- if(includeContentType) meta_obj$contentType else ""
