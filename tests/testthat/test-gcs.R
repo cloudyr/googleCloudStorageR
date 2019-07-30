@@ -7,6 +7,9 @@ skip_if_no_token <- function() {
 if (gargle:::secret_can_decrypt("googleCloudStorageR")) {
   json <- gargle:::secret_read("googleCloudStorageR", "tests_auth.json")
   gcs_auth(json_file = rawToChar(json))
+  tmp <- tempfile(fileext = ".json")
+  write(rawToChar(json), file = tmp)
+  Sys.setenv("GCS_AUTH_FILE" = tmp)
 }
 
 test_that("Authentication", {
