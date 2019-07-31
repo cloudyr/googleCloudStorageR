@@ -7,9 +7,12 @@
 gcs_delete_pubsub(config_name, bucket = gcs_get_global_bucket())
 }
 \arguments{
-\item{config_name}{A name of a configuration}
+\item{config_name}{The ID of the pubsub configuration}
 
 \item{bucket}{The bucket for notifications}
+}
+\value{
+TRUE if successful
 }
 \description{
 Delete notification configurations for a bucket.

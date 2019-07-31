@@ -1,4 +1,4 @@
-context("googleCloudStorageR")
+context("setup")
 
 skip_if_no_token <- function() {
   testthat::skip_if_not(googleAuthR::gar_has_token(), "No token")
@@ -12,12 +12,16 @@ if (gargle:::secret_can_decrypt("googleCloudStorageR")) {
   Sys.setenv("GCS_AUTH_FILE" = tmp)
 }
 
+context("Authentication")
+
 test_that("Authentication", {
   skip_if_no_token()
   
   # manual auth
   expect_true(googleAuthR::gar_has_token())
 })
+
+context("Buckets")
 
 test_that("Bucket List", {
   skip_if_no_token()
@@ -81,6 +85,26 @@ test_that("We can make a bucket with lifecycle and versioning set",{
   
 })
 
+test_that("Versioning buckets", {
+  skip_if_no_token()
+  
+  buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
+  
+  # start with false
+  gcs_version_bucket(buck, action = "disable")
+  
+  expect_false(gcs_version_bucket(buck, action = "status"))
+  expect_true(gcs_version_bucket(buck, action = "enable"))
+  expect_true(gcs_version_bucket(buck, action = "status"))  
+  expect_false(gcs_version_bucket(buck, action = "disable"))  
+  expect_false(gcs_version_bucket(buck, action = "status"))
+  
+  expect_error(gcs_version_bucket(buck, action = "list"),
+               "`timeDeleted` property not found")
+})
+
+context("Objects")
+
 test_that("Object Operations", {
   skip_if_no_token()
   
@@ -131,6 +155,8 @@ test_that("Object Operations", {
 
 })
 
+context("Downloads")
+
 test_that("Signed URLs", {
   skip_if_no_token()
   
@@ -144,7 +170,7 @@ test_that("Signed URLs", {
   temp1 <- tempfile()
   on.exit(unlink(temp1))
 
-  download.file(signed, destfile = temp1)
+  download.file(signed, destfile = temp1, quiet = TRUE)
   expect_true(file.exists(temp1))
   
   gcs_upload(mtcars, 
@@ -161,28 +187,12 @@ test_that("Signed URLs", {
   temp2 <- tempfile()
   on.exit(unlink(temp2))
   
-  download.file(signed, destfile = temp2)
+  download.file(signed, destfile = temp2, quiet = TRUE)
   expect_true(file.exists(temp2))
   
 })
 
-test_that("Versioning buckets", {
-  skip_if_no_token()
-  
-  buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
-  
-  # start with false
-  gcs_version_bucket(buck, action = "disable")
-  
-  expect_false(gcs_version_bucket(buck, action = "status"))
-  expect_true(gcs_version_bucket(buck, action = "enable"))
-  expect_true(gcs_version_bucket(buck, action = "status"))  
-  expect_false(gcs_version_bucket(buck, action = "disable"))  
-  expect_false(gcs_version_bucket(buck, action = "status"))
-  
-  expect_error(gcs_version_bucket(buck, action = "list"),
-               "`timeDeleted` property not found")
-})
+context("Uploads")
 
 test_that("Uploads", {
   skip_if_no_token()
@@ -191,7 +201,6 @@ test_that("Uploads", {
   on.exit(unlink("test_mtcars.csv"))
 
   upload <- gcs_upload("test_mtcars.csv")
-  print(upload)
   expect_equal(upload$kind, "storage#object")
   
   upload <- gcs_upload(mtcars)
@@ -219,7 +228,6 @@ test_that("Uploads", {
   
   meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list("Content-Language" = "en", blah = 2))
   upload <- gcs_upload(mtcars, object_metadata = meta)
-  print(upload)
   
   expect_equal(upload$kind, "storage#object")
   expect_equal(upload$name, "mtcars_meta.csv")
@@ -446,5 +454,25 @@ test_that("We can delete the lifecycle bucket", {
 })
 
 
+context("Pubsub")
 
-
+test_that("Pubsub operations", {
+  skip_on_cran()
+  skip_if_no_token()
+  
+  email <- gcs_get_service_email(Sys.getenv("GCS_DEFAULT_PROJECT"))
+  expect_true(grepl("@", email))
+  expect_true(grepl("gserviceaccount\\.com", email))
+  
+  ps <- gcs_create_pubsub("gcs_r", 
+                          project = Sys.getenv("GCS_DEFAULT_PROJECT"),
+                          bucket = gcs_get_global_bucket())
+  expect_equal(ps$kind, "storage#notification")
+  
+  ps_df <- gcs_list_pubsub(bucket = gcs_get_global_bucket())
+  expect_true(all(ps_df$kind %in% "storage#notification"))
+  
+  expect_true(gcs_delete_pubsub(ps$id))
+  
+  
+})

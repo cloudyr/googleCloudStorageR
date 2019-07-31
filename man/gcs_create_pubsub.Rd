@@ -35,7 +35,7 @@ project <- "myproject"
 bucket <- "mybucket"
 
 # get the email to give access
-gce_get_service_email(project)
+gcs_get_service_email(project)
 
 # once email has access, create a new pub/sub topic for your bucket
 gcs_create_pubsub("gcs_r", project, bucket)

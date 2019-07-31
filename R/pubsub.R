@@ -28,7 +28,7 @@
 #' bucket <- "mybucket"
 #'
 #' # get the email to give access
-#' gce_get_service_email(project)
+#' gcs_get_service_email(project)
 #'
 #' # once email has access, create a new pub/sub topic for your bucket
 #' gcs_create_pubsub("gcs_r", project, bucket)
@@ -123,7 +123,8 @@ gcs_list_pubsub <- function(bucket = gcs_get_global_bucket()){
   the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/notificationConfigs",
                      bucket)
 
-  api <- gar_api_generator(the_url, "GET", data_parse_function = function(x) x)
+  api <- gar_api_generator(the_url, "GET", 
+                           data_parse_function = function(x) x$items)
 
   api()
 }
@@ -132,7 +133,7 @@ gcs_list_pubsub <- function(bucket = gcs_get_global_bucket()){
 #'
 #' Delete notification configurations for a bucket.
 #'
-#' @param config_name A name of a configuration
+#' @param config_name The ID of the pubsub configuration
 #' @param bucket The bucket for notifications
 #'
 #' @details
@@ -146,6 +147,8 @@ gcs_list_pubsub <- function(bucket = gcs_get_global_bucket()){
 #' @seealso \url{https://cloud.google.com/storage/docs/reporting-changes}
 #'
 #' @export
+#' 
+#' @return TRUE if successful
 #' @importFrom googleAuthR gar_api_generator
 #' @import assertthat
 #' @family pubsub functions
@@ -158,8 +161,20 @@ gcs_delete_pubsub <- function(config_name,
 
   the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/notificationConfigs/%s",
                      bucket, config_name)
+  
+  
+  # to avoid some warning messages due to empty body
+  options(googleAuthR.rawResponse = TRUE)
+  on.exit(options(googleAuthR.rawResponse = FALSE))
+  api <- suppressMessages(suppressWarnings(
+    gar_api_generator(the_url, "DELETE")
+    ))
 
-  api <- gar_api_generator(the_url, "DELETE", data_parse_function = function(x) x)
-
-  api()
+  res <- api()
+  
+  if(res$status_code != 204){
+    stop("Error deleting ", config_name)
+  }
+  
+  TRUE
 }
