@@ -267,6 +267,8 @@ test_that("We can download via a gs:// link", {
 context("Compose")
 
 test_that("Compose objects", {
+  skip_on_cran()
+  skip_if_no_token()
   
   comp <- gcs_compose_objects(c("mtcars.csv","test_mtcars.csv"),
                       destination = "composed_mtcars.csv",
