@@ -264,6 +264,18 @@ test_that("We can download via a gs:// link", {
   
 })
 
+context("Compose")
+
+test_that("Compose objects", {
+  
+  comp <- gcs_compose_objects(c("mtcars.csv","test_mtcars.csv"),
+                      destination = "composed_mtcars.csv",
+                      bucket = gcs_get_global_bucket())
+  expect_equal(comp$kind, "storage#object")
+  expect_equal(comp$componentCount, 2)
+  
+})
+
 context("Access Control")
 
 test_that("We can set access control level for user", {
@@ -476,3 +488,4 @@ test_that("Pubsub operations", {
   
   
 })
+

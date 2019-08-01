@@ -56,7 +56,9 @@ gcs_compose_objects <- function(objects,
                                           compose = ""),
                          data_parse_function = function(x) x)
   
-  ob(the_body = body)
+  res <- ob(the_body = body)
+  
+  structure(res, class = c("gcs_objectmeta"))
   
 }
 

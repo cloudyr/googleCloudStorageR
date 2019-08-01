@@ -41,6 +41,7 @@ print.gcs_objectmeta <- function(x, ...){
   cat0("Meta Generation:    ", x$metageneration)
   cat0("eTag:               ", x$etag)
   cat0("crc32c:             ", x$crc32c)
+  cat0("componentCount:     ", x$componentCount)
 }
 
 #' @export
