@@ -1,4 +1,4 @@
-# googleCloudStorageR 0.5.0.9000
+# googleCloudStorageR 0.5.1
 
 * fix unable to return object metadata (#105)
 * fix signature mismatch if object name contains / (#102)
