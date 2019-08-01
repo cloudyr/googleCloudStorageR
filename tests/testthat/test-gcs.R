@@ -46,7 +46,7 @@ test_that("Bucket Operations", {
   expect_true(buck == gcs_get_global_bucket())
   
   b <- gcs_get_bucket(buck)
-  
+  print(b)
   expect_equal(b$kind, "storage#bucket")
   
   new_bucket <- gcs_create_bucket("blahblahblahfffff",
@@ -110,7 +110,7 @@ test_that("Object Operations", {
   
   upload <- gcs_upload(mtcars, bucket = "blahblahblahfffff", name = "mtcars.csv")
   expect_equal(class(upload), "gcs_objectmeta")
-  
+  print(upload)
   del <- gcs_delete_object("mtcars.csv", bucket = "blahblahblahfffff")
   expect_true(del)
   
@@ -227,6 +227,7 @@ test_that("Uploads", {
   expect_equal(upload$name, "mtcars.csv")
   
   meta <- gcs_metadata_object("mtcars_meta.csv", metadata = list("Content-Language" = "en", blah = 2))
+  print(meta)
   upload <- gcs_upload(mtcars, object_metadata = meta)
   
   expect_equal(upload$kind, "storage#object")
@@ -248,7 +249,7 @@ test_that("We can supply our own parseFunction to downloads", {
   
   dl <- gcs_get_object("mtcars_meta.csv", parseFunction = f)
   expect_s3_class(dl, "data.frame")
-  
+  print(dl)
 })
 
 test_that("We can download via a gs:// link", {
@@ -286,6 +287,7 @@ test_that("We can set access control level for user", {
   
   acl <- gcs_update_object_acl("mtcars.csv", entity = "joe@blogs.com")
   expect_true(acl)
+  print(acl)
   
 })
 
