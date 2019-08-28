@@ -154,7 +154,7 @@ gcs_source <- function(script,
 #'
 #' @details
 #'
-#' Zip/unzip is performed before upload and after download.
+#' Zip/unzip is performed before upload and after download using \link[zip]{zipr}.
 #'
 #'
 #' @return When uploading the GCS meta object; when downloading \code{TRUE} if successful
@@ -177,7 +177,7 @@ gcs_save_all <- function(directory = getwd(),
                                     recursive = TRUE,
                                     pattern = pattern))
 
-  zip::zip(tmp, files = the_files)
+  zip::zipr(tmp, files = the_files)
 
   gcs_upload(tmp, bucket = bucket, name = directory)
 
