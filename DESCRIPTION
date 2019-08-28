@@ -20,7 +20,7 @@ Imports:
     openssl,
     utils,
     yaml,
-    zip
+    zip (>= 2.0.3)
 Suggests:
     covr,
     fs,
