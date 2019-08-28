@@ -1,3 +1,7 @@
+# googleCloudStorageR 0.5.1.9000
+
+* Fix `gcs_save_all()` to use new `zip` for filepaths (Thanks @caewok) #107
+
 # googleCloudStorageR 0.5.1
 
 * fix unable to return object metadata (#105)
