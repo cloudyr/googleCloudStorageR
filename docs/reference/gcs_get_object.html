@@ -8,10 +8,12 @@
 
 <title>Get an object in a bucket directly — gcs_get_object • googleCloudStorageR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Get an object in a bucket directly — gcs_get_object" />
 
+<meta property="og:title" content="Get an object in a bucket directly — gcs_get_object" />
 <meta property="og:description" content="This retrieves an object directly." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -85,7 +88,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://cloud.google.com/storage/">
@@ -123,15 +125,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>This retrieves an object directly.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>gcs_get_object</span>(<span class='no'>object_name</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
   <span class='kw'>meta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>saveToDisk</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>parseObject</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parseFunction</span> <span class='kw'>=</span> <span class='no'>gcs_parse_download</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -164,11 +164,10 @@
       <td><p>If saveToDisk is NULL, the function that will parse the download.  Defaults to <a href='gcs_parse_download.html'>gcs_parse_download</a></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The object, or TRUE if successfully saved to disk.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This differs from providing downloads via a download link as you can
@@ -176,9 +175,8 @@
 <p><code>object_name</code> can use a <code>gs://</code> URI instead,
 in which case it will take the bucket name from that URI and <code>bucket</code> argument
 will be overridden.  The URLs should be in the form <code>gs://bucket/object/name</code></p>
-<p>By default if you want to get the object straight into an R session the parseFunction is <a href='gcs_parse_download.html'>gcs_parse_download</a> which wraps <code>httr</code>'s <a href='https://www.rdocumentation.org/packages/httr/topics/content'>content</a>.</p>
+<p>By default if you want to get the object straight into an R session the parseFunction is <a href='gcs_parse_download.html'>gcs_parse_download</a> which wraps <code>httr</code>'s <a href='https://httr.r-lib.org/reference/content.html'>content</a>.</p>
 <p>If you want to use your own function (say to unzip the object) then supply it here.  The first argument should take the downloaded object.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other object functions: <code><a href='gcs_compose_objects.html'>gcs_compose_objects</a></code>,
@@ -186,7 +184,6 @@ will be overridden.  The URLs should be in the form <code>gs://bucket/object/nam
   <code><a href='gcs_delete_object.html'>gcs_delete_object</a></code>,
   <code><a href='gcs_list_objects.html'>gcs_list_objects</a></code>,
   <code><a href='gcs_metadata_object.html'>gcs_metadata_object</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -205,7 +202,7 @@ will be overridden.  The URLs should be in the form <code>gs://bucket/object/nam
 <span class='co'>## default gives a warning about missing column name.</span>
 <span class='co'>## custom parse function to suppress warning</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>object</span>){
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>suppressWarnings</a></span>(<span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/httr/topics/content'>content</a></span>(<span class='no'>object</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>))
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>suppressWarnings</a></span>(<span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span>(<span class='no'>object</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>))
 }
 
 <span class='co'>## get mtcars csv with custom parse function.</span>
@@ -218,13 +215,9 @@ will be overridden.  The URLs should be in the form <code>gs://bucket/object/nam
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

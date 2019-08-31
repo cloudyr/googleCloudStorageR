@@ -8,10 +8,12 @@
 
 <title>Create a Bucket Access Controls — gcs_create_bucket_acl • googleCloudStorageR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Create a Bucket Access Controls — gcs_create_bucket_acl" />
 
+<meta property="og:title" content="Create a Bucket Access Controls — gcs_create_bucket_acl" />
 <meta property="og:description" content="Create a new access control at the bucket level" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -85,7 +88,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://cloud.google.com/storage/">
@@ -123,15 +125,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Create a new access control at the bucket level</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>gcs_create_bucket_acl</span>(<span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(), <span class='kw'>entity</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>entity_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"group"</span>, <span class='st'>"domain"</span>, <span class='st'>"project"</span>, <span class='st'>"allUsers"</span>,
   <span class='st'>"allAuthenticatedUsers"</span>), <span class='kw'>role</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"READER"</span>, <span class='st'>"OWNER"</span>))</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -153,28 +153,24 @@
 <p>Used also for when a bucket is updated</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Bucket access control object</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Access control functions: <code><a href='gcs_get_bucket_acl.html'>gcs_get_bucket_acl</a></code>,
   <code><a href='gcs_get_object_acl.html'>gcs_get_object_acl</a></code>,
   <code><a href='gcs_update_object_acl.html'>gcs_update_object_acl</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

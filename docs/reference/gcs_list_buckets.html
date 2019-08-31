@@ -8,10 +8,12 @@
 
 <title>List buckets — gcs_list_buckets • googleCloudStorageR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,10 +32,11 @@
 
 
 
-<meta property="og:title" content="List buckets — gcs_list_buckets" />
 
+<meta property="og:title" content="List buckets — gcs_list_buckets" />
 <meta property="og:description" content="List the buckets your projectId has access to" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -85,7 +88,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://cloud.google.com/storage/">
@@ -123,14 +125,12 @@
     </div>
 
     <div class="ref-description">
-    
     <p>List the buckets your projectId has access to</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>gcs_list_buckets</span>(<span class='no'>projectId</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>projection</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"noAcl"</span>,
   <span class='st'>"full"</span>), <span class='kw'>maxResults</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>detail</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"summary"</span>, <span class='st'>"full"</span>))</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -155,11 +155,10 @@
       <td><p>Set level of detail</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>data.frame</code> of buckets</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Columns returned by <code>detail</code> are:</p>
@@ -167,7 +166,6 @@
 <li><p><code>summary</code> - name, storageClass, location ,updated</p></li>
 <li><p><code>full</code> - as above plus: id, selfLink, projectNumber, timeCreated, metageneration, etag</p></li>
 </ul>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other bucket functions: <code><a href='gcs_create_bucket.html'>gcs_create_bucket</a></code>,
@@ -176,7 +174,6 @@
   <code><a href='gcs_get_bucket.html'>gcs_get_bucket</a></code>,
   <code><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></code>,
   <code><a href='gcs_global_bucket.html'>gcs_global_bucket</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -193,13 +190,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

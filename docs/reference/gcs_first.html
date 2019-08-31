@@ -8,10 +8,12 @@
 
 <title>Save your R session to the cloud on startup/exit — gcs_first • googleCloudStorageR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Save your R session to the cloud on startup/exit — gcs_first" />
 
+<meta property="og:title" content="Save your R session to the cloud on startup/exit — gcs_first" />
 <meta property="og:description" content="Place within your .Rprofile to load and save your session data automatically" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -85,7 +88,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://cloud.google.com/storage/">
@@ -123,15 +125,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Place within your <code>.Rprofile</code> to load and save your session data automatically</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>gcs_first</span>(<span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"GCS_SESSION_BUCKET"</span>))
 
 <span class='fu'>gcs_last</span>(<span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"GCS_SESSION_BUCKET"</span>))</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -140,7 +140,7 @@
       <td><p>The bucket holding your session data. See Details.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The folder you want to save to Google Cloud Storage will also need to have a yaml file called <code>_gcssave.yaml</code> in the root of the directory.  It can hold the following arguments:</p>
@@ -160,12 +160,10 @@
  available in environment file <code>GCS_AUTH_FILE</code>,
  or if on Google Compute Engine it will reuse the Google Cloud authentication
  via <a href='https://code.markedmondson.me/googleAuthR//reference/gar_gce_auth.html'>gar_gce_auth</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='gcs_save_all.html'>gcs_save_all</a> and <a href='gcs_save_all.html'>gcs_load_all</a> that these functions call</p>
 <p><a href='gcs_save_all.html'>gcs_save_all</a> and <a href='gcs_save_all.html'>gcs_load_all</a> that these functions call</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -187,11 +185,8 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
