@@ -14,7 +14,7 @@ Depends:
 Imports:
     assertthat (>= 0.2.0),
     curl,
-    googleAuthR (>= 0.8.1.9000),
+    googleAuthR (>= 1.0.0),
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
     openssl,
@@ -36,4 +36,3 @@ License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
-Remotes: MarkEdmondson1234/googleAuthR

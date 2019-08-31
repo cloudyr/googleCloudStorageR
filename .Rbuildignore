@@ -19,3 +19,4 @@ test_signedurls.RData
 ^CRAN-RELEASE$
 ^index\.md$
 
+^revdep$
