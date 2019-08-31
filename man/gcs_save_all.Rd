@@ -32,7 +32,7 @@ When uploading the GCS meta object; when downloading \code{TRUE} if successful
 This function takes all the files in the directory, zips them, and saves/loads/deletes them to the cloud.  The upload name will be the directory name.
 }
 \details{
-Zip/unzip is performed before upload and after download.
+Zip/unzip is performed before upload and after download using \link[zip]{zipr}.
 }
 \seealso{
 Other R session data functions: \code{\link{gcs_load}},
