@@ -4,7 +4,8 @@
 \alias{gcs_auth}
 \title{Authenticate with Google Cloud Storage API}
 \usage{
-gcs_auth(json_file)
+gcs_auth(json_file = NULL, token = NULL,
+  email = Sys.getenv("GARGLE_EMAIL"))
 }
 \arguments{
 \item{json_file}{Authentication json file you have downloaded from your Google Project}
@@ -26,5 +27,31 @@ However, you can authenticate directly using this function pointing at your JSON
 \dontrun{
 library(googleCloudStorageR)
 gcs_auth("location_of_json_file.json")
+
+#' # to use your own Google Cloud Project credentials
+# go to GCP console and download client credentials JSON 
+# ideally set this in .Renviron file, not here but just for demonstration
+Sys.setenv("GAR_CLIENT_JSON" = "location/of/file.json")
+library(googleCloudStorageR)
+# should now be able to log in via your own GCP project
+gcs_auth()
+
+# reauthentication
+# Once you have authenticated, set email to skip the interactive message
+gcs_auth(email = "my@email.com")
+
+# or leave unset to bring up menu on which email to auth with
+gcs_auth()
+# The bigQueryR package is requesting access to your Google account. 
+# Select a pre-authorised account or enter '0' to obtain a new token.
+# Press Esc/Ctrl + C to abort.
+#1: my@email.com
+#2: work@mybusiness.com
+# you can set authentication for many emails, then switch between them e.g.
+gcs_auth(email = "my@email.com")
+gcs_list_buckets("my-project") # lists what buckets you have access to
+gcs_auth(email = "work@mybusiness.com") 
+gcs_list_buckets("my-project") # lists second set of buckets
+
 }
 }

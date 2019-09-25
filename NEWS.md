@@ -1,9 +1,14 @@
+# googleCloudStorageR 0.5.1.9000
+
+* Let users auth via an email again via `gcs_auth`
+
 # googleCloudStorageR 0.5.1
 
 * Fix `gcs_save_all()` to use new `zip` for filepaths (Thanks @caewok) #107
 * fix unable to return object metadata (#105)
 * fix signature mismatch if object name contains / (#102)
 * document `gcs_version_bucket()` - thanks @j450h1 ! (#96)
+
 
 # googleCloudStorageR 0.5.0
 
