@@ -9,6 +9,10 @@ gcs_auth(json_file = NULL, token = NULL,
 }
 \arguments{
 \item{json_file}{Authentication json file you have downloaded from your Google Project}
+
+\item{token}{An existing auth token you may have by other means}
+
+\item{email}{The email to default authenticate through}
 }
 \description{
 Authenticate with Google Cloud Storage API
@@ -42,7 +46,7 @@ gcs_auth(email = "my@email.com")
 
 # or leave unset to bring up menu on which email to auth with
 gcs_auth()
-# The bigQueryR package is requesting access to your Google account. 
+# The googleCLoudStorageR package is requesting access to your Google account. 
 # Select a pre-authorised account or enter '0' to obtain a new token.
 # Press Esc/Ctrl + C to abort.
 #1: my@email.com

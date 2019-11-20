@@ -1,7 +1,9 @@
 #' Authenticate with Google Cloud Storage API 
 #'
 #' @param json_file Authentication json file you have downloaded from your Google Project
-#'
+#' @param token An existing auth token you may have by other means
+#' @param email The email to default authenticate through
+#' 
 #' @details
 #'
 #' The best way to authenticate is to use an environment argument pointing at your authentication file.
@@ -32,7 +34,7 @@
 #' 
 #' # or leave unset to bring up menu on which email to auth with
 #' gcs_auth()
-#' # The bigQueryR package is requesting access to your Google account. 
+#' # The googleCLoudStorageR package is requesting access to your Google account. 
 #' # Select a pre-authorised account or enter '0' to obtain a new token.
 #' # Press Esc/Ctrl + C to abort.
 #' #1: my@email.com
