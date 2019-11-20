@@ -200,20 +200,15 @@ gcs_load_all <- function(directory = getwd(),
   tmp2 <- tempdir()
   on.exit(unlink(tmp2))
 
-  unzipped <- unzip(tmp, exdir = tmp2)
-
-  new_files <- gsub(directory,exdir,gsub(tmp2, "", unzipped))
-
   if(list){
+    unzipped <- unzip(tmp, exdir = tmp2)
+    
+    new_files <- gsub(directory,exdir,gsub(tmp2, "", unzipped))
+  
     return(new_files)
   }
 
-  mapply(function(x, name){
-    suppressWarnings(file.copy(x, name,
-                               overwrite = FALSE,
-                               recursive = TRUE,
-                               copy.date = TRUE))
-  }, unzipped, new_files)
+  file.copy(from = paste0(tmp2, directory), to = paste0(directory, "/.."), overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
 
   TRUE
 
