@@ -171,13 +171,14 @@ gcs_save_all <- function(directory = getwd(),
 
   bucket <- as.bucket_name(bucket)
 
-  the_files <- file.path(directory,
-                         list.files(path = directory,
-                                    all.files = TRUE,
-                                    recursive = TRUE,
-                                    pattern = pattern))
-
-  zip::zipr(tmp, files = the_files)
+  the_files <- list.files(path = directory,
+                          all.files = TRUE,
+                          recursive = TRUE,
+                          pattern = pattern)
+  
+  withCallingHandlers(
+    zip::zip(tmp, files = the_files),
+    deprecated = function(e) NULL)
 
   gcs_upload(tmp, bucket = bucket, name = directory)
 
@@ -207,8 +208,11 @@ gcs_load_all <- function(directory = getwd(),
   
     return(new_files)
   }
-
-  file.copy(from = paste0(tmp2, directory), to = paste0(directory, "/.."), overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
+  
+  filelist <- paste0(tmp2, "/", list.files(tmp2))
+  filelist <- filelist[filelist != tmp]
+  
+  file.copy(from = filelist, to = directory, overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
 
   TRUE
 
