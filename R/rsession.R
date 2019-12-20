@@ -200,10 +200,10 @@ gcs_load_all <- function(directory = getwd(),
 
   tmp2 <- tempdir()
   on.exit(unlink(tmp2))
-
+  
+  unzipped <- unzip(tmp, exdir = tmp2)
+  
   if(list){
-    unzipped <- unzip(tmp, exdir = tmp2)
-    
     new_files <- gsub(directory,exdir,gsub(tmp2, "", unzipped))
   
     return(new_files)
