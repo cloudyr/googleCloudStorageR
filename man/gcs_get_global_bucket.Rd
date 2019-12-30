@@ -16,11 +16,12 @@ Bucket name set this session to use by default
 Set the bucket name via \link{gcs_global_bucket}
 }
 \seealso{
-Other bucket functions: \code{\link{gcs_create_bucket}},
-  \code{\link{gcs_create_lifecycle}},
-  \code{\link{gcs_delete_bucket}},
-  \code{\link{gcs_get_bucket}},
-  \code{\link{gcs_global_bucket}},
-  \code{\link{gcs_list_buckets}}
+Other bucket functions: 
+\code{\link{gcs_create_bucket}()},
+\code{\link{gcs_create_lifecycle}()},
+\code{\link{gcs_delete_bucket}()},
+\code{\link{gcs_get_bucket}()},
+\code{\link{gcs_global_bucket}()},
+\code{\link{gcs_list_buckets}()}
 }
 \concept{bucket functions}

@@ -4,8 +4,7 @@
 \alias{gcs_download_url}
 \title{Get the download URL}
 \usage{
-gcs_download_url(object_name, bucket = gcs_get_global_bucket(),
-  public = FALSE)
+gcs_download_url(object_name, bucket = gcs_get_global_bucket(), public = FALSE)
 }
 \arguments{
 \item{object_name}{A vector of object names}
@@ -30,7 +29,8 @@ Use the \code{public = TRUE} to return the URL accessible to all, which changes 
   \code{storage.cloud.google.com} to \code{storage.googleapis.com}
 }
 \seealso{
-Other download functions: \code{\link{gcs_parse_download}},
-  \code{\link{gcs_signed_url}}
+Other download functions: 
+\code{\link{gcs_parse_download}()},
+\code{\link{gcs_signed_url}()}
 }
 \concept{download functions}

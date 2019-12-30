@@ -4,10 +4,14 @@
 \alias{gcs_copy_object}
 \title{Copy an object}
 \usage{
-gcs_copy_object(source_object, destination_object,
+gcs_copy_object(
+  source_object,
+  destination_object,
   source_bucket = gcs_get_global_bucket(),
-  destination_bucket = gcs_get_global_bucket(), rewriteToken = NULL,
-  destinationPredefinedAcl = NULL)
+  destination_bucket = gcs_get_global_bucket(),
+  rewriteToken = NULL,
+  destinationPredefinedAcl = NULL
+)
 }
 \arguments{
 \item{source_object}{The name of the object to copy, or a \code{gs://} URL}
@@ -29,10 +33,11 @@ If successful, a rewrite object.
 Copies an object to a new destination
 }
 \seealso{
-Other object functions: \code{\link{gcs_compose_objects}},
-  \code{\link{gcs_delete_object}},
-  \code{\link{gcs_get_object}},
-  \code{\link{gcs_list_objects}},
-  \code{\link{gcs_metadata_object}}
+Other object functions: 
+\code{\link{gcs_compose_objects}()},
+\code{\link{gcs_delete_object}()},
+\code{\link{gcs_get_object}()},
+\code{\link{gcs_list_objects}()},
+\code{\link{gcs_metadata_object}()}
 }
 \concept{object functions}

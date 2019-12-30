@@ -4,8 +4,7 @@
 \alias{gcs_auth}
 \title{Authenticate with Google Cloud Storage API}
 \usage{
-gcs_auth(json_file = NULL, token = NULL,
-  email = Sys.getenv("GARGLE_EMAIL"))
+gcs_auth(json_file = NULL, token = NULL, email = Sys.getenv("GARGLE_EMAIL"))
 }
 \arguments{
 \item{json_file}{Authentication json file you have downloaded from your Google Project}

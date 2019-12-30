@@ -4,12 +4,18 @@
 \alias{gcs_upload}
 \title{Upload a file of arbitrary type}
 \usage{
-gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
-  name = deparse(substitute(file)), object_function = NULL,
-  object_metadata = NULL, predefinedAcl = c("private",
-  "authenticatedRead", "bucketOwnerFullControl", "bucketOwnerRead",
-  "projectPrivate", "publicRead", "default"), upload_type = c("simple",
-  "resumable"))
+gcs_upload(
+  file,
+  bucket = gcs_get_global_bucket(),
+  type = NULL,
+  name = deparse(substitute(file)),
+  object_function = NULL,
+  object_metadata = NULL,
+  predefinedAcl = c("private", "bucketLevel", "authenticatedRead",
+    "bucketOwnerFullControl", "bucketOwnerRead", "projectPrivate", "publicRead",
+    "default"),
+  upload_type = c("simple", "resumable")
+)
 }
 \arguments{
 \item{file}{data.frame, list, R object or filepath (character) to upload file}
@@ -24,7 +30,7 @@ gcs_upload(file, bucket = gcs_get_global_bucket(), type = NULL,
 
 \item{object_metadata}{Optional metadata for object created via \link{gcs_metadata_object}}
 
-\item{predefinedAcl}{Specify user access to object. Default is 'private'}
+\item{predefinedAcl}{Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.}
 
 \item{upload_type}{Override automatic decision on upload type}
 }

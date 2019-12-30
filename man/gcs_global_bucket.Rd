@@ -20,11 +20,12 @@ This sets a bucket to a global environment value so you don't need to
 supply the bucket argument to other API calls.
 }
 \seealso{
-Other bucket functions: \code{\link{gcs_create_bucket}},
-  \code{\link{gcs_create_lifecycle}},
-  \code{\link{gcs_delete_bucket}},
-  \code{\link{gcs_get_bucket}},
-  \code{\link{gcs_get_global_bucket}},
-  \code{\link{gcs_list_buckets}}
+Other bucket functions: 
+\code{\link{gcs_create_bucket}()},
+\code{\link{gcs_create_lifecycle}()},
+\code{\link{gcs_delete_bucket}()},
+\code{\link{gcs_get_bucket}()},
+\code{\link{gcs_get_global_bucket}()},
+\code{\link{gcs_list_buckets}()}
 }
 \concept{bucket functions}

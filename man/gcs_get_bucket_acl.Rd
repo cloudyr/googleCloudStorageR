@@ -4,9 +4,12 @@
 \alias{gcs_get_bucket_acl}
 \title{Get Bucket Access Controls}
 \usage{
-gcs_get_bucket_acl(bucket = gcs_get_global_bucket(), entity = "",
+gcs_get_bucket_acl(
+  bucket = gcs_get_global_bucket(),
+  entity = "",
   entity_type = c("user", "group", "domain", "project", "allUsers",
-  "allAuthenticatedUsers"))
+    "allAuthenticatedUsers")
+)
 }
 \arguments{
 \item{bucket}{Name of a bucket, or a bucket object returned by \link{gcs_create_bucket}}
@@ -36,8 +39,9 @@ acl <- gcs_get_bucket_acl(entity_type = "project",
 }
 }
 \seealso{
-Other Access control functions: \code{\link{gcs_create_bucket_acl}},
-  \code{\link{gcs_get_object_acl}},
-  \code{\link{gcs_update_object_acl}}
+Other Access control functions: 
+\code{\link{gcs_create_bucket_acl}()},
+\code{\link{gcs_get_object_acl}()},
+\code{\link{gcs_update_object_acl}()}
 }
 \concept{Access control functions}

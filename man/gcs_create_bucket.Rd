@@ -4,15 +4,20 @@
 \alias{gcs_create_bucket}
 \title{Create a new bucket}
 \usage{
-gcs_create_bucket(name, projectId, location = "US",
-  storageClass = c("MULTI_REGIONAL", "REGIONAL", "STANDARD", "NEARLINE",
-  "COLDLINE", "DURABLE_REDUCED_AVAILABILITY"),
-  predefinedAcl = c("projectPrivate", "authenticatedRead", "private",
-  "publicRead", "publicReadWrite"),
-  predefinedDefaultObjectAcl = c("bucketOwnerFullControl",
-  "bucketOwnerRead", "authenticatedRead", "private", "projectPrivate",
-  "publicRead"), projection = c("noAcl", "full"), versioning = FALSE,
-  lifecycle = NULL)
+gcs_create_bucket(
+  name,
+  projectId,
+  location = "US",
+  storageClass = c("MULTI_REGIONAL", "REGIONAL", "STANDARD", "NEARLINE", "COLDLINE",
+    "DURABLE_REDUCED_AVAILABILITY"),
+  predefinedAcl = c("projectPrivate", "authenticatedRead", "private", "publicRead",
+    "publicReadWrite"),
+  predefinedDefaultObjectAcl = c("bucketOwnerFullControl", "bucketOwnerRead",
+    "authenticatedRead", "private", "projectPrivate", "publicRead"),
+  projection = c("noAcl", "full"),
+  versioning = FALSE,
+  lifecycle = NULL
+)
 }
 \arguments{
 \item{name}{Globally unique name of bucket to create}
@@ -40,11 +45,12 @@ Create a new bucket in your project
 \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
 }
 \seealso{
-Other bucket functions: \code{\link{gcs_create_lifecycle}},
-  \code{\link{gcs_delete_bucket}},
-  \code{\link{gcs_get_bucket}},
-  \code{\link{gcs_get_global_bucket}},
-  \code{\link{gcs_global_bucket}},
-  \code{\link{gcs_list_buckets}}
+Other bucket functions: 
+\code{\link{gcs_create_lifecycle}()},
+\code{\link{gcs_delete_bucket}()},
+\code{\link{gcs_get_bucket}()},
+\code{\link{gcs_get_global_bucket}()},
+\code{\link{gcs_global_bucket}()},
+\code{\link{gcs_list_buckets}()}
 }
 \concept{bucket functions}

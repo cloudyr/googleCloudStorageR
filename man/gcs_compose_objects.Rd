@@ -4,8 +4,7 @@
 \alias{gcs_compose_objects}
 \title{Compose up to 32 objects into one}
 \usage{
-gcs_compose_objects(objects, destination,
-  bucket = gcs_get_global_bucket())
+gcs_compose_objects(objects, destination, bucket = gcs_get_global_bucket())
 }
 \arguments{
 \item{objects}{A character vector of object names to combine}
@@ -35,10 +34,11 @@ This merges objects stored on Cloud Storage into one object.
 \seealso{
 \href{https://cloud.google.com/storage/docs/json_api/v1/objects/compose}{Compose objects}
 
-Other object functions: \code{\link{gcs_copy_object}},
-  \code{\link{gcs_delete_object}},
-  \code{\link{gcs_get_object}},
-  \code{\link{gcs_list_objects}},
-  \code{\link{gcs_metadata_object}}
+Other object functions: 
+\code{\link{gcs_copy_object}()},
+\code{\link{gcs_delete_object}()},
+\code{\link{gcs_get_object}()},
+\code{\link{gcs_list_objects}()},
+\code{\link{gcs_metadata_object}()}
 }
 \concept{object functions}

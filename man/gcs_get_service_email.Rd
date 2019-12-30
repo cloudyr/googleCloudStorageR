@@ -17,8 +17,9 @@ This service email can be different from the email in the service JSON.  Give th
 \code{pubsub.publisher} permission in the Google cloud console.
 }
 \seealso{
-Other pubsub functions: \code{\link{gcs_create_pubsub}},
-  \code{\link{gcs_delete_pubsub}},
-  \code{\link{gcs_list_pubsub}}
+Other pubsub functions: 
+\code{\link{gcs_create_pubsub}()},
+\code{\link{gcs_delete_pubsub}()},
+\code{\link{gcs_list_pubsub}()}
 }
 \concept{pubsub functions}

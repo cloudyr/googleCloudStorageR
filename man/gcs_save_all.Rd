@@ -6,11 +6,18 @@
 \alias{gcs_delete_all}
 \title{Save/Load all files in directory to Google Cloud Storage}
 \usage{
-gcs_save_all(directory = getwd(), bucket = gcs_get_global_bucket(),
-  pattern = "")
+gcs_save_all(
+  directory = getwd(),
+  bucket = gcs_get_global_bucket(),
+  pattern = ""
+)
 
-gcs_load_all(directory = getwd(), bucket = gcs_get_global_bucket(),
-  exdir = directory, list = FALSE)
+gcs_load_all(
+  directory = getwd(),
+  bucket = gcs_get_global_bucket(),
+  exdir = directory,
+  list = FALSE
+)
 
 gcs_delete_all(directory = getwd(), bucket = gcs_get_global_bucket())
 }
@@ -35,8 +42,10 @@ This function takes all the files in the directory, zips them, and saves/loads/d
 Zip/unzip is performed before upload and after download using \link[zip]{zipr}.
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_load}},
-  \code{\link{gcs_save_image}}, \code{\link{gcs_save}},
-  \code{\link{gcs_source}}
+Other R session data functions: 
+\code{\link{gcs_load}()},
+\code{\link{gcs_save_image}()},
+\code{\link{gcs_save}()},
+\code{\link{gcs_source}()}
 }
 \concept{R session data functions}

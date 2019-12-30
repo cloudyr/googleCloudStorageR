@@ -3,7 +3,6 @@
 \docType{package}
 \name{googleCloudStorageR}
 \alias{googleCloudStorageR}
-\alias{googleCloudStorageR-package}
 \title{googleCloudStorageR}
 \description{
 Interact with Google Cloud Storage API in R. Part of the 'cloudyr' project.

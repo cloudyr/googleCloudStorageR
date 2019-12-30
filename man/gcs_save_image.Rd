@@ -4,8 +4,12 @@
 \alias{gcs_save_image}
 \title{Save an R session to the Google Cloud}
 \usage{
-gcs_save_image(file = ".RData", bucket = gcs_get_global_bucket(),
-  saveLocation = NULL, envir = parent.frame())
+gcs_save_image(
+  file = ".RData",
+  bucket = gcs_get_global_bucket(),
+  saveLocation = NULL,
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{file}{Where to save the file in GCS and locally}
@@ -31,8 +35,10 @@ Restore the objects using \code{gcs_load(bucket = "your_bucket")}
 This will overwrite any data with the same name in your current local environment.
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_load}},
-  \code{\link{gcs_save_all}}, \code{\link{gcs_save}},
-  \code{\link{gcs_source}}
+Other R session data functions: 
+\code{\link{gcs_load}()},
+\code{\link{gcs_save_all}()},
+\code{\link{gcs_save}()},
+\code{\link{gcs_source}()}
 }
 \concept{R session data functions}

@@ -4,10 +4,16 @@
 \alias{gcs_metadata_object}
 \title{Make metadata for an object}
 \usage{
-gcs_metadata_object(object_name = NULL, metadata = NULL,
-  md5Hash = NULL, crc32c = NULL, contentLanguage = NULL,
-  contentEncoding = NULL, contentDisposition = NULL,
-  cacheControl = NULL)
+gcs_metadata_object(
+  object_name = NULL,
+  metadata = NULL,
+  md5Hash = NULL,
+  crc32c = NULL,
+  contentLanguage = NULL,
+  contentEncoding = NULL,
+  contentDisposition = NULL,
+  cacheControl = NULL
+)
 }
 \arguments{
 \item{object_name}{Name of the object. GCS uses this version if also set elsewhere, or a \code{gs://} URL}
@@ -33,10 +39,11 @@ Object metadata for uploading of class \code{gar_Object}
 Use this to pass to uploads in \link{gcs_upload}
 }
 \seealso{
-Other object functions: \code{\link{gcs_compose_objects}},
-  \code{\link{gcs_copy_object}},
-  \code{\link{gcs_delete_object}},
-  \code{\link{gcs_get_object}},
-  \code{\link{gcs_list_objects}}
+Other object functions: 
+\code{\link{gcs_compose_objects}()},
+\code{\link{gcs_copy_object}()},
+\code{\link{gcs_delete_object}()},
+\code{\link{gcs_get_object}()},
+\code{\link{gcs_list_objects}()}
 }
 \concept{object functions}

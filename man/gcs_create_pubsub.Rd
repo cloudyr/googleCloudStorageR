@@ -4,8 +4,12 @@
 \alias{gcs_create_pubsub}
 \title{Create a pub/sub notification for a bucket}
 \usage{
-gcs_create_pubsub(topic, project, bucket = gcs_get_global_bucket(),
-  event_types = NULL)
+gcs_create_pubsub(
+  topic,
+  project,
+  bucket = gcs_get_global_bucket(),
+  event_types = NULL
+)
 }
 \arguments{
 \item{topic}{The pub/sub topic name}
@@ -47,8 +51,9 @@ gcs_create_pubsub("gcs_r", project, bucket)
 \seealso{
 \url{https://cloud.google.com/storage/docs/reporting-changes}
 
-Other pubsub functions: \code{\link{gcs_delete_pubsub}},
-  \code{\link{gcs_get_service_email}},
-  \code{\link{gcs_list_pubsub}}
+Other pubsub functions: 
+\code{\link{gcs_delete_pubsub}()},
+\code{\link{gcs_get_service_email}()},
+\code{\link{gcs_list_pubsub}()}
 }
 \concept{pubsub functions}

@@ -4,9 +4,15 @@
 \alias{gcs_get_object}
 \title{Get an object in a bucket directly}
 \usage{
-gcs_get_object(object_name, bucket = gcs_get_global_bucket(),
-  meta = FALSE, saveToDisk = NULL, overwrite = FALSE,
-  parseObject = TRUE, parseFunction = gcs_parse_download)
+gcs_get_object(
+  object_name,
+  bucket = gcs_get_global_bucket(),
+  meta = FALSE,
+  saveToDisk = NULL,
+  overwrite = FALSE,
+  parseObject = TRUE,
+  parseFunction = gcs_parse_download
+)
 }
 \arguments{
 \item{object_name}{name of object in the bucket that will be URL encoded, or a \code{gs://} URL}
@@ -69,10 +75,11 @@ gcs_get_object("mtcars_meta.csv", parseFunction = f)
 
 }
 \seealso{
-Other object functions: \code{\link{gcs_compose_objects}},
-  \code{\link{gcs_copy_object}},
-  \code{\link{gcs_delete_object}},
-  \code{\link{gcs_list_objects}},
-  \code{\link{gcs_metadata_object}}
+Other object functions: 
+\code{\link{gcs_compose_objects}()},
+\code{\link{gcs_copy_object}()},
+\code{\link{gcs_delete_object}()},
+\code{\link{gcs_list_objects}()},
+\code{\link{gcs_metadata_object}()}
 }
 \concept{object functions}

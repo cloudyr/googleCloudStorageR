@@ -4,9 +4,14 @@
 \alias{gcs_get_object_acl}
 \title{Check the access control settings for an object for one entity}
 \usage{
-gcs_get_object_acl(object_name, bucket = gcs_get_global_bucket(),
-  entity = "", entity_type = c("user", "group", "domain", "project",
-  "allUsers", "allAuthenticatedUsers"), generation = NULL)
+gcs_get_object_acl(
+  object_name,
+  bucket = gcs_get_global_bucket(),
+  entity = "",
+  entity_type = c("user", "group", "domain", "project", "allUsers",
+    "allAuthenticatedUsers"),
+  generation = NULL
+)
 }
 \arguments{
 \item{object_name}{Name of the object}
@@ -45,8 +50,9 @@ acl <- gcs_get_object_acl("mtcars.csv", entity_type = "allUsers")
 }
 }
 \seealso{
-Other Access control functions: \code{\link{gcs_create_bucket_acl}},
-  \code{\link{gcs_get_bucket_acl}},
-  \code{\link{gcs_update_object_acl}}
+Other Access control functions: 
+\code{\link{gcs_create_bucket_acl}()},
+\code{\link{gcs_get_bucket_acl}()},
+\code{\link{gcs_update_object_acl}()}
 }
 \concept{Access control functions}

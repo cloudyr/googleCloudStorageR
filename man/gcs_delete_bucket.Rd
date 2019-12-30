@@ -4,8 +4,11 @@
 \alias{gcs_delete_bucket}
 \title{Delete a bucket}
 \usage{
-gcs_delete_bucket(bucket, ifMetagenerationMatch = NULL,
-  ifMetagenerationNotMatch = NULL)
+gcs_delete_bucket(
+  bucket,
+  ifMetagenerationMatch = NULL,
+  ifMetagenerationNotMatch = NULL
+)
 }
 \arguments{
 \item{bucket}{Name of the bucket, or a bucket object}
@@ -18,11 +21,12 @@ gcs_delete_bucket(bucket, ifMetagenerationMatch = NULL,
 Delete the bucket, and all its objects
 }
 \seealso{
-Other bucket functions: \code{\link{gcs_create_bucket}},
-  \code{\link{gcs_create_lifecycle}},
-  \code{\link{gcs_get_bucket}},
-  \code{\link{gcs_get_global_bucket}},
-  \code{\link{gcs_global_bucket}},
-  \code{\link{gcs_list_buckets}}
+Other bucket functions: 
+\code{\link{gcs_create_bucket}()},
+\code{\link{gcs_create_lifecycle}()},
+\code{\link{gcs_get_bucket}()},
+\code{\link{gcs_get_global_bucket}()},
+\code{\link{gcs_global_bucket}()},
+\code{\link{gcs_list_buckets}()}
 }
 \concept{bucket functions}

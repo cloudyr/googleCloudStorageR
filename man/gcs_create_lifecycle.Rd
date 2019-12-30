@@ -4,8 +4,12 @@
 \alias{gcs_create_lifecycle}
 \title{Create a lifecycle condition}
 \usage{
-gcs_create_lifecycle(age = NULL, createdBefore = NULL,
-  numNewerVersions = NULL, isLive = NULL)
+gcs_create_lifecycle(
+  age = NULL,
+  createdBefore = NULL,
+  numNewerVersions = NULL,
+  isLive = NULL
+)
 }
 \arguments{
 \item{age}{Age in days before objects are deleted}
@@ -39,11 +43,12 @@ Use this to set rules for how long objects last in a bucket in \link{gcs_create_
 \seealso{
 Lifecycle documentation \url{https://cloud.google.com/storage/docs/lifecycle}
 
-Other bucket functions: \code{\link{gcs_create_bucket}},
-  \code{\link{gcs_delete_bucket}},
-  \code{\link{gcs_get_bucket}},
-  \code{\link{gcs_get_global_bucket}},
-  \code{\link{gcs_global_bucket}},
-  \code{\link{gcs_list_buckets}}
+Other bucket functions: 
+\code{\link{gcs_create_bucket}()},
+\code{\link{gcs_delete_bucket}()},
+\code{\link{gcs_get_bucket}()},
+\code{\link{gcs_get_global_bucket}()},
+\code{\link{gcs_global_bucket}()},
+\code{\link{gcs_list_buckets}()}
 }
 \concept{bucket functions}

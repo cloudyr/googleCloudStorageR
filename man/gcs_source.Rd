@@ -20,8 +20,10 @@ TRUE if successful
 Download an R script and run it immediately via \link{source}
 }
 \seealso{
-Other R session data functions: \code{\link{gcs_load}},
-  \code{\link{gcs_save_all}}, \code{\link{gcs_save_image}},
-  \code{\link{gcs_save}}
+Other R session data functions: 
+\code{\link{gcs_load}()},
+\code{\link{gcs_save_all}()},
+\code{\link{gcs_save_image}()},
+\code{\link{gcs_save}()}
 }
 \concept{R session data functions}

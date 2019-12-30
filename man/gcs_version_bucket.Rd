@@ -4,8 +4,7 @@
 \alias{gcs_version_bucket}
 \title{Change or fetch bucket version status}
 \usage{
-gcs_version_bucket(bucket, action = c("status", "enable", "disable",
-  "list"))
+gcs_version_bucket(bucket, action = c("status", "enable", "disable", "list"))
 }
 \arguments{
 \item{bucket}{gcs bucket}

@@ -22,8 +22,9 @@ an existing pub/sub topic; have given your service account at least \code{pubsub
 \seealso{
 \url{https://cloud.google.com/storage/docs/reporting-changes}
 
-Other pubsub functions: \code{\link{gcs_create_pubsub}},
-  \code{\link{gcs_delete_pubsub}},
-  \code{\link{gcs_get_service_email}}
+Other pubsub functions: 
+\code{\link{gcs_create_pubsub}()},
+\code{\link{gcs_delete_pubsub}()},
+\code{\link{gcs_get_service_email}()}
 }
 \concept{pubsub functions}

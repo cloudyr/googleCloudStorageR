@@ -4,9 +4,14 @@
 \alias{gcs_update_object_acl}
 \title{Change access to an object in a bucket}
 \usage{
-gcs_update_object_acl(object_name, bucket = gcs_get_global_bucket(),
-  entity = "", entity_type = c("user", "group", "domain", "project",
-  "allUsers", "allAuthenticatedUsers"), role = c("READER", "OWNER"))
+gcs_update_object_acl(
+  object_name,
+  bucket = gcs_get_global_bucket(),
+  entity = "",
+  entity_type = c("user", "group", "domain", "project", "allUsers",
+    "allAuthenticatedUsers"),
+  role = c("READER", "OWNER")
+)
 }
 \arguments{
 \item{object_name}{Object to update}
@@ -46,8 +51,9 @@ For example:
 \seealso{
 \href{https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/insert}{objectAccessControls on Google API reference}
 
-Other Access control functions: \code{\link{gcs_create_bucket_acl}},
-  \code{\link{gcs_get_bucket_acl}},
-  \code{\link{gcs_get_object_acl}}
+Other Access control functions: 
+\code{\link{gcs_create_bucket_acl}()},
+\code{\link{gcs_get_bucket_acl}()},
+\code{\link{gcs_get_object_acl}()}
 }
 \concept{Access control functions}

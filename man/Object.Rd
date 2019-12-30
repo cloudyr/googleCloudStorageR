@@ -4,14 +4,33 @@
 \alias{Object}
 \title{Object Object}
 \usage{
-Object(acl = NULL, bucket = NULL, cacheControl = NULL,
-  componentCount = NULL, contentDisposition = NULL,
-  contentEncoding = NULL, contentLanguage = NULL, contentType = NULL,
-  crc32c = NULL, customerEncryption = NULL, etag = NULL,
-  generation = NULL, id = NULL, md5Hash = NULL, mediaLink = NULL,
-  metadata = NULL, metageneration = NULL, name = NULL,
-  owner = NULL, selfLink = NULL, size = NULL, storageClass = NULL,
-  timeCreated = NULL, timeDeleted = NULL, updated = NULL)
+Object(
+  acl = NULL,
+  bucket = NULL,
+  cacheControl = NULL,
+  componentCount = NULL,
+  contentDisposition = NULL,
+  contentEncoding = NULL,
+  contentLanguage = NULL,
+  contentType = NULL,
+  crc32c = NULL,
+  customerEncryption = NULL,
+  etag = NULL,
+  generation = NULL,
+  id = NULL,
+  md5Hash = NULL,
+  mediaLink = NULL,
+  metadata = NULL,
+  metageneration = NULL,
+  name = NULL,
+  owner = NULL,
+  selfLink = NULL,
+  size = NULL,
+  storageClass = NULL,
+  timeCreated = NULL,
+  timeDeleted = NULL,
+  updated = NULL
+)
 }
 \arguments{
 \item{acl}{Access controls on the object}

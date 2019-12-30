@@ -4,8 +4,12 @@
 \alias{gcs_retry_upload}
 \title{Retry a resumeable upload}
 \usage{
-gcs_retry_upload(retry_object = NULL, upload_url = NULL, file = NULL,
-  type = NULL)
+gcs_retry_upload(
+  retry_object = NULL,
+  upload_url = NULL,
+  file = NULL,
+  type = NULL
+)
 }
 \arguments{
 \item{retry_object}{A object of class \code{gcs_upload_retry}.}

@@ -8,7 +8,7 @@
 #' @param name What to call the file once uploaded. Default is the filepath
 #' @param object_function If not NULL, a \code{function(input, output)}
 #' @param object_metadata Optional metadata for object created via \link{gcs_metadata_object}
-#' @param predefinedAcl Specify user access to object. Default is 'private'
+#' @param predefinedAcl Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.
 #' @param upload_type Override automatic decision on upload type
 #'
 #' @details
@@ -95,6 +95,7 @@ gcs_upload <- function(file,
                        object_metadata = NULL,
                        predefinedAcl = c(
                          "private",
+                         "bucketLevel",
                          "authenticatedRead",
                          "bucketOwnerFullControl",
                          "bucketOwnerRead",
@@ -107,6 +108,10 @@ gcs_upload <- function(file,
   bucket        <- as.bucket_name(bucket)
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type   <- match.arg(upload_type)
+  
+  if(predefinedAcl == "bucketLevel"){
+    predefinedAcl <- NULL
+  }
   
   ## no leading slashes
   name <- gsub("^/","", URLencode(name, reserved = TRUE))
