@@ -103,6 +103,9 @@ f <- function(input, output){
 
 gcs_upload(mtcars, name = "mtcars_csv2.csv", object_function = f)
 
+# upload to a bucket with bucket level ACL set
+gcs_upload(mtcars, predefinedAcl = "bucketLevel")
+
 }
 
 

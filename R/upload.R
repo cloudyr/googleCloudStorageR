@@ -74,6 +74,9 @@
 #' }
 #'
 #' gcs_upload(mtcars, name = "mtcars_csv2.csv", object_function = f)
+#' 
+#' # upload to a bucket with bucket level ACL set
+#' gcs_upload(mtcars, predefinedAcl = "bucketLevel")
 #'
 #' }
 #'
@@ -109,9 +112,7 @@ gcs_upload <- function(file,
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type   <- match.arg(upload_type)
   
-  if(predefinedAcl == "bucketLevel"){
-    predefinedAcl <- NULL
-  }
+
   
   ## no leading slashes
   name <- gsub("^/","", URLencode(name, reserved = TRUE))
@@ -343,6 +344,10 @@ do_simple_upload <- function(name,
     pars_args[["predefinedAcl"]] <- predefinedAcl
   }
   
+  if(predefinedAcl == "bucketLevel"){
+    predefinedAcl <- NULL
+  }
+  
   up <-
     gar_api_generator("https://www.googleapis.com/upload/storage/v1",
                       "POST",
@@ -386,6 +391,10 @@ do_multipart_upload <- function(name,
     pars_args[["predefinedAcl"]] <- predefinedAcl
   }
   
+  if(predefinedAcl == "bucketLevel"){
+    predefinedAcl <- NULL
+  }
+  
   up <-
     gar_api_generator("https://www.googleapis.com/upload/storage/v1",
                       "POST",
@@ -416,6 +425,10 @@ do_resumable_upload <- function(name,
                     name=name)
   if(predefinedAcl != "default"){
     pars_args[["predefinedAcl"]] <- predefinedAcl
+  }
+  
+  if(predefinedAcl == "bucketLevel"){
+    predefinedAcl <- NULL
   }
   
   up <-
