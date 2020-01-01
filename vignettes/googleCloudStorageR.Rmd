@@ -152,6 +152,14 @@ gcs_upload(mtcars,
            type = "text/csv")
 ```
 
+Since 2019 you can also set bucket level access permissions.  To upload to those buckets, specify the `defaultAcl="bucketLevel"`
+
+```r
+gcs_upload(mtcars, 
+           bucket = "mark-bucketlevel-acl",
+           predefinedAcl = "bucketLevel")
+```
+
 ## Upload metadata
 
 You can pass metadata with an object via the function `gcs_metadata_object()`.
@@ -240,6 +248,14 @@ gcs_update_object_acl("your-object.csv",
                       entity = "yourdomain.com", 
                       entity_type = "domain", 
                       role = OWNER)
+```
+
+Since 2019 you can also set bucket level access permissions.  To upload to those buckets, specify the `defaultAcl="bucketLevel"`
+
+```r
+gcs_upload(mtcars, 
+           bucket = "mark-bucketlevel-acl",
+           predefinedAcl = "bucketLevel")
 ```
 
 ## Deleting an object
