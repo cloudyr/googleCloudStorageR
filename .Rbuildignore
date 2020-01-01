@@ -18,5 +18,5 @@ test_signedurls.RData
 ^gcs\.oauth$
 ^CRAN-RELEASE$
 ^index\.md$
-
+^.github
 ^revdep$
