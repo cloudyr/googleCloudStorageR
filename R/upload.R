@@ -112,8 +112,6 @@ gcs_upload <- function(file,
   predefinedAcl <- match.arg(predefinedAcl)
   upload_type   <- match.arg(upload_type)
   
-
-  
   ## no leading slashes
   name <- gsub("^/","", URLencode(name, reserved = TRUE))
   
@@ -340,12 +338,8 @@ do_simple_upload <- function(name,
   pars_args <- list(uploadType="media",
                     name=name)
   
-  if(predefinedAcl != "default"){
+  if(!predefinedAcl %in% c("default","bucketLevel")){
     pars_args[["predefinedAcl"]] <- predefinedAcl
-  }
-  
-  if(predefinedAcl == "bucketLevel"){
-    predefinedAcl <- NULL
   }
   
   up <-
@@ -387,12 +381,8 @@ do_multipart_upload <- function(name,
   
   pars_args <- list(uploadType="multipart",
                     name=name)
-  if(predefinedAcl != "default"){
+  if(!predefinedAcl %in% c("default","bucketLevel")){
     pars_args[["predefinedAcl"]] <- predefinedAcl
-  }
-  
-  if(predefinedAcl == "bucketLevel"){
-    predefinedAcl <- NULL
   }
   
   up <-
@@ -423,12 +413,8 @@ do_resumable_upload <- function(name,
   
   pars_args <- list(uploadType="resumable",
                     name=name)
-  if(predefinedAcl != "default"){
+  if(!predefinedAcl %in% c("default","bucketLevel")){
     pars_args[["predefinedAcl"]] <- predefinedAcl
-  }
-  
-  if(predefinedAcl == "bucketLevel"){
-    predefinedAcl <- NULL
   }
   
   up <-

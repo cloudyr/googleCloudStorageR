@@ -232,6 +232,10 @@ test_that("Uploads", {
   
   expect_equal(upload$kind, "storage#object")
   expect_equal(upload$name, "mtcars_meta.csv")
+  
+  # upload to bucketLevel Acl
+  bl <- gcs_upload(mtcars, bucket = "mark-bucketlevel-acl")
+  
 })
 
 
