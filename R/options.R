@@ -2,7 +2,8 @@
 
   op <- options()
   op.googleCloudStorageR <- list(
-    googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/devstorage.full_control")
+    googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/devstorage.full_control"),
+    googleCloudStorageR.upload_limit =  5000000L
   )
   
   toset <- !(names(op.googleCloudStorageR) %in% names(op))

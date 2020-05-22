@@ -20,7 +20,7 @@
 #'  }
 #'
 #'
-#' By default the \code{upload_type} will be 'simple' if under 5MB, 'resumable' if over 5MB.
+#' By default the \code{upload_type} will be 'simple' if under 5MB, 'resumable' if over 5MB.  Use \link{gcs_upload_set_limit} to modify this boundary - you may want it smaller on slow connections, higher on faster connections.
 #'   'Multipart' upload is used if you provide a \code{object_metadata}.
 #'
 #' If \code{object_function} is NULL and \code{file} is not a character filepath,
@@ -77,7 +77,10 @@
 #' 
 #' # upload to a bucket with bucket level ACL set
 #' gcs_upload(mtcars, predefinedAcl = "bucketLevel")
-#'
+#' 
+#' # modify boundary between simple and resumable uploads
+#' # default 5000000L is 5MB
+#' gcs_upload_set_limit(1000000L)
 #' }
 #'
 #'
@@ -285,6 +288,20 @@ gcs_upload_s3.default <- function(file,
          write function using argument object_function", call. = FALSE)
 }
 
+#' Set the upload limit for simple uploads
+#' 
+#' If not set then the default is 5MB, which if a file is more of in \link{gcs_upload} will default to a resumable and not simple upload
+#' 
+#' @param upload_limit Upload limit in bytes
+#' @rdname gcs_upload
+gcs_upload_set_limit <- function(upload_limit = 5000000L){
+  assert_that(
+    is.scalar(upload_limit),
+    is.integer(upload_limit)
+  )
+  myMessage("Setting upload limit for simple uploads to ", upload_limit)
+  options(googleCloudStorageR.upload_limit = upload_limit)
+}
 
 do_upload <- function(name,
                       bucket,
@@ -297,8 +314,9 @@ do_upload <- function(name,
   myMessage("File size detected as ",
             format_object_size(file.size(temp), "auto"), level = 3)
   
-  # 5MB simple upload limit
-  UPLOAD_LIMIT <- 5000000L
+  # default is 5MB simple upload limit
+  UPLOAD_LIMIT <- getOption("googleCloudStorageR.upload_limit", 5000000L)
+  assert_that(is.scalar(UPLOAD_LIMIT))
   
   if(upload_type == "resumable" || file.size(temp) > UPLOAD_LIMIT){
     do_resumable_upload(name = name,

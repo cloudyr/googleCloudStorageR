@@ -3,6 +3,7 @@
 * Let users auth via an email again via `gcs_auth`
 * correct file.copy behaviour in `gcs_load_all()` (#112) - thanks @jasonmhoule
 * Allow GCS uploads if ACL has been set at bucket level (#111)
+* Let users set the boundary between simple and resumable upload limit via new option `option(googleCloudStorageR.upload_limit)` or `gcs_upload_set_limit()` - default is 5000000L or 5MB (#120)
 
 # googleCloudStorageR 0.5.1
 
