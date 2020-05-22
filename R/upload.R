@@ -288,12 +288,10 @@ gcs_upload_s3.default <- function(file,
          write function using argument object_function", call. = FALSE)
 }
 
-#' Set the upload limit for simple uploads
-#' 
-#' If not set then the default is 5MB, which if a file is more of in \link{gcs_upload} will default to a resumable and not simple upload
-#' 
+
 #' @param upload_limit Upload limit in bytes
 #' @rdname gcs_upload
+#' @export
 gcs_upload_set_limit <- function(upload_limit = 5000000L){
   assert_that(
     is.scalar(upload_limit),

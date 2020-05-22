@@ -44,8 +44,6 @@ If successful, a metadata object
 }
 \description{
 Upload up to 5TB
-
-If not set then the default is 5MB, which if a file is more of in \link{gcs_upload} will default to a resumable and not simple upload
 }
 \details{
 When using \code{object_function} it expects a function with two arguments:
