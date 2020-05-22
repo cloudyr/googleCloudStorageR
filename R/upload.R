@@ -126,6 +126,9 @@ gcs_upload <- function(file,
   ## so jsonlite::toJSON works
   if(!is.null(object_metadata)) class(object_metadata) <- "list"
   
+  ## no caching
+  googleAuthR::gar_cache_setup(invalid_func = function(req){FALSE})
+  
   # hack to get around method dispatch class for file
   gcs_upload_s3(file = file,
                 bucket = bucket,
@@ -445,8 +448,9 @@ do_resumable_upload <- function(name,
                                      
                                    ))
   
-  req <- up(the_body = object_metadata)
-  
+  # suppress empty JSON content warning (#120)
+  req <- suppressWarnings(up(the_body = object_metadata))
+    
   ## extract the upload URL
   if(req$status_code == 200){
     
@@ -454,7 +458,7 @@ do_resumable_upload <- function(name,
     myMessage("Found resumeable upload URL: ", upload_url, level = 3)
     
   } else {
-    stop("Couldn't find resumeable upload URL")
+    stop("Couldn't find resumeable upload URL", call. = FALSE)
   }
   
   up2 <- PUTme(upload_url,
@@ -519,7 +523,8 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
 
   if(is.null(retry_object)){
     if(any(is.null(upload_url), is.null(file), is.null(type))){
-      stop("Must supply either retry_object or all of upload_url, file and type")
+      stop("Must supply either retry_object or all of upload_url, file and type", 
+           call. = FALSE)
     }
   } else {
 
