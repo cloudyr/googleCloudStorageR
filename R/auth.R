@@ -55,7 +55,6 @@ gcs_auth <- function(json_file = NULL,
 
   set_scopes()
 
-  
   if(is.null(json_file)){
     gar_auth(token = token,
              email = email,

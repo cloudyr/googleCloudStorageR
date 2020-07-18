@@ -20,3 +20,4 @@ test_signedurls.RData
 ^index\.md$
 ^.github
 ^revdep$
+^cloud_build$

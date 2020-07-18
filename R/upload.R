@@ -400,19 +400,20 @@ do_multipart_upload <- function(name,
   
   pars_args <- list(uploadType="multipart",
                     name=name)
+  
   if(!predefinedAcl %in% c("default","bucketLevel")){
     pars_args[["predefinedAcl"]] <- predefinedAcl
   }
   
+  the_url <- sprintf("https://storage.googleapis.com/upload/storage/v1/b/%s/o",
+                     bucket)
   up <-
-    gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+    gar_api_generator(the_url,
                       "POST",
-                      path_args = list(b = bucket,
-                                       o = ""),
                       pars_args = pars_args,
+                      checkTrailingSlash = FALSE,
                       customConfig = list(
-                        encode = "multipart",
-                        httr::add_headers("Content-Type" =  "multipart/related")
+                        encode = "multipart"
                       ))
   
   req <- up(the_body = bb)

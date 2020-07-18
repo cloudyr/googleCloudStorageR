@@ -481,7 +481,7 @@ Object <- function(acl = NULL,
                    timeCreated = NULL,
                    timeDeleted = NULL,
                    updated = NULL) {
-  structure(list(acl = acl,
+  structure(rmNullObs(list(acl = acl,
                  bucket = bucket,
                  cacheControl = cacheControl,
                  componentCount = componentCount,
@@ -505,5 +505,5 @@ Object <- function(acl = NULL,
                  size = size,
                  storageClass = storageClass,
                  timeCreated = timeCreated,
-                 timeDeleted = timeDeleted, updated = updated), class = "gar_Object")
+                 timeDeleted = timeDeleted, updated = updated)), class = "gar_Object")
 }
