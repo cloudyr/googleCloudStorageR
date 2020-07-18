@@ -10,21 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +41,6 @@
 
 <meta property="og:title" content="Upload a file of arbitrary type — gcs_upload" />
 <meta property="og:description" content="Upload up to 5TB" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -50,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -66,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">googleCloudStorageR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9001</span>
       </span>
     </div>
 
@@ -74,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,13 +120,14 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Upload a file of arbitrary type</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/cloudyr/googleCloudStorageR/blob/master/R/upload.R'><code>R/upload.R</code></a></small>
     <div class="hidden name"><code>gcs_upload.Rd</code></div>
     </div>
 
@@ -128,12 +135,20 @@
     <p>Upload up to 5TB</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gcs_upload</span>(<span class='no'>file</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(), <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/deparse'>deparse</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>substitute</a></span>(<span class='no'>file</span>)), <span class='kw'>object_function</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>object_metadata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>predefinedAcl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"private"</span>,
-  <span class='st'>"authenticatedRead"</span>, <span class='st'>"bucketOwnerFullControl"</span>, <span class='st'>"bucketOwnerRead"</span>,
-  <span class='st'>"projectPrivate"</span>, <span class='st'>"publicRead"</span>, <span class='st'>"default"</span>), <span class='kw'>upload_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"simple"</span>,
-  <span class='st'>"resumable"</span>))</pre>
+    <pre class="usage"><span class='fu'>gcs_upload</span>(
+  <span class='no'>file</span>,
+  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='no'>file</span>)),
+  <span class='kw'>object_function</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>object_metadata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>predefinedAcl</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"private"</span>, <span class='st'>"bucketLevel"</span>, <span class='st'>"authenticatedRead"</span>,
+    <span class='st'>"bucketOwnerFullControl"</span>, <span class='st'>"bucketOwnerRead"</span>, <span class='st'>"projectPrivate"</span>, <span class='st'>"publicRead"</span>,
+    <span class='st'>"default"</span>),
+  <span class='kw'>upload_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"simple"</span>, <span class='st'>"resumable"</span>)
+)
+
+<span class='fu'>gcs_upload_set_limit</span>(<span class='kw'>upload_limit</span> <span class='kw'>=</span> <span class='fl'>5000000L</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,11 +179,15 @@
     </tr>
     <tr>
       <th>predefinedAcl</th>
-      <td><p>Specify user access to object. Default is 'private'</p></td>
+      <td><p>Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.</p></td>
     </tr>
     <tr>
       <th>upload_type</th>
       <td><p>Override automatic decision on upload type</p></td>
+    </tr>
+    <tr>
+      <th>upload_limit</th>
+      <td><p>Upload limit in bytes</p></td>
     </tr>
     </table>
 
@@ -181,15 +200,18 @@
 <li><p><code>input</code> The object you supply in file to write from</p></li>
 <li><p><code>output</code> The filename you write to</p></li>
 </ul>
-    <p>By default the <code>upload_type</code> will be 'simple' if under 5MB, 'resumable' if over 5MB.
+
+
+<p>By default the <code>upload_type</code> will be 'simple' if under 5MB, 'resumable' if over 5MB.  Use gcs_upload_set_limit to modify this boundary - you may want it smaller on slow connections, higher on faster connections.
   'Multipart' upload is used if you provide a <code>object_metadata</code>.</p>
 <p>If <code>object_function</code> is NULL and <code>file</code> is not a character filepath,
   the defaults are:</p>
 <ul>
-<li><p>file's class is <code>data.frame</code> - <a href='https://www.rdocumentation.org/packages/utils/topics/write.table'>write.csv</a></p></li>
-<li><p>file's class is <code>list</code> - <a href='https://www.rdocumentation.org/packages/jsonlite/topics/fromJSON'>toJSON</a></p></li>
+<li><p>file's class is <code>data.frame</code> - <a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></p></li>
+<li><p>file's class is <code>list</code> - <a href='https://jeroen.cran.dev/jsonlite/reference/fromJSON.html'>toJSON</a></p></li>
 </ul>
-    <p>If <code>object_function</code> is not NULL and <code>file</code> is not a character filepath,
+
+<p>If <code>object_function</code> is not NULL and <code>file</code> is not a character filepath,
   then <code>object_function</code> will be applied to the R object specified
   in <code>file</code> before upload. You may want to also use <code>name</code> to ensure the correct
   file extension is used e.g. <code>name = 'myobject.feather'</code></p>
@@ -199,12 +221,15 @@ Use <code>name</code> to override this.</p>
     <h2 class="hasAnchor" id="scopes"><a class="anchor" href="#scopes"></a>scopes</h2>
 
     
-    <p>Requires scopes <code>https://www.googleapis.com/auth/devstorage.read_write</code>
+
+
+<p>Requires scopes <code>https://www.googleapis.com/auth/devstorage.read_write</code>
   or <code>https://www.googleapis.com/auth/devstorage.full_control</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='co'>## set global bucket so don't need to keep supplying in future calls</span>
 <span class='fu'><a href='gcs_global_bucket.html'>gcs_global_bucket</a></span>(<span class='st'>"my-bucket"</span>)
 
@@ -219,33 +244,31 @@ Use <code>name</code> to override this.</p>
 
 <span class='co'>## when looping, its best to specify the name else it will take</span>
 <span class='co'>## the deparsed function call e.g. X[[i]]</span>
-<span class='no'>my_files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>list.files</a></span>(<span class='st'>"my_uploads"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>my_files</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gcs_upload</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='no'>x</span>))
+<span class='no'>my_files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"my_uploads"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>my_files</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gcs_upload</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='no'>x</span>))
 
 <span class='co'>## you can supply your own function to transform R objects before upload</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>input</span>, <span class='no'>output</span>){
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/write.table'>write.csv2</a></span>(<span class='no'>input</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>output</span>)
+  <span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv2</a></span>(<span class='no'>input</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>output</span>)
 }
 
 <span class='fu'>gcs_upload</span>(<span class='no'>mtcars</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"mtcars_csv2.csv"</span>, <span class='kw'>object_function</span> <span class='kw'>=</span> <span class='no'>f</span>)
 
-<span class='co'># }</span><div class='input'>
+<span class='co'># upload to a bucket with bucket level ACL set</span>
+<span class='fu'>gcs_upload</span>(<span class='no'>mtcars</span>, <span class='kw'>predefinedAcl</span> <span class='kw'>=</span> <span class='st'>"bucketLevel"</span>)
 
-
-</div></pre>
+<span class='co'># modify boundary between simple and resumable uploads</span>
+<span class='co'># default 5000000L is 5MB</span>
+<span class='fu'>gcs_upload_set_limit</span>(<span class='fl'>1000000L</span>)
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#scopes">scopes</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -253,13 +276,16 @@ Use <code>name</code> to override this.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
