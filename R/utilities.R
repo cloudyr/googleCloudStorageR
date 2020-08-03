@@ -52,8 +52,12 @@ js_to_posix <- function(x){
 #'
 #' @keywords internal
 #' @noRd
-format_object_size <- function (x, units = "b", ...)
-{
+format_object_size <- function (x, units = "b", ...){
+  
+  if(is.na(x)){
+    return("File had no filesize")
+  }
+  
   units <- match.arg(units, c("b", "auto", "Kb", "Mb", "Gb",
                               "Tb", "Pb", "B", "KB", "MB", "GB", "TB", "PB", "KiB",
                               "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"))
@@ -67,15 +71,20 @@ format_object_size <- function (x, units = "b", ...)
   else if (x >= 1024)
     "Kb"
   else "b"
-  switch(units, b = , B = paste(x, "bytes"), Kb = , KB = paste(round(x/1024,
-                                                                     1L), "Kb"), Mb = , MB = paste(round(x/1024^2, 1L), "Mb"),
-         Gb = , GB = paste(round(x/1024^3, 1L), "Gb"), Tb = ,
-         TB = paste(round(x/1024^4, 1L), "Tb"), Pb = , PB = paste(round(x/1024^5,
-                                                                        1L), "Pb"), KiB = paste(round(x/1024, 1L), "KiB"),
-         MiB = paste(round(x/1024^2, 1L), "MiB"), GiB = paste(round(x/1024^3,
-                                                                    1L), "GiB"), TiB = paste(round(x/1024^4, 1L), "TiB"),
-         PiB = paste(round(x/1024^5, 1L), "PiB"), EiB = paste(round(x/1024^6,
-                                                                    1L), "EiB"), ZiB = paste(round(x/1024^7, 1L), "ZiB"),
+  switch(units, 
+         b = , B = paste(x, "bytes"), 
+         Kb = , KB = paste(round(x/1024,1L), "Kb"), 
+         Mb = , MB = paste(round(x/1024^2, 1L), "Mb"),
+         Gb = , GB = paste(round(x/1024^3, 1L), "Gb"), 
+         Tb = , TB = paste(round(x/1024^4, 1L), "Tb"), 
+         Pb = , PB = paste(round(x/1024^5, 1L), "Pb"), 
+         KiB = paste(round(x/1024, 1L), "KiB"),
+         MiB = paste(round(x/1024^2, 1L), "MiB"), 
+         GiB = paste(round(x/1024^3, 1L), "GiB"), 
+         TiB = paste(round(x/1024^4, 1L), "TiB"),
+         PiB = paste(round(x/1024^5, 1L), "PiB"), 
+         EiB = paste(round(x/1024^6,1L), "EiB"), 
+         ZiB = paste(round(x/1024^7, 1L), "ZiB"),
          YiB = paste(round(x/1024^8, 1L), "YiB"))
 }
 
