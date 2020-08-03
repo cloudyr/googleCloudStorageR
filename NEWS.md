@@ -6,6 +6,8 @@
 * Let users set the boundary between simple and resumable upload limit via new option `option(googleCloudStorageR.upload_limit)` or `gcs_upload_set_limit()` - default is 5000000L or 5MB (#120)
 * Suppress warning for when resumable uploads are requesting the upload URL (#120)
 * Fix ability to upload meta data with objects (#108)
+* If file has no filesize will message without an error (#123)
+* If project has no buckets will give an empty data frame and not an error (#100)
 
 # googleCloudStorageR 0.5.1
 
