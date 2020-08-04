@@ -4,12 +4,10 @@ skip_if_no_token <- function() {
   testthat::skip_if_not(googleAuthR::gar_has_token(), "No token")
 }
 
-if (gargle:::secret_can_decrypt("googleCloudStorageR")) {
-  json <- gargle:::secret_read("googleCloudStorageR", "tests_auth.json")
-  gcs_auth(json_file = rawToChar(json))
-  tmp <- tempfile(fileext = ".json")
-  write(rawToChar(json), file = tmp)
-  Sys.setenv("GCS_AUTH_FILE" = tmp)
+if(file.exists("test_auth.json")){
+  gcs_auth(json_file="test_auth.json")
+} else {
+  message("No authentication file found for testing")
 }
 
 context("Authentication")
