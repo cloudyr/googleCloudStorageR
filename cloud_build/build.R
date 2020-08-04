@@ -14,5 +14,6 @@ cr_deploy_packagetests(
           "GCS_DEFAULT_BUCKET=mark-edmondson-public-files",
           "GCS_AUTH_FILE=test_auth.json"),
   codecov_token = "$_CODECOV_TOKEN",
+  create_trigger = "inline",
   trigger_repo = cr_buildtrigger_repo("cloudyr/googleCloudStorageR")
 )
