@@ -163,6 +163,15 @@ gcs_source <- function(script,
 #' @export
 #' @importFrom zip zip
 #' @family R session data functions
+#' @examples 
+#' 
+#' \dontrun{
+#' 
+#' gcs_save_all(
+#'   directory = "path-to-all-images",
+#'   bucket = "my-bucket",
+#'   predefinedAcl = "bucketLevel")
+#' }
 gcs_save_all <- function(directory = getwd(),
                          bucket = gcs_get_global_bucket(),
                          pattern = "",

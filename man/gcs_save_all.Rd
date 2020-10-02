@@ -9,7 +9,10 @@
 gcs_save_all(
   directory = getwd(),
   bucket = gcs_get_global_bucket(),
-  pattern = ""
+  pattern = "",
+  predefinedAcl = c("private", "bucketLevel", "authenticatedRead",
+    "bucketOwnerFullControl", "bucketOwnerRead", "projectPrivate", "publicRead",
+    "default")
 )
 
 gcs_load_all(
@@ -28,6 +31,8 @@ gcs_delete_all(directory = getwd(), bucket = gcs_get_global_bucket())
 
 \item{pattern}{An optional regular expression. Only file names which match the regular expression will be saved.}
 
+\item{predefinedAcl}{Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.}
+
 \item{exdir}{When downloading, specify a destination directory if required}
 
 \item{list}{When downloading, only list where the files would unzip to}
@@ -40,6 +45,16 @@ This function takes all the files in the directory, zips them, and saves/loads/d
 }
 \details{
 Zip/unzip is performed before upload and after download using \link[zip]{zipr}.
+}
+\examples{
+
+\dontrun{
+
+gcs_save_all(
+  directory = "path-to-all-images",
+  bucket = "my-bucket",
+  predefinedAcl = "bucketLevel")
+}
 }
 \seealso{
 Other R session data functions: 
