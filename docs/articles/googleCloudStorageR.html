@@ -88,7 +88,7 @@
       <h1 data-toc-skip>googleCloudStorageR</h1>
                         <h4 class="author">Mark Edmondson</h4>
             
-            <h4 class="date">2020-08-04</h4>
+            <h4 class="date">2020-10-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cloudyr/googleCloudStorageR/blob/master/vignettes/googleCloudStorageR.Rmd"><code>vignettes/googleCloudStorageR.Rmd</code></a></small>
       <div class="hidden name"><code>googleCloudStorageR.Rmd</code></div>
@@ -203,7 +203,7 @@ gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")</pre></body
 <div id="uploading-objects---simple-uploads" class="section level2">
 <h2 class="hasAnchor">
 <a href="#uploading-objects---simple-uploads" class="anchor"></a>Uploading objects - simple uploads</h2>
-<p>Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects. By default, data frames will be converted to CSV via <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>, lists to JSON via <code><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">jsonlite::toJSON</a></code>.</p>
+<p>Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects. By default, data frames will be converted to CSV via <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>, lists to JSON via <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">jsonlite::toJSON</a></code>.</p>
 <p>If you want to use other functions for transforming R objects, for example setting <code>row.names = FALSE</code> or using <code>write.csv2</code>, pass the function through <code>object_function</code></p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co">## upload a file - type will be guessed from file extension or supply type  </span>
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="no">mtcars</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">filename</span>)
@@ -395,21 +395,21 @@ x
 <span class="co">## options(shiny.port = 1221)</span>
 <span class="co">## print(source('shiny_test.R')$value) or push the "Run App" button in RStudio</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(
-  <span class="kw">ui</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyUI.html">shinyUI</a></span>(
-      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(
+  <span class="kw">ui</span> <span class="kw">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyUI.html">shinyUI</a></span>(
+      <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(
         <span class="kw pkg">googleAuthR</span><span class="kw ns">::</span><span class="fu"><a href="https://code.markedmondson.me/googleAuthR//reference/googleAuthUI.html">googleAuthUI</a></span>(<span class="st">"login"</span>),
-        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fileInput.html">fileInput</a></span>(<span class="st">"picture"</span>, <span class="st">"picture"</span>),
-        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textInput.html">textInput</a></span>(<span class="st">"filename"</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Name on Google Cloud Storage"</span>,<span class="kw">value</span> <span class="kw">=</span> <span class="st">"myObject"</span>),
-        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span>(<span class="st">"submit"</span>, <span class="st">"submit"</span>),
-        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span>(<span class="st">"meta_file"</span>)
+        <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fileInput.html">fileInput</a></span>(<span class="st">"picture"</span>, <span class="st">"picture"</span>),
+        <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/textInput.html">textInput</a></span>(<span class="st">"filename"</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Name on Google Cloud Storage"</span>,<span class="kw">value</span> <span class="kw">=</span> <span class="st">"myObject"</span>),
+        <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/actionButton.html">actionButton</a></span>(<span class="st">"submit"</span>, <span class="st">"submit"</span>),
+        <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/textOutput.html">textOutput</a></span>(<span class="st">"meta_file"</span>)
       )
   ),
-  <span class="kw">server</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyServer.html">shinyServer</a></span>(<span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>){
+  <span class="kw">server</span> <span class="kw">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyServer.html">shinyServer</a></span>(<span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>){
 
-    <span class="no">access_token</span> <span class="kw">&lt;-</span> <span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html">callModule</a></span>(<span class="no">googleAuth</span>, <span class="st">"login"</span>)
+    <span class="no">access_token</span> <span class="kw">&lt;-</span> <span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/callModule.html">callModule</a></span>(<span class="no">googleAuth</span>, <span class="st">"login"</span>)
 
-    <span class="no">meta</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive</a></span>(<span class="no">input</span>$<span class="no">submit</span>, {
+    <span class="no">meta</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/observeEvent.html">eventReactive</a></span>(<span class="no">input</span>$<span class="no">submit</span>, {
 
       <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span>(<span class="st">"Uploading to Google Cloud Storage"</span>)
 
@@ -424,9 +424,9 @@ x
 
     })
 
-    <span class="no">output</span>$<span class="no">meta_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderText.html">renderText</a></span>({
+    <span class="no">output</span>$<span class="no">meta_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderText.html">renderText</a></span>({
 
-      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html">req</a></span>(<span class="fu">meta</span>())
+      <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/req.html">req</a></span>(<span class="fu">meta</span>())
 
       <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu">meta</span>())
 

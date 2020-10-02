@@ -138,7 +138,10 @@
     <pre class="usage"><span class='fu'>gcs_save_all</span>(
   <span class='kw'>directory</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
   <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='fu'><a href='gcs_get_global_bucket.html'>gcs_get_global_bucket</a></span>(),
-  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>""</span>
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>predefinedAcl</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"private"</span>, <span class='st'>"bucketLevel"</span>, <span class='st'>"authenticatedRead"</span>,
+    <span class='st'>"bucketOwnerFullControl"</span>, <span class='st'>"bucketOwnerRead"</span>, <span class='st'>"projectPrivate"</span>, <span class='st'>"publicRead"</span>,
+    <span class='st'>"default"</span>)
 )
 
 <span class='fu'>gcs_load_all</span>(
@@ -166,6 +169,10 @@
       <td><p>An optional regular expression. Only file names which match the regular expression will be saved.</p></td>
     </tr>
     <tr>
+      <th>predefinedAcl</th>
+      <td><p>Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.</p></td>
+    </tr>
+    <tr>
       <th>exdir</th>
       <td><p>When downloading, specify a destination directory if required</p></td>
     </tr>
@@ -189,6 +196,15 @@
 <code><a href='gcs_save.html'>gcs_save</a>()</code>,
 <code><a href='gcs_source.html'>gcs_source</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+<span class='fu'>gcs_save_all</span>(
+  <span class='kw'>directory</span> <span class='kw'>=</span> <span class='st'>"path-to-all-images"</span>,
+  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"my-bucket"</span>,
+  <span class='kw'>predefinedAcl</span> <span class='kw'>=</span> <span class='st'>"bucketLevel"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
