@@ -151,6 +151,7 @@ gcs_source <- function(script,
 #' @param pattern An optional regular expression. Only file names which match the regular expression will be saved.
 #' @param exdir When downloading, specify a destination directory if required
 #' @param list When downloading, only list where the files would unzip to
+#' @param predefinedAcl Specify user access to object. Default is 'private'. Set to 'bucketLevel' for buckets with bucket level access enabled.
 #'
 #' @details
 #'
@@ -164,7 +165,17 @@ gcs_source <- function(script,
 #' @family R session data functions
 gcs_save_all <- function(directory = getwd(),
                          bucket = gcs_get_global_bucket(),
-                         pattern = ""){
+                         pattern = "",
+                         predefinedAcl = c("private", 
+                                           "bucketLevel", 
+                                           "authenticatedRead",
+                                           "bucketOwnerFullControl",
+                                           "bucketOwnerRead", 
+                                           "projectPrivate", 
+                                           "publicRead",
+                                           "default")){
+  
+  predefinedAcl <- match.arg(predefinedAcl)
 
   tmp <- tempfile(fileext = ".zip")
   on.exit(unlink(tmp))
@@ -180,7 +191,7 @@ gcs_save_all <- function(directory = getwd(),
     zip::zip(tmp, files = the_files),
     deprecated = function(e) NULL)
 
-  gcs_upload(tmp, bucket = bucket, name = directory)
+  gcs_upload(tmp, bucket = bucket, name = directory, predefinedAcl = predefinedAcl)
 
 }
 
@@ -212,7 +223,8 @@ gcs_load_all <- function(directory = getwd(),
   filelist <- paste0(tmp2, "/", list.files(tmp2))
   filelist <- filelist[filelist != tmp]
   
-  file.copy(from = filelist, to = directory, overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
+  file.copy(from = filelist, to = directory, 
+            overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
 
   TRUE
 
