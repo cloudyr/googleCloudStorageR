@@ -1,4 +1,4 @@
-# googleCloudStorageR 0.5.1.9000
+# googleCloudStorageR 0.6.0
 
 * Let users auth via an email again via `gcs_auth`
 * correct file.copy behaviour in `gcs_load_all()` (#112) - thanks @jasonmhoule
