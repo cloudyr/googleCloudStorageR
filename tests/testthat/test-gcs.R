@@ -155,6 +155,11 @@ test_that("Object Operations", {
   
   mtcars_meta <- gcs_get_object("mtcars.csv", bucket = buck, meta = TRUE)
   expect_equal(mtcars_meta$kind, "storage#object")
+  
+  copy <-  gcs_copy_object("mtcars.csv","mtcars2.csv")
+  expect_equal(copy$kind, "storage#rewriteResponse")
+  expect_equal(copy$resource$kind, "storage#object")
+  expect_equal(copy$resource$name, "mtcars2.csv")
 
 })
 
@@ -467,6 +472,7 @@ test_that("We can delete all test files", {
   expect_true(gcs_delete_object("example.R"))
   expect_true(gcs_delete_object("gcs_save_test.RData"))
   expect_true(gcs_delete_object(".RData_test"))
+  expect_true(gcs_delete_object("mtcars2.csv"))
 })
 
 test_that("We can delete the lifecycle bucket", {
