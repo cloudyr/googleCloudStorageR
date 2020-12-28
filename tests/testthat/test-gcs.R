@@ -1,7 +1,8 @@
 context("setup")
 
 skip_if_no_token <- function() {
-  testthat::skip_if_not(googleAuthR::gar_has_token(), "No token")
+  skip_on_cran()
+  skip_on_travis()
 }
 
 if(file.exists("test_auth.json")){
