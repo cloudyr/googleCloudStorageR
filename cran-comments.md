@@ -11,11 +11,13 @@
 
 ## Reverse dependencies
 
-I have checked the four packages that depend on this package: 
+I have checked the five packages that depend on this package: 
 
 * googleAnalyticsR
 * bigQueryR  
 * googleComputeEngineR
-* flyio
+* googleCloudRunner
+* sonicscrewdriver
+* GCSConnection
 
 There were no issues. 
