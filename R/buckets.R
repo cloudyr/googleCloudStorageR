@@ -145,6 +145,8 @@ gcs_list_buckets <- function(projectId,
                                    data_parse_function = parse_lb)
 
   out <- lb()
+  
+  if(nrow(out) < 1) return(NULL)
 
   out_names <- switch(detail,
                       summary = c("name", "storageClass", "location" ,"updated"),

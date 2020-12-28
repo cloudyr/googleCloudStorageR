@@ -32,6 +32,9 @@ test_that("Bucket List", {
   expect_true(
     all(names(b) %in% c("name","storageClass","location","updated"))
   )
+  
+  no_buckets <- gcs_list_buckets("me-gtm-monitoring")
+  expect_true(is.null(no_buckets))
 })
 
 
@@ -140,7 +143,8 @@ test_that("Object Operations", {
                           'storageClass', 'timeStorageClassUpdated', 
                           'size', 'md5Hash', 'mediaLink', 'crc32c', 
                           'etag', 'contentType', 
-                          'componentCount', 'contentLanguage'))
+                          'componentCount', 'contentLanguage',
+                          'eventBasedHold'))
   )
   
   gcs_upload(mtcars, bucket = buck, name="mtcars.csv")

@@ -7,8 +7,9 @@
 * Suppress warning for when resumable uploads are requesting the upload URL (#120)
 * Fix ability to upload meta data with objects (#108)
 * If file has no filesize will message without an error (#123)
-* If project has no buckets will give an empty data frame and not an error (#100)
+* If project has no buckets will give NULL and not an error (#100)
 * Fix `gcs_save_all()` to also accept bucket level ACL (#129)
+* Fix listing buckets for projects `gcs_list_buckets()` (#100)
 
 # googleCloudStorageR 0.5.1
 
