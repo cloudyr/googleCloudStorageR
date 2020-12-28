@@ -124,7 +124,7 @@ gcs_list_buckets <- function(projectId,
               is.count(maxResults))
 
   parse_lb <- function(x){
-    if(is.null(x$timeCreated)){
+    if(is.null(x$items)){
       myMessage("No buckets found in ", projectId, level = 3)
       return(data.frame())
     }
