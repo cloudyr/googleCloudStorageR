@@ -155,7 +155,7 @@ gcs_source <- function(script,
 #'
 #' @details
 #'
-#' Zip/unzip is performed before upload and after download using \link[zip]{zipr}.
+#' Zip/unzip is performed before upload and after download using \link[zip]{zip}.
 #'
 #'
 #' @return When uploading the GCS meta object; when downloading \code{TRUE} if successful
@@ -232,8 +232,13 @@ gcs_load_all <- function(directory = getwd(),
   filelist <- paste0(tmp2, "/", list.files(tmp2))
   filelist <- filelist[filelist != tmp]
   
-  file.copy(from = filelist, to = directory, 
-            overwrite = FALSE, recursive = TRUE, copy.date = TRUE)
+  if(!dir.exists(exdir)){
+    dir.create(exdir)
+  }
+  
+  file.copy(from = filelist, 
+            to = exdir, 
+            overwrite = TRUE, recursive = TRUE, copy.date = TRUE)
 
   TRUE
 

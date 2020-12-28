@@ -410,6 +410,29 @@ test_that("We can save the R session", {
   unlink(".RData_test")
 })
 
+context("Grouped files")
+
+test_that("Load and Save All",{
+  
+  here <- getwd()
+  message("These files: ", paste(list.files(here, full.names = TRUE), 
+                                 collapse = "\n"))
+  
+  saved <- gcs_save_all(here)
+  expect_equal(saved$kind, "storage#object")
+
+  loaded <- gcs_load_all(here, exdir = "load_all")
+  expect_true(loaded)
+  # should be the same, aside from load_all directory
+  expect_equal(list.files(here)[!list.files(here) %in% list.files("load_all")],
+               "load_all")
+  
+  expect_true(gcs_delete_all(here))
+  gone <- gcs_list_objects(prefix = here)
+  expect_equal(nrow(gone), 0)
+  
+})
+
 
 context("Source files")
 
@@ -504,7 +527,6 @@ test_that("Pubsub operations", {
   expect_true(all(ps_df$kind %in% "storage#notification"))
   
   expect_true(gcs_delete_pubsub(ps$id))
-  
   
 })
 
