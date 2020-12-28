@@ -3,7 +3,7 @@ pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   googleCloudStorageR: googleCloudStorageR.html
-last_built: 2020-12-28T21:53Z
+last_built: 2020-12-28T22:15Z
 urls:
   reference: https://cloudyr.github.io/googleCloudStorageR//reference
   article: https://cloudyr.github.io/googleCloudStorageR//articles
