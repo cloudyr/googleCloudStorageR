@@ -5,8 +5,8 @@ skip_if_no_token <- function() {
   skip_on_travis()
 }
 
-if(file.exists("test_auth.json")){
-  gcs_auth(json_file="test_auth.json")
+if(file.exists("/workspace/test_auth.json")){
+  gcs_auth(json_file="/workspace/test_auth.json")
 } else {
   message("No authentication file found for testing")
 }
