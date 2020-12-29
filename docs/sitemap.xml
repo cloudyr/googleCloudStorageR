@@ -94,6 +94,9 @@
     <loc>https://cloudyr.github.io/googleCloudStorageR//reference/gcs_save_image.html</loc>
   </url>
   <url>
+    <loc>https://cloudyr.github.io/googleCloudStorageR//reference/gcs_setup.html</loc>
+  </url>
+  <url>
     <loc>https://cloudyr.github.io/googleCloudStorageR//reference/gcs_signed_url.html</loc>
   </url>
   <url>
