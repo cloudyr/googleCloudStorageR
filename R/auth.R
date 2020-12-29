@@ -51,7 +51,7 @@
 #' @export
 gcs_auth <- function(json_file = NULL,
                      token = NULL, 
-                     email = Sys.getenv("GARGLE_EMAIL")){
+                     email = NULL){
 
   set_scopes()
 

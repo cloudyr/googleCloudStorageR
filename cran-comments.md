@@ -11,7 +11,7 @@
 
 ## Reverse dependencies
 
-I have checked the five packages that depend on this package: 
+I have checked the six packages that depend on this package: 
 
 * googleAnalyticsR
 * bigQueryR  

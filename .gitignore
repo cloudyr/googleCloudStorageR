@@ -6,3 +6,5 @@
 inst/doc
 auth.json
 gcs.oauth
+googlecloudstorager-auth-key.json
+.Renviron

@@ -2,7 +2,6 @@
 
   op <- options()
   op.googleCloudStorageR <- list(
-    googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/devstorage.full_control"),
     googleCloudStorageR.upload_limit =  5000000L
   )
   
@@ -16,13 +15,15 @@
 
 .onAttach <- function(libname, pkgname){
 
-  googleAuthR::gar_attach_auto_auth(c("https://www.googleapis.com/auth/devstorage.full_control",
-                                      "https://www.googleapis.com/auth/cloud-platform"),
-                                      environment_var = "GCS_AUTH_FILE")
+  googleAuthR::gar_attach_auto_auth(
+    c("https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/cloud-platform"),
+    environment_var = "GCS_AUTH_FILE")
 
-  if(Sys.getenv("GCS_DEFAULT_BUCKET") != ""){
-    .gcs_env$bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
-    packageStartupMessage("Set default bucket name to '", Sys.getenv("GCS_DEFAULT_BUCKET"),"'")
+  default_bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
+  if(!nzchar(default_bucket)){
+    .gcs_env$bucket <- default_bucket
+    packageStartupMessage("Set default bucket name to '", default_bucket,"'")
   }
 
   invisible()

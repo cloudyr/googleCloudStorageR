@@ -10,6 +10,7 @@
 * If project has no buckets will give NULL and not an error (#100)
 * Fix `gcs_save_all()` to also accept bucket level ACL (#129)
 * Fix listing buckets for projects `gcs_list_buckets()` (#100)
+* Add `gcs_setup()` to help first time setup
 
 # googleCloudStorageR 0.5.1
 
