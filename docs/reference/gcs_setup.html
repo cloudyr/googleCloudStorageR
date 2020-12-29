@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authenticate with Google Cloud Storage API — gcs_auth • googleCloudStorageR</title>
+<title>Help setup googleCloudStorageR — gcs_setup • googleCloudStorageR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Authenticate with Google Cloud Storage API — gcs_auth" />
-<meta property="og:description" content="Authenticate with Google Cloud Storage API" />
+<meta property="og:title" content="Help setup googleCloudStorageR — gcs_setup" />
+<meta property="og:description" content="Use this to make a wizard to walk through setup steps" />
 
 
 
@@ -126,73 +126,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Authenticate with Google Cloud Storage API</h1>
-    <small class="dont-index">Source: <a href='https://github.com/cloudyr/googleCloudStorageR/blob/master/R/auth.R'><code>R/auth.R</code></a></small>
-    <div class="hidden name"><code>gcs_auth.Rd</code></div>
+    <h1>Help setup googleCloudStorageR</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cloudyr/googleCloudStorageR/blob/master/R/setup.R'><code>R/setup.R</code></a></small>
+    <div class="hidden name"><code>gcs_setup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Authenticate with Google Cloud Storage API</p>
+    <p>Use this to make a wizard to walk through setup steps</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gcs_auth</span>(<span class='kw'>json_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>gcs_setup</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>json_file</th>
-      <td><p>Authentication json file you have downloaded from your Google Project</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>An existing auth token you may have by other means</p></td>
-    </tr>
-    <tr>
-      <th>email</th>
-      <td><p>The email to default authenticate through</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The best way to authenticate is to use an environment argument pointing at your authentication file.</p>
-<p>Set the file location of your download Google Project JSON file in a <code>GCS_AUTH_FILE</code> argument</p>
-<p>Then, when you load the library you should auto-authenticate</p>
-<p>However, you can authenticate directly using this function pointing at your JSON auth file.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>googleCloudStorageR</span>)
-<span class='fu'>gcs_auth</span>(<span class='st'>"location_of_json_file.json"</span>)
-
-<span class='co'>#' # to use your own Google Cloud Project credentials</span>
-<span class='co'># go to GCP console and download client credentials JSON </span>
-<span class='co'># ideally set this in .Renviron file, not here but just for demonstration</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span>(<span class='st'>"GAR_CLIENT_JSON"</span> <span class='kw'>=</span> <span class='st'>"location/of/file.json"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>googleCloudStorageR</span>)
-<span class='co'># should now be able to log in via your own GCP project</span>
-<span class='fu'>gcs_auth</span>()
-
-<span class='co'># reauthentication</span>
-<span class='co'># Once you have authenticated, set email to skip the interactive message</span>
-<span class='fu'>gcs_auth</span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"my@email.com"</span>)
-
-<span class='co'># or leave unset to bring up menu on which email to auth with</span>
-<span class='fu'>gcs_auth</span>()
-<span class='co'># The googleCLoudStorageR package is requesting access to your Google account. </span>
-<span class='co'># Select a pre-authorised account or enter '0' to obtain a new token.</span>
-<span class='co'># Press Esc/Ctrl + C to abort.</span>
-<span class='co'>#1: my@email.com</span>
-<span class='co'>#2: work@mybusiness.com</span>
-<span class='co'># you can set authentication for many emails, then switch between them e.g.</span>
-<span class='fu'>gcs_auth</span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"my@email.com"</span>)
-<span class='fu'><a href='gcs_list_buckets.html'>gcs_list_buckets</a></span>(<span class='st'>"my-project"</span>) <span class='co'># lists what buckets you have access to</span>
-<span class='fu'>gcs_auth</span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"work@mybusiness.com"</span>)
-<span class='fu'><a href='gcs_list_buckets.html'>gcs_list_buckets</a></span>(<span class='st'>"my-project"</span>) <span class='co'># lists second set of buckets</span>
-
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
