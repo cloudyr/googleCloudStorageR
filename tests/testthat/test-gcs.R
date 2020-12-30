@@ -110,8 +110,8 @@ test_that("Versioning buckets", {
   expect_false(gcs_version_bucket(buck, action = "disable"))  
   expect_false(gcs_version_bucket(buck, action = "status"))
   
-  expect_error(gcs_version_bucket(buck, action = "list"),
-               "`timeDeleted` property not found")
+  df <- gcs_version_bucket(buck, action = "list")
+  expect_equal(class(df), "data.frame")
 })
 
 context("Objects")

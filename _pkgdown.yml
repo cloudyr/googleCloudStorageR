@@ -22,6 +22,7 @@ reference:
   - title: "Authentication"
     contents:
       - gcs_auth
+      - gcs_setup
   - title: "Buckets"
     desc: >
       Working with Google Cloud Storage buckets
