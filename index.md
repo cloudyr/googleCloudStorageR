@@ -11,7 +11,8 @@ Please read [Get Started](articles/googleCloudStorageR.html) for an overview of 
 [![CRAN](http://www.r-pkg.org/badges/version/googleCloudStorageR)](http://cran.r-project.org/package=googleCloudStorageR)
 ![CloudBuild](https://badger-ewjogewawq-ew.a.run.app/build/status?project=mark-edmondson-gde&id=b645a814-94ae-4154-90fb-dad20f815ad9)
 [![codecov.io](http://codecov.io/github/cloudyr/googleCloudStorageR/coverage.svg?branch=master)](http://codecov.io/github/cloudyr/googleCloudStorageR?branch=master)
-[!CRANlogs](https://cranlogs.r-pkg.org/badges/googleCloudStorageR)
+[![Downloads](https://cranlogs.r-pkg.org/badges/googleCloudStorageR)](https://www.r-pkg.org/pkg/googleCloudStorageR)
+
 This package is on CRAN:
 
 ```R
