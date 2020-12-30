@@ -1,5 +1,9 @@
 # googleCloudStorageR
 
+[![CRAN](http://www.r-pkg.org/badges/version/googleCloudStorageR)](http://cran.r-project.org/package=googleCloudStorageR)
+![CloudBuild](https://badger-ewjogewawq-ew.a.run.app/build/status?project=mark-edmondson-gde&id=b645a814-94ae-4154-90fb-dad20f815ad9)
+[![codecov.io](http://codecov.io/github/cloudyr/googleCloudStorageR/coverage.svg?branch=master)](http://codecov.io/github/cloudyr/googleCloudStorageR?branch=master)
+
 ## Mission Statement
 
 `googleCloudStorageR` is an R library for interacting with the Google Cloud Storage JSON API ([api docs](https://cloud.google.com/storage/docs/json_api/)).
@@ -7,10 +11,6 @@
 Please read [Get Started](articles/googleCloudStorageR.html) for an overview of its features, or browse the [function reference](reference/index.html). 
 
 ## Installation
-
-[![CRAN](http://www.r-pkg.org/badges/version/googleCloudStorageR)](http://cran.r-project.org/package=googleCloudStorageR)
-![CloudBuild](https://badger-ewjogewawq-ew.a.run.app/build/status?project=mark-edmondson-gde&id=b645a814-94ae-4154-90fb-dad20f815ad9)
-[![codecov.io](http://codecov.io/github/cloudyr/googleCloudStorageR/coverage.svg?branch=master)](http://codecov.io/github/cloudyr/googleCloudStorageR?branch=master)
 
 This package is on CRAN:
 
