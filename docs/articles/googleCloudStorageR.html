@@ -82,13 +82,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="googleCloudStorageR_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>googleCloudStorageR</h1>
                         <h4 class="author">Mark Edmondson</h4>
             
-            <h4 class="date">2020-12-29</h4>
+            <h4 class="date">2020-12-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cloudyr/googleCloudStorageR/blob/master/vignettes/googleCloudStorageR.Rmd"><code>vignettes/googleCloudStorageR.Rmd</code></a></small>
       <div class="hidden name"><code>googleCloudStorageR.Rmd</code></div>
@@ -120,6 +120,13 @@
 <span class="co">#3: Setup default bucket</span>
 <span class="co">#</span>
 <span class="co">#Selection: |</span></pre></body></html></div>
+<p>It uses <code><a href="https://code.markedmondson.me/googleAuthR//reference/gar_setup_menu.html">googleAuthR::gar_setup_menu()</a></code> to create the wizard. You will need to have owner access to the project you are using.</p>
+<p>After each menu option has completed, restart R and rerun <code><a href="../reference/gcs_setup.html">gcs_setup()</a></code> function to continue to the next step.</p>
+<p>Upon successful set-up, you should see a message similar to below:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">googleCloudStorageR</span>)
+<span class="co">#Setting scopes to https://www.googleapis.com/auth/devstorage.full_control and https://www.googleapis.com/auth/cloud-platform</span>
+<span class="co">#Successfully auto-authenticated via /Users/xxxx/googlecloudstorager-auth-key.json</span>
+<span class="co">#Set default bucket name to 'xxxxxx'</span></pre></body></html></div>
 </div>
 <div id="manual-setup" class="section level2">
 <h2 class="hasAnchor">
@@ -138,7 +145,7 @@
 <h3 class="hasAnchor">
 <a href="#set-environment-variables" class="anchor"></a>Set environment variables</h3>
 <p>By default, all <code>cloudyr</code> packages look for the access key ID and secret access key in environment variables. You can also use this to specify a default bucket, and auto-authentication upon attaching the library. For example:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span>(<span class="st">"GCS_DEFAULT_BUCKET"</span> <span class="kw">=</span> <span class="st">"my-default-bucket"</span>,
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span>(<span class="st">"GCS_DEFAULT_BUCKET"</span> <span class="kw">=</span> <span class="st">"my-default-bucket"</span>,
            <span class="st">"GCS_AUTH_FILE"</span> <span class="kw">=</span> <span class="st">"/fullpath/to/service-auth.json"</span>)</pre></body></html></div>
 <p>These can alternatively be set on the command line or via an Renviron.site or .Renviron file (<code>https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html</code>).</p>
 <p>e.g.</p>
@@ -152,7 +159,7 @@ GCS_DEFAULT_BUCKET=my-default-bucket</code></pre>
 <p>The best method for authentication is to use your own Google Cloud Project. You can specify the location of a service account JSON file taken from your Google Project:</p>
 <pre><code><a href="https://rdrr.io/r/base/Sys.setenv.html">    Sys.setenv("GCS_AUTH_FILE" = "/fullpath/to/auth.json")</a></code></pre>
 <p>This file will then used for authentication via <code><a href="../reference/gcs_auth.html">gcs_auth()</a></code> when you load the library:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co">## GCS_AUTH_FILE set so auto-authentication</span>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co">## GCS_AUTH_FILE set so auto-authentication</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">googleCloudStorageR</span>)
 
 <span class="fu"><a href="../reference/gcs_get_bucket.html">gcs_get_bucket</a></span>(<span class="st">"your-bucket"</span>)</pre></body></html></div>
@@ -161,7 +168,7 @@ GCS_DEFAULT_BUCKET=my-default-bucket</code></pre>
 <h3 class="hasAnchor">
 <a href="#setting-a-default-bucket" class="anchor"></a>Setting a default Bucket</h3>
 <p>To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function <code><a href="../reference/gcs_global_bucket.html">gcs_global_bucket()</a></code>. See the <code>Setting environment variables</code> section for more details.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r">## set bucket via environment
+<div class="sourceCode" id="cb7"><html><body><pre class="r">## set bucket via environment
 Sys.setenv("GCS_DEFAULT_BUCKET" = "my-default-bucket")
 
 library(googleCloudStorageR)
@@ -180,7 +187,7 @@ gcs_get_global_bucket()
 <h2 class="hasAnchor">
 <a href="#downloading-objects-from-google-cloud-storage" class="anchor"></a>Downloading objects from Google Cloud storage</h2>
 <p>Once you have a Google project and created a bucket with an object in it, you can download it as below:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r">library(googleCloudStorageR)
+<div class="sourceCode" id="cb8"><html><body><pre class="r">library(googleCloudStorageR)
 
 ## get your project name from the API console
 proj &lt;- "your-project"
@@ -223,7 +230,7 @@ gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")</pre></body
 <a href="#uploading-objects---simple-uploads" class="anchor"></a>Uploading objects - simple uploads</h2>
 <p>Objects can be uploaded via files saved to disk, or passed in directly if they are data frames or list type R objects. By default, data frames will be converted to CSV via <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>, lists to JSON via <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">jsonlite::toJSON</a></code>.</p>
 <p>If you want to use other functions for transforming R objects, for example setting <code>row.names = FALSE</code> or using <code>write.csv2</code>, pass the function through <code>object_function</code></p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co">## upload a file - type will be guessed from file extension or supply type  </span>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co">## upload a file - type will be guessed from file extension or supply type  </span>
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="no">mtcars</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">filename</span>)
 <span class="fu"><a href="../reference/gcs_upload.html">gcs_upload</a></span>(<span class="no">filename</span>)
 
@@ -242,7 +249,7 @@ gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")</pre></body
            <span class="kw">object_function</span> <span class="kw">=</span> <span class="no">f</span>,
            <span class="kw">type</span> <span class="kw">=</span> <span class="st">"text/csv"</span>)</pre></body></html></div>
 <p>Since 2019 you can also set bucket level access permissions. To upload to those buckets, specify the <code>defaultAcl="bucketLevel"</code></p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_upload.html">gcs_upload</a></span>(<span class="no">mtcars</span>,
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_upload.html">gcs_upload</a></span>(<span class="no">mtcars</span>,
            <span class="kw">bucket</span> <span class="kw">=</span> <span class="st">"mark-bucketlevel-acl"</span>,
            <span class="kw">predefinedAcl</span> <span class="kw">=</span> <span class="st">"bucketLevel"</span>)</pre></body></html></div>
 </div>
@@ -251,7 +258,7 @@ gcs_get_object(objects$name[[1]], saveToDisk = "csv_downloaded.csv")</pre></body
 <a href="#upload-metadata" class="anchor"></a>Upload metadata</h2>
 <p>You can pass metadata with an object via the function <code><a href="../reference/gcs_metadata_object.html">gcs_metadata_object()</a></code>.</p>
 <p>the name you pass to the metadata object will override the name if it is also set elsewhere.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r">meta &lt;- gcs_metadata_object("mtcars.csv",
+<div class="sourceCode" id="cb11"><html><body><pre class="r">meta &lt;- gcs_metadata_object("mtcars.csv",
                              metadata = list(custom1 = 2,
                                              custom_key = 'dfsdfsdfsfs))
                                              
@@ -263,7 +270,7 @@ gcs_upload(mtcars, object_metadata = meta)</pre></body></html></div>
 <p>If the file/object is small, simple uploads are used. You can modify this limit using <code><a href="https://rdrr.io/r/base/options.html">option(googleCloudStorageR.upload_limit)</a></code> or <code><a href="../reference/gcs_upload.html">gcs_upload_set_limit()</a></code> - default is 5000000L or 5MB (#120)</p>
 <p>For files greater than the upload limit, <a href="https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resumable">resumable uploads</a> are used. This allows you to upload up to 5TB.</p>
 <p>If you get an interrupted connection when uploading, <code>gcs_upload</code> will retry 3 times, if it fails it will return a Retry object, that you can try again later from where the upload stopped. Call this via <code>gcs_retry_upload</code></p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r">## write a big object to a file
+<div class="sourceCode" id="cb12"><html><body><pre class="r">## write a big object to a file
 big_file &lt;- "big_filename.csv"
 write.csv(big_object, file = big_file)
 
@@ -306,7 +313,7 @@ try2 &lt;- gcs_retry_upload(upload_try)</pre></body></html></div>
 <a href="#updating-user-access-to-objects" class="anchor"></a>Updating user access to objects</h2>
 <p>You can change who can access objects via <code>gcs_update_acl</code> to one of <code>READER</code> or <code>OWNER</code>, on a user, group, domain, project or public for all users or authenticated users.</p>
 <p>By default you are “OWNER” of all the objects and buckets you upload and create.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co">## update access of object to READER for all public</span>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co">## update access of object to READER for all public</span>
 <span class="fu"><a href="../reference/gcs_update_object_acl.html">gcs_update_object_acl</a></span>(<span class="st">"your-object.csv"</span>, <span class="kw">entity_type</span> <span class="kw">=</span> <span class="st">"allUsers"</span>)
 
 <span class="co">## update access of object for user joe@blogs.com to OWNER</span>
@@ -325,7 +332,7 @@ try2 &lt;- gcs_retry_upload(upload_try)</pre></body></html></div>
                       <span class="kw">entity_type</span> <span class="kw">=</span> <span class="st">"domain"</span>,
                       <span class="kw">role</span> <span class="kw">=</span> <span class="no">OWNER</span>)</pre></body></html></div>
 <p>Since 2019 you can also set bucket level access permissions. To upload to those buckets, specify the <code>defaultAcl="bucketLevel"</code></p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_upload.html">gcs_upload</a></span>(<span class="no">mtcars</span>,
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_upload.html">gcs_upload</a></span>(<span class="no">mtcars</span>,
            <span class="kw">bucket</span> <span class="kw">=</span> <span class="st">"mark-bucketlevel-acl"</span>,
            <span class="kw">predefinedAcl</span> <span class="kw">=</span> <span class="st">"bucketLevel"</span>)</pre></body></html></div>
 </div>
@@ -333,13 +340,13 @@ try2 &lt;- gcs_retry_upload(upload_try)</pre></body></html></div>
 <h2 class="hasAnchor">
 <a href="#deleting-an-object" class="anchor"></a>Deleting an object</h2>
 <p>Delete an object by passing its name (and bucket if not default)</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="co">## returns TRUE is successful, a 404 error if not found</span>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co">## returns TRUE is successful, a 404 error if not found</span>
 <span class="fu"><a href="../reference/gcs_delete_object.html">gcs_delete_object</a></span>(<span class="st">"your-object.csv"</span>)</pre></body></html></div>
 <div id="viewing-current-access-level-to-objects" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-current-access-level-to-objects" class="anchor"></a>Viewing current access level to objects</h3>
 <p>Use <code><a href="../reference/gcs_get_object_acl.html">gcs_get_object_acl()</a></code> to see what the current access is for an <code>entity</code> + <code>entity_type</code>.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r">## default entity_type is user
+<div class="sourceCode" id="cb16"><html><body><pre class="r">## default entity_type is user
 acl &lt;- gcs_get_object_acl("your-object.csv", 
                          entity = "joe@blogs.com")
 acl$role 
@@ -356,7 +363,7 @@ acl$role
 <h2 class="hasAnchor">
 <a href="#creating-download-links" class="anchor"></a>Creating download links</h2>
 <p>Once a user (or group or the public) has access, they can reach that object via a download link generated by the function <code>gcs_download_url</code></p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r">download_url &lt;- gcs_download_url("your-object.csv")
+<div class="sourceCode" id="cb17"><html><body><pre class="r">download_url &lt;- gcs_download_url("your-object.csv")
 download_url
 [1] "https://storage.cloud.google.com/your-project/your-object.csv"</pre></body></html></div>
 </div>
@@ -364,7 +371,7 @@ download_url
 <h2 class="hasAnchor">
 <a href="#r-session-helpers" class="anchor"></a>R Session helpers</h2>
 <p>Versions of <code><a href="https://rdrr.io/r/base/save.html">save.image()</a></code>, <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> and <code><a href="https://rdrr.io/r/base/load.html">load()</a></code> are implemented called <code><a href="../reference/gcs_save_image.html">gcs_save_image()</a></code>, <code><a href="../reference/gcs_save.html">gcs_save()</a></code> and <code><a href="../reference/gcs_load.html">gcs_load()</a></code>. These functions save and load the global R session to the cloud.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co">## save the current R session including all objects</span>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="co">## save the current R session including all objects</span>
 <span class="fu"><a href="../reference/gcs_save_image.html">gcs_save_image</a></span>()
 
 <span class="co">### wipe environment</span>
@@ -373,7 +380,7 @@ download_url
 <span class="co">## load up environment again</span>
 <span class="fu"><a href="../reference/gcs_load.html">gcs_load</a></span>()</pre></body></html></div>
 <p>Save specific objects:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r">cc &lt;- 3
+<div class="sourceCode" id="cb19"><html><body><pre class="r">cc &lt;- 3
 d &lt;- "test1"
 gcs_save("cc","d", file = "gcs_save_test.RData")
 
@@ -387,7 +394,7 @@ cc == 3
 d == "test1"
 [1] TRUE</pre></body></html></div>
 <p>You can also upload <code>.R</code> code files and source them directly using <code>gcs_source</code>:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r">## make a R source file and upload it
+<div class="sourceCode" id="cb20"><html><body><pre class="r">## make a R source file and upload it
 cat("x &lt;- 'hello world!'\nx", file = "example.R")
 gcs_upload("example.R", name = "example.R")
 
@@ -403,7 +410,7 @@ x
 <a href="#uploading-via-a-shiny-app" class="anchor"></a>Uploading via a Shiny app</h2>
 <p>The library is also compatible with Shiny authentication flows, so you can create Shiny apps that lets users log in and upload their own data.</p>
 <p>An example of that is shown below:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"shiny"</span>)
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"shiny"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"googleAuthR"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"googleCloudStorageR"</span>)
 
@@ -469,7 +476,7 @@ x
 <h2 class="hasAnchor">
 <a href="#object-administration" class="anchor"></a>Object administration</h2>
 <p>You can get meta data about an object by passing <code>meta=TRUE</code> to <code>gcs_get_object</code></p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_get_object.html">gcs_get_object</a></span>(<span class="st">"your-object"</span>, <span class="st">"your-bucket"</span>, <span class="kw">meta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/gcs_get_object.html">gcs_get_object</a></span>(<span class="st">"your-object"</span>, <span class="st">"your-bucket"</span>, <span class="kw">meta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 </div>
 <div id="explanation-of-google-project-access" class="section level2">
 <h2 class="hasAnchor">

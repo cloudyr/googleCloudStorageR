@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Help setup googleCloudStorageR — gcs_setup • googleCloudStorageR</title>
+<title>Help set-up googleCloudStorageR — gcs_setup • googleCloudStorageR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Help setup googleCloudStorageR — gcs_setup" />
-<meta property="og:description" content="Use this to make a wizard to walk through setup steps" />
+<meta property="og:title" content="Help set-up googleCloudStorageR — gcs_setup" />
+<meta property="og:description" content="Use this to make a wizard to walk through set-up steps" />
 
 
 
@@ -126,19 +126,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Help setup googleCloudStorageR</h1>
+    <h1>Help set-up googleCloudStorageR</h1>
     <small class="dont-index">Source: <a href='https://github.com/cloudyr/googleCloudStorageR/blob/master/R/setup.R'><code>R/setup.R</code></a></small>
     <div class="hidden name"><code>gcs_setup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to make a wizard to walk through setup steps</p>
+    <p>Use this to make a wizard to walk through set-up steps</p>
     </div>
 
     <pre class="usage"><span class='fu'>gcs_setup</span>()</pre>
 
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>This function assumes you have at least a Google Cloud Platform project setup, from which it can generate the necessary authentication keys and set up authentication.</p>
+<p>It uses <a href='https://code.markedmondson.me/googleAuthR//reference/gar_setup_menu.html'>gar_setup_menu</a> to create the wizard.  You will need to have owner access to the project you are using.</p>
+<p>After each menu option has completed, restart R and reload the library and this function to continue to the next step.</p>
+<p>Upon successful set-up, you should see a message similar to <code>Successfully auto-authenticated via /xxxx/googlecloudstorager-auth-key.json</code> and <code>Set default bucket name to 'xxxx'</code> when you load the library via <code><a href='https://cloudyr.github.io/googleCloudStorageR//reference'>library(googleCloudStorageR)</a></code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html'>Setup documentation on googleCloudStorageR website</a></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>googleCloudStorageR</span>)
+<span class='fu'>gcs_setup</span>()
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
