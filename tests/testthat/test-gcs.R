@@ -20,6 +20,14 @@ test_that("Authentication", {
   expect_true(googleAuthR::gar_has_token())
 })
 
+test_that("Expected env vars present",{
+  
+  expect_true(!nzchar(Sys.getenv("GCS_DEFAULT_BUCKET")))
+  expect_true(!nzchar(Sys.getenv("GCS_DEFAULT_PROJECT")))
+  expect_true(!nzchar(Sys.getenv("GCS_AUTH_FILE")))
+  
+})
+
 context("Buckets")
 
 test_that("Bucket List", {
@@ -44,7 +52,7 @@ test_that("Bucket Operations", {
   skip_if_no_token()
   
   buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
-  expect_true(buck != "")
+  expect_true(nzchar(buck))
   expect_true(buck == gcs_get_global_bucket())
   
   b <- gcs_get_bucket(buck)
@@ -156,7 +164,9 @@ test_that("Object Operations", {
   mtcars_meta <- gcs_get_object("mtcars.csv", bucket = buck, meta = TRUE)
   expect_equal(mtcars_meta$kind, "storage#object")
   
-  copy <-  gcs_copy_object("mtcars.csv","mtcars2.csv")
+  copy <-  gcs_copy_object("mtcars.csv","mtcars2.csv", 
+                           source_bucket = buck,
+                           destination_bucket = buck)
   expect_equal(copy$kind, "storage#rewriteResponse")
   expect_equal(copy$resource$kind, "storage#object")
   expect_equal(copy$resource$name, "mtcars2.csv")
