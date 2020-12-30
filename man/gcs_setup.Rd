@@ -2,10 +2,32 @@
 % Please edit documentation in R/setup.R
 \name{gcs_setup}
 \alias{gcs_setup}
-\title{Help setup googleCloudStorageR}
+\title{Help set-up googleCloudStorageR}
 \usage{
 gcs_setup()
 }
 \description{
-Use this to make a wizard to walk through setup steps
+Use this to make a wizard to walk through set-up steps
+}
+\details{
+This function assumes you have at least a Google Cloud Platform project setup, from which it can generate the necessary authentication keys and set up authentication.
+
+It uses \link[googleAuthR]{gar_setup_menu} to create the wizard.  You will need to have owner access to the project you are using.
+
+After each menu option has completed, restart R and reload the library and this function to continue to the next step.
+
+Upon successful set-up, you should see a message similar to \code{Successfully auto-authenticated via /xxxx/googlecloudstorager-auth-key.json} and \code{Set default bucket name to 'xxxx'} when you load the library via \code{library(googleCloudStorageR)}
+}
+\examples{
+
+\dontrun{
+
+library(googleCloudStorageR)
+gcs_setup()
+
+}
+
+}
+\seealso{
+\href{https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html}{Setup documentation on googleCloudStorageR website}
 }

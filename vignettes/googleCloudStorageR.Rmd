@@ -36,6 +36,19 @@ gcs_setup()
 #Selection: |
 ```
 
+It uses `googleAuthR::gar_setup_menu()` to create the wizard.  You will need to have owner access to the project you are using.
+ 
+After each menu option has completed, restart R and rerun `gcs_setup()` function to continue to the next step.
+ 
+Upon successful set-up, you should see a message similar to below:
+
+```r
+library(googleCloudStorageR)
+#Setting scopes to https://www.googleapis.com/auth/devstorage.full_control and https://www.googleapis.com/auth/cloud-platform
+#Successfully auto-authenticated via /Users/xxxx/googlecloudstorager-auth-key.json
+#Set default bucket name to 'xxxxxx'
+```
+
 ## Manual setup
 
 `gcs_setup()` works through the steps detailed below.
