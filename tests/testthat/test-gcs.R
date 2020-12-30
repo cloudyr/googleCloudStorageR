@@ -53,6 +53,7 @@ test_that("Bucket Operations", {
   
   buck <- Sys.getenv("GCS_DEFAULT_BUCKET")
   expect_true(nzchar(buck))
+  expect_equal(buck, "mark-edmondson-public-files")
   expect_true(buck == gcs_get_global_bucket())
   
   b <- gcs_get_bucket(buck)
