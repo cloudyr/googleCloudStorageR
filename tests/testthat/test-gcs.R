@@ -22,9 +22,9 @@ test_that("Authentication", {
 
 test_that("Expected env vars present",{
   
-  expect_true(!nzchar(Sys.getenv("GCS_DEFAULT_BUCKET")))
-  expect_true(!nzchar(Sys.getenv("GCS_DEFAULT_PROJECT")))
-  expect_true(!nzchar(Sys.getenv("GCS_AUTH_FILE")))
+  expect_true(nzchar(Sys.getenv("GCS_DEFAULT_BUCKET")))
+  expect_true(nzchar(Sys.getenv("GCS_DEFAULT_PROJECT")))
+  expect_true(nzchar(Sys.getenv("GCS_AUTH_FILE")))
   
 })
 
