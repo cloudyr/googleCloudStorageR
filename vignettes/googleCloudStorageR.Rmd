@@ -213,7 +213,7 @@ gcs_upload(mtcars, object_metadata = meta)
 
 If the file/object is small, simple uploads are used.  You can modify this limit using `option(googleCloudStorageR.upload_limit)` or `gcs_upload_set_limit()` - default is 5000000L or 5MB (#120)
 
-For files greater than the upload limit, [resumable uploads](https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resumable) are used.  This allows you to upload up to 5TB.  
+For files greater than the upload limit, [resumable uploads](https://cloud.google.com/storage/docs/uploads-downloads) are used.  This allows you to upload up to 5TB.  
 
 If you get an interrupted connection when uploading, `gcs_upload` will retry 3 times, if it fails it will return a Retry object, that you can try again later from where the upload stopped.  Call this via `gcs_retry_upload`
 

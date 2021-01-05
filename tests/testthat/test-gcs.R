@@ -21,7 +21,7 @@ test_that("Authentication", {
 })
 
 test_that("Expected env vars present",{
-  
+  skip_if_no_token()
   expect_true(nzchar(Sys.getenv("GCS_DEFAULT_BUCKET")))
   expect_true(nzchar(Sys.getenv("GCS_DEFAULT_PROJECT")))
   expect_true(nzchar(Sys.getenv("GCS_AUTH_FILE")))
@@ -424,6 +424,7 @@ test_that("We can save the R session", {
 context("Grouped files")
 
 test_that("Load and Save All",{
+  skip_if_no_token()
   
   here <- getwd()
   message("These files: ", paste(list.files(here, full.names = TRUE), 

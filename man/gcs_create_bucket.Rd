@@ -42,7 +42,7 @@ gcs_create_bucket(
 Create a new bucket in your project
 }
 \details{
-\href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
+\href{https://cloud.google.com/storage/docs/locations}{See here for details on location options}
 }
 \seealso{
 Other bucket functions: 

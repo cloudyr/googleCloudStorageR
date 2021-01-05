@@ -221,7 +221,7 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
 #' @param lifecycle A list of \link{gcs_create_lifecycle} objects
 #'
 #' @details
-#'   \href{https://cloud.google.com/storage/docs/bucket-locations}{See here for details on location options}
+#'   \href{https://cloud.google.com/storage/docs/locations}{See here for details on location options}
 #'
 #' @family bucket functions
 #' @import assertthat
