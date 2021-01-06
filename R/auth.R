@@ -1,22 +1,27 @@
 #' Authenticate with Google Cloud Storage API 
 #'
 #' @param json_file Authentication json file you have downloaded from your Google Project
-#' @param token An existing auth token you may have by other means
+#' @param token An existing authentication token you may have by other means
 #' @param email The email to default authenticate through
 #' 
 #' @details
 #'
-#' The best way to authenticate is to use an environment argument pointing at your authentication file.
+#' The best way to authenticate is to use an environment argument pointing at your authentication file, making this function unnecessary.
 #'
 #' Set the file location of your download Google Project JSON file in a \code{GCS_AUTH_FILE} argument
 #'
 #' Then, when you load the library you should auto-authenticate
 #'
-#' However, you can authenticate directly using this function pointing at your JSON auth file.
+#' However, you can authenticate directly using this function pointing at your JSON auth file.  You will still need the two JSON files - the client JSON and the authentication key JSON.  \link{gcs_setup} can help set-up the latter, the client JSON you will need to download from your Google Cloud Project.
+#' 
+#' If using JSON files from another source, ensure it has either \code{"https://www.googleapis.com/auth/devstorage.full_control" or "https://www.googleapis.com/auth/cloud-platform"} scopes. 
 #'
 #' @examples
 #'
 #' \dontrun{
+#' # on first run, generate a auth key via gcs_setup()
+#' 
+#' # the json file for the auth key you are using
 #' library(googleCloudStorageR)
 #' gcs_auth("location_of_json_file.json")
 #' 
