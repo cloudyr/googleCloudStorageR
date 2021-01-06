@@ -1,3 +1,7 @@
+# googleCloudStorage 0.6.0.9000
+
+* ...
+
 # googleCloudStorageR 0.6.0
 
 * Let users auth via an email again via `gcs_auth`
