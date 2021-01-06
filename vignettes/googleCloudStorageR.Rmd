@@ -19,6 +19,8 @@ You can use your own Google Project with a credit card added to create buckets, 
 
 ## Configuring your own Google Project
 
+You will first need to [create a Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and make sure that the Cloud Storage API is turned on.  It is by default for new projects.
+
 The recommended way is to use `gcs_setup()` which will help you create and download an authentication JSON key, and set your default bucket.
 
 ```r
