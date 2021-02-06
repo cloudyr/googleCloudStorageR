@@ -293,7 +293,7 @@ gcs_metadata_object <- function(object_name = NULL,
     object_name <- parse_gsurl$obj
   }
 
-  object_name <- if(!is.null(object_name)) URLencode(object_name, reserved = TRUE)
+  object_name <- if(!is.null(object_name)) URLencode(object_name)
 
   out <- Object(name = object_name,
                 metadata = metadata,
