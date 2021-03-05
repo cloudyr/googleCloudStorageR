@@ -97,6 +97,27 @@ library(googleCloudStorageR)
 gcs_get_bucket("your-bucket")
 ```
 
+### Token-authentication
+
+You can also seamlessly authenticate as the service account your compute resource (i.e. Cloud-Function, AI Notebook etc...) is using by requesting
+a token and then passing that token to `gcs_auth` with the [gargle](https://gargle.r-lib.org/) library
+
+```r
+## Load googleCloudStorageR and gargle
+library(googleCloudStorageR)
+library(gargle)
+
+## Fetch token. See: https://developers.google.com/identity/protocols/oauth2/scopes
+scope <-c("https://www.googleapis.com/auth/cloud-platform")
+token <- token_fetch(scopes = scope)
+
+## Pass your token to gcs_auth
+gcs_auth(token = token)
+
+## Perform gcs operations as normal
+gcs_list_objects(bucket = "my-bucket")
+```
+
 ### Setting a default Bucket
 
 To avoid specifying the bucket in the functions below, you can set the name of your default bucket via environmental variables or via the function `gcs_global_bucket()`.  See the `Setting environment variables` section for more details.
