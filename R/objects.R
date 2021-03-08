@@ -173,8 +173,16 @@ gcs_parse_gsurls <- function(gsurl){
 #' }
 #'
 #' ## get mtcars csv with custom parse function.
-#' gcs_get_object("mtcars_meta.csv", parseFunction = f)
-#'
+#' gcs_get_object("mtcars.csv", parseFunction = f)
+#' 
+#' ## to download from a folder in your bucket
+#' my_folder <- "your_folder/"
+#' objs <- gcs_list_objects(prefix = my_folder)
+#' 
+#' dir.create(my_folder)
+#' 
+#' # download all the objects to that folder
+#' dls <- lapply(objs$name, function(x) gcs_get_object(x, saveToDisk = x))
 #' }
 #'
 #' @family object functions
@@ -224,6 +232,8 @@ gcs_get_object <- function(object_name,
   } else {
     customConfig <- NULL
   }
+  
+  cli::cli_process_start(paste("Downloading", URLdecode(object_name)))
 
   ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
                           path_args = list(b = bucket,
@@ -231,42 +241,49 @@ gcs_get_object <- function(object_name,
                           pars_args = list(alt = alt),
                           customConfig = customConfig)
   req <- ob()
-
-
-  if(!meta){
-    if(req$status_code == 404){
-      stop("File not found. Check object_name and if you have read permissions.
-           Looked for ", object_name)
-    }
-
-    if(!is.null(saveToDisk)){
-
-      myMessage("Saved ", URLdecode(object_name), " to ", saveToDisk,
-                " (",format_object_size(file.size(saveToDisk), "auto"),")",
-                level = 3)
-
-      out <- TRUE
-
-    } else {
-      message("Downloaded ", object_name)
-
-      if(parseObject){
-        out <- try(parseFunction(req))
-        if(is.error(out)){
-          stop("Problem parsing the object with supplied parseFunction.")
-        }
-      } else {
-        out <- req
-      }
-    }
-
-  } else {
-    out <- structure(req$content, class = "gcs_objectmeta")
+  
+  if(req$status_code == 404){
+    stop("File not found. Check object_name and if you have read permissions.
+           Looked for ", object_name, call. = FALSE)
   }
 
-
+  if(meta){
+    cli::cli_process_done(
+      msg_done = paste("Metadata for",URLdecode(object_name)))
+    return(structure(req$content, class = "gcs_objectmeta"))
+  }
+  
+  if(!is.null(saveToDisk)){
+    
+    msg <- paste("Saved", URLdecode(object_name), "to", saveToDisk,
+                 " (",format_object_size(file.size(saveToDisk), "auto"),")")
+    
+    cli::cli_process_done(msg_done = msg)
+    
+    return(TRUE)
+    
+  }
+    
+  cli::cli_status_update("Downloaded - parsing object")
+  
+  out <- req
+  
+  if(parseObject){
+    out <- tryCatch(
+      parseFunction(req),
+      error = function(err){
+        stop("Problem parsing the object with supplied parseFunction.", 
+             call. = FALSE)
+      })
+  }
+  
+  cli::cli_process_done(msg_done = paste("Downloaded and parsed",
+                                         URLdecode(object_name),
+                                         "into R object of class:", 
+                                         paste(class(out), collapse = ", ")))
+  
   out
-
+  
 }
 
 #' Make metadata for an object

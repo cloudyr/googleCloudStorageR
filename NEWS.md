@@ -1,6 +1,8 @@
 # googleCloudStorage 0.6.0.9000
 
-* ...
+* Fix url encoding issue for multipart uploads (#139 - thanks @jomatt)
+* Add downloading a folder example to `gcs_get_object()` #144
+* Improve message feedback for downloading objects
 
 # googleCloudStorageR 0.6.0
 

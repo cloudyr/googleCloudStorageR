@@ -23,7 +23,7 @@
   default_bucket <- Sys.getenv("GCS_DEFAULT_BUCKET")
   if(nzchar(default_bucket)){
     .gcs_env$bucket <- default_bucket
-    packageStartupMessage("Set default bucket name to '", default_bucket,"'")
+    cli::cli_alert_success("Set default bucket name to '{default_bucket}'")
   }
 
   invisible()

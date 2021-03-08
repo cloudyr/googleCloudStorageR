@@ -69,8 +69,16 @@ f <- function(object){
 }
 
 ## get mtcars csv with custom parse function.
-gcs_get_object("mtcars_meta.csv", parseFunction = f)
+gcs_get_object("mtcars.csv", parseFunction = f)
 
+## to download from a folder in your bucket
+my_folder <- "your_folder/"
+objs <- gcs_list_objects(prefix = my_folder)
+
+dir.create(my_folder)
+
+# download all the objects to that folder
+dls <- lapply(objs$name, function(x) gcs_get_object(x, saveToDisk = x))
 }
 
 }

@@ -4,7 +4,8 @@ test_that("Object Operations", {
   upload <- gcs_upload(mtcars, bucket = "blahblahblahfffff", name = "mtcars.csv")
   expect_equal(class(upload), "gcs_objectmeta")
   print(upload)
-  del <- gcs_delete_object("mtcars.csv", bucket = "blahblahblahfffff")
+  del <- gcs_delete_object("mtcars.csv", 
+                           bucket = "blahblahblahfffff")
   expect_true(del)
   
   buck <- gcs_get_global_bucket()

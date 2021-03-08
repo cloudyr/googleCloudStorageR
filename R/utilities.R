@@ -146,16 +146,24 @@ error.message <- function(test_me){
 #' @details 0 = everything, 1 = debug, 2=normal, 3=important
 #' @keywords internal
 #' @noRd
-myMessage <- function(..., level = 1){
-
-
+#' @importFrom cli cli_h1 cli_div cli_alert_info cli_end
+myMessage <- function(..., level = 2){
+  
   compare_level <- getOption("googleAuthR.verbose")
-  if(is.null(compare_level)) compare_level <- 1
-
+  
   if(level >= compare_level){
-    message(Sys.time()," -- ", ...)
+    time <- paste(Sys.time(),">")
+    mm <- paste(...)
+    if(grepl("^#", mm)){
+      cli::cli_h1(mm)
+    } else {
+      cli::cli_div(theme = list(span.time = list(color = "grey")))
+      cli::cli_alert_info("{.time {time}} {mm}")
+      cli::cli_end()
+    }
+    
   }
-
+  
 }
 
 #' Substitute in a (nested) list

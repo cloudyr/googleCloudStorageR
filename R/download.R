@@ -59,7 +59,6 @@ gcs_download_url <- function(object_name, bucket = gcs_get_global_bucket(), publ
 #' @export
 gcs_parse_download <- function(object, encoding = "UTF-8"){
   out <- content(object, encoding = encoding)
-  message("Object parsed to class: ", paste(class(out), collapse = " "))
   out
 }
 

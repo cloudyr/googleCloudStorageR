@@ -13,6 +13,7 @@ Depends:
     R (>= 3.2.0)
 Imports:
     assertthat (>= 0.2.0),
+    cli,
     curl,
     googleAuthR (>= 1.3.1),
     httr (>= 1.2.1),
@@ -22,7 +23,6 @@ Imports:
     yaml,
     zip (>= 2.0.3)
 Suggests:
-    cli,
     fs,
     googleComputeEngineR,
     knitr,
@@ -34,6 +34,6 @@ Suggests:
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Config/testthat/edition: 3
 Config/testthat/parallel: false
