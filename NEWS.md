@@ -3,6 +3,7 @@
 * Fix url encoding issue for multipart uploads (#139 - thanks @jomatt)
 * Add downloading a folder example to `gcs_get_object()` #144
 * Improve message feedback for downloading objects
+* `gcs_upload()` will now retry with a warning if using legacy ACL settings for a bucket with uniform bucket-level access enabled - will retry with `predefinedAcl='bucketLevel'`
 
 # googleCloudStorageR 0.6.0
 

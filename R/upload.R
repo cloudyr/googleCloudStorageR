@@ -130,14 +130,32 @@ gcs_upload <- function(file,
   googleAuthR::gar_cache_setup(invalid_func = function(req){FALSE})
   
   # hack to get around method dispatch class for file
-  gcs_upload_s3(file = file,
-                bucket = bucket,
-                type = type,
-                name = name,
-                object_function = object_function,
-                object_metadata = object_metadata,
-                predefinedAcl = predefinedAcl,
-                upload_type = upload_type)
+  tryCatch(
+    gcs_upload_s3(file = file,
+                  bucket = bucket,
+                  type = type,
+                  name = name,
+                  object_function = object_function,
+                  object_metadata = object_metadata,
+                  predefinedAcl = predefinedAcl,
+                  upload_type = upload_type),
+    error = function(err){
+      if(!grepl("Cannot insert legacy ACL",err$message)){
+        stop(err$message)
+      }
+      warning(err$message, " - Retrying with predefinedAcl='bucketLevel'")
+      # this is so common try to help a bit
+      gcs_upload_s3(file = file,
+                    bucket = bucket,
+                    type = type,
+                    name = name,
+                    object_function = object_function,
+                    object_metadata = object_metadata,
+                    predefinedAcl = "bucketLevel",
+                    upload_type = upload_type)
+    }
+  )
+
   
   
 }
