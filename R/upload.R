@@ -143,7 +143,10 @@ gcs_upload <- function(file,
       if(!grepl("Cannot insert legacy ACL",err$message)){
         stop(err$message)
       }
-      warning(err$message, " - Retrying with predefinedAcl='bucketLevel'")
+      cli::cli_alert_warning(
+        paste(err$message, 
+              "- Retrying with predefinedAcl='bucketLevel'"))
+      
       # this is so common try to help a bit
       gcs_upload_s3(file = file,
                     bucket = bucket,
