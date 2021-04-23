@@ -175,6 +175,10 @@ gcs_parse_gsurls <- function(gsurl){
 #' ## get mtcars csv with custom parse function.
 #' gcs_get_object("mtcars.csv", parseFunction = f)
 #' 
+#' ## download an RDS file using helper gcs_parse_rds()
+#' 
+#' gcs_get_object("obj.rds", parseFunction = gcs_parse_rds)
+#' 
 #' ## to download from a folder in your bucket
 #' my_folder <- "your_folder/"
 #' objs <- gcs_list_objects(prefix = my_folder)
@@ -183,6 +187,9 @@ gcs_parse_gsurls <- function(gsurl){
 #' 
 #' # download all the objects to that folder
 #' dls <- lapply(objs$name, function(x) gcs_get_object(x, saveToDisk = x))
+#' 
+
+#' 
 #' }
 #'
 #' @family object functions
@@ -219,7 +226,7 @@ gcs_get_object <- function(object_name,
     alt = "json"
   } else {
     options(googleAuthR.rawResponse = TRUE)
-    on.exit(options(googleAuthR.rawResponse = FALSE))
+    on.exit(options(googleAuthR.rawResponse = FALSE), add = TRUE)
     alt = "media"
   }
 

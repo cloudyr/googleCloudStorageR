@@ -2,9 +2,12 @@
 % Please edit documentation in R/download.R
 \name{gcs_parse_download}
 \alias{gcs_parse_download}
+\alias{gcs_parse_rds}
 \title{Parse downloaded objects straight into R}
 \usage{
 gcs_parse_download(object, encoding = "UTF-8")
+
+gcs_parse_rds(object)
 }
 \arguments{
 \item{object}{The object downloaded}
@@ -13,6 +16,9 @@ gcs_parse_download(object, encoding = "UTF-8")
 }
 \description{
 Wrapper for \code{httr}'s \link[httr]{content}.  This is the default function used in \link{gcs_get_object}
+}
+\details{
+\code{gcs_parse_rds} will parse .rds files created via \link{saveRDS} without saving to disk
 }
 \seealso{
 gcs_get_object

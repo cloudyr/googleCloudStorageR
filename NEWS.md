@@ -4,6 +4,7 @@
 * Add downloading a folder example to `gcs_get_object()` #144
 * Improve message feedback for downloading objects
 * `gcs_upload()` will now retry with a warning if using legacy ACL settings for a bucket with uniform bucket-level access enabled - will retry with `predefinedAcl='bucketLevel'`
+* Add `gcs_parse_rds()` to help parsing RDS objects for `gcs_get_object()` #146
 
 # googleCloudStorageR 0.6.0
 
