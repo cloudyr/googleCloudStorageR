@@ -37,6 +37,7 @@ test_that("We can create and delete a versioned bucket",{
   proj <- Sys.getenv("GCS_DEFAULT_PROJECT")
   bucket <- "gcsr-test-bucket-versionzzzzzzz"
   bbs <- gcs_create_bucket(bucket, projectId = proj, versioning = TRUE)
+  on.exit(gcs_delete_bucket(bucket, force_delete = TRUE))
   
   tmp <- tempfile()
   writeLines("first", tmp)

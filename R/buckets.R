@@ -321,7 +321,7 @@ gcs_delete_bucket <- function(bucket,
   bucket <- as.bucket_name(bucket)
   
   if(isTRUE(force_delete)){
-    gcs_delete_bucket_objects(bucket)
+    gcs_delete_bucket_objects(bucket, force_delete=TRUE)
   }
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
@@ -356,6 +356,7 @@ gcs_delete_bucket <- function(bucket,
 #' @import assertthat
 gcs_delete_bucket_objects <- function(bucket,
                                       include_versions = FALSE){
+  myMessage("Deleting all objects in bucket:", bucket)
   bucket <- as.bucket_name(bucket)
   assert_that(is.flag(include_versions))
   if(isFALSE(include_versions)){
