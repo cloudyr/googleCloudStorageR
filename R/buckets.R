@@ -321,7 +321,7 @@ gcs_delete_bucket <- function(bucket,
   bucket <- as.bucket_name(bucket)
   
   if(isTRUE(force_delete)){
-    gcs_delete_bucket_objects(bucket, force_delete=TRUE)
+    gcs_delete_bucket_objects(bucket, include_versions=TRUE)
   }
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
