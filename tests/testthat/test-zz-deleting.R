@@ -64,7 +64,8 @@ test_that("We can create and delete a versioned bucket",{
                  saveToDisk = tmp, generation  = v1)
   expect_equal(readLines(tmp), "first")
   gcs_get_object(object_name = "x", bucket = bucket, 
-                 saveToDisk = tmp, generation  = v2)
+                 saveToDisk = tmp, generation  = v2, 
+                 overwrite = TRUE)
   expect_equal(readLines(tmp), "second")
   
   gcs_delete_bucket(bucket, force_delete = TRUE)
