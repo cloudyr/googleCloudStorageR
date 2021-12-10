@@ -26,6 +26,8 @@ If successful, TRUE.
 Deletes an object from a bucket
 }
 \seealso{
+To delete all objects in a bucket see \link{gcs_delete_bucket_objects}
+
 Other object functions: 
 \code{\link{gcs_compose_objects}()},
 \code{\link{gcs_copy_object}()},

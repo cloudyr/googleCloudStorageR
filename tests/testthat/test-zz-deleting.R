@@ -30,3 +30,46 @@ test_that("We can delete the lifecycle bucket", {
   expect_true(deleted)
   
 })
+
+test_that("We can create and delete a versioned bucket",{
+  skip_on_cran()
+  skip_if_no_token()
+  proj <- Sys.getenv("GCS_DEFAULT_PROJECT")
+  bucket <- "googlecloudstorager-test-bucket-versionzzzzzzz"
+  bbs <- gcs_create_bucket(bucket, projectId = proj, versioning = TRUE)
+  
+  tmp <- tempfile()
+  writeLines("first", tmp)
+  head_first <- gcs_upload(
+    file = tmp,
+    bucket = bucket,
+    object_metadata = gcs_metadata_object(
+       metadata = list("custom" = "first-meta"),
+       object_name = "x"
+  ))
+  
+  v1 <- head_first$generation
+  writeLines("second", tmp)
+  head_second <- gcs_upload(
+    file = tmp,
+    bucket = bucket,
+    object_metadata = gcs_metadata_object(
+      metadata = list("custom" = "second-meta"),
+      object_name = "x"
+    ))
+  v2 <- head_second$generation
+
+  unlink(tmp)
+  gcs_get_object(object_name = "x", bucket = bucket, 
+                 saveToDisk = tmp, generation  = v1)
+  expect_equal(readLines(tmp), "first")
+  gcs_get_object(object_name = "x", bucket = bucket, 
+                 saveToDisk = tmp, generation  = v2)
+  expect_equal(readLines(tmp), "second")
+  
+  gcs_delete_bucket(bucket, force_delete = TRUE)
+  
+  buckets <- gcs_list_buckets(proj)
+  expect_false(bucket %in% buckets$name)
+  
+})

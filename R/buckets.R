@@ -308,16 +308,21 @@ gcs_create_bucket <-
 #' @param bucket Name of the bucket, or a bucket object
 #' @param ifMetagenerationMatch Delete only if metageneration matches
 #' @param ifMetagenerationNotMatch Delete only if metageneration does not match
-#'
+#' @param force_delete If the bucket contains objects it will prevent deletion, including objects in a versioned bucket that previously existed.  Setting this to TRUE will force deletion of those objects before deleting the bucket itself.
 #' @family bucket functions
 #' @import assertthat
 #' @importFrom googleAuthR gar_api_generator
 #' @export
 gcs_delete_bucket <- function(bucket,
                               ifMetagenerationMatch = NULL,
-                              ifMetagenerationNotMatch = NULL){
+                              ifMetagenerationNotMatch = NULL,
+                              force_delete = FALSE){
 
   bucket <- as.bucket_name(bucket)
+  
+  if(isTRUE(force_delete)){
+    gcs_delete_bucket_objects(bucket)
+  }
 
   pars_args <- list(ifMetagenerationMatch=ifMetagenerationMatch,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch)
@@ -341,6 +346,43 @@ gcs_delete_bucket <- function(bucket,
 
   out
 
+}
+
+#' Delete all objects in a bucket
+#' @export
+#' @param include_versions Whether to include all historic versions of the objects to delete
+#' @rdname gcs_delete_bucket
+#' @seealso \link{gcs_delete_object}
+#' @import assertthat
+gcs_delete_bucket_objects <- function(bucket,
+                                      include_versions = FALSE){
+  bucket <- as.bucket_name(bucket)
+  assert_that(is.flag(include_versions))
+  if(isFALSE(include_versions)){
+    include_versions <- NULL
+  }
+  os <- gcs_list_objects(bucket, 
+                         versions = include_versions, 
+                         detail = "full")
+  
+  safe_delete <- function(x, bucket, version = NULL){
+    tryCatch({
+      gcs_delete_object(x, bucket = bucket, generation = version)
+    }, error = function(ex) {
+      NULL
+    })
+  }
+  
+  if(isTRUE(include_versions)){
+    mapply(safe_delete, 
+           x = os$name, version = os$generation, 
+           MoreArgs = list(bucket = bucket))
+  } else {
+    lapply(os$name, safe_delete, bucket = bucket)
+  }
+  
+
+  TRUE
 }
 
 #' Create a lifecycle condition

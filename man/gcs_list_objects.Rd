@@ -8,7 +8,8 @@ gcs_list_objects(
   bucket = gcs_get_global_bucket(),
   detail = c("summary", "more", "full"),
   prefix = NULL,
-  delimiter = NULL
+  delimiter = NULL,
+  versions = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ gcs_list_objects(
 \item{prefix}{Filter results to objects whose names begin with this prefix}
 
 \item{delimiter}{Use to list objects like a directory listing.}
+
+\item{versions}{If \code{TRUE}, lists all versions of an object as distinct results in order of increasing generation number.}
 }
 \value{
 A data.frame of the objects

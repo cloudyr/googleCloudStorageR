@@ -4,6 +4,7 @@
 #' @param detail Set level of detail
 #' @param prefix Filter results to objects whose names begin with this prefix
 #' @param delimiter Use to list objects like a directory listing.
+#' @param versions If \code{TRUE}, lists all versions of an object as distinct results in order of increasing generation number. 
 #' @details
 #'
 #' Columns returned by \code{detail} are:
@@ -31,7 +32,8 @@
 gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                              detail = c("summary","more","full"),
                              prefix = NULL,
-                             delimiter = NULL){
+                             delimiter = NULL,
+                             versions = FALSE){
 
   detail <- match.arg(detail)
 
@@ -39,7 +41,8 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
 
   pars <- list(prefix = prefix,
                delimiter = delimiter,
-               pageToken = "")
+               pageToken = "",
+               versions = versions)
   pars <- rmNullObs(pars)
 
   lo <- gar_api_generator("https://www.googleapis.com/storage/v1/",
@@ -358,6 +361,7 @@ gcs_metadata_object <- function(object_name = NULL,
 #' @import assertthat
 #' @importFrom googleAuthR gar_api_generator
 #' @export
+#' @seealso To delete all objects in a bucket see \link{gcs_delete_bucket_objects}
 gcs_delete_object <- function(object_name,
                               bucket = gcs_get_global_bucket(),
                               generation = NULL){

@@ -1,19 +1,6 @@
 test_that("Signed URLs", {
   skip_if_no_token()
   
-  obj1 <- gcs_get_object(
-    "LT08/PRE/015/013/LT80150132013127LGN01/LT80150132013127LGN01_MTL.txt",
-    meta = TRUE,
-    bucket = "gcp-public-data-landsat"
-  )
-  signed <- gcs_signed_url(obj1)
-
-  temp1 <- tempfile()
-  on.exit(unlink(temp1))
-
-  download.file(signed, destfile = temp1, quiet = TRUE)
-  expect_true(file.exists(temp1))
-  
   gcs_upload(mtcars, 
              bucket = Sys.getenv("GCS_DEFAULT_BUCKET"),
              name = "mtcars.csv")

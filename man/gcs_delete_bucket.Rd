@@ -2,13 +2,17 @@
 % Please edit documentation in R/buckets.R
 \name{gcs_delete_bucket}
 \alias{gcs_delete_bucket}
+\alias{gcs_delete_bucket_objects}
 \title{Delete a bucket}
 \usage{
 gcs_delete_bucket(
   bucket,
   ifMetagenerationMatch = NULL,
-  ifMetagenerationNotMatch = NULL
+  ifMetagenerationNotMatch = NULL,
+  force_delete = FALSE
 )
+
+gcs_delete_bucket_objects(bucket, include_versions = FALSE)
 }
 \arguments{
 \item{bucket}{Name of the bucket, or a bucket object}
@@ -16,11 +20,17 @@ gcs_delete_bucket(
 \item{ifMetagenerationMatch}{Delete only if metageneration matches}
 
 \item{ifMetagenerationNotMatch}{Delete only if metageneration does not match}
+
+\item{force_delete}{If the bucket contains objects it will prevent deletion, including objects in a versioned bucket that previously existed.  Setting this to TRUE will force deletion of those objects before deleting the bucket itself.}
+
+\item{include_versions}{Whether to include all historic versions of the objects to delete}
 }
 \description{
 Delete the bucket, and all its objects
 }
 \seealso{
+\link{gcs_delete_object}
+
 Other bucket functions: 
 \code{\link{gcs_create_bucket}()},
 \code{\link{gcs_create_lifecycle}()},
