@@ -11,7 +11,8 @@ gcs_get_object(
   saveToDisk = NULL,
   overwrite = FALSE,
   parseObject = TRUE,
-  parseFunction = gcs_parse_download
+  parseFunction = gcs_parse_download,
+  generation = NULL
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ gcs_get_object(
 \item{parseObject}{If saveToDisk is NULL, whether to parse with \code{parseFunction}}
 
 \item{parseFunction}{If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}}
+
+\item{generation}{The generation number for the noncurrent version, if you have object versioning enabled in your bucket e.g. \code{1560468815691234}}
 }
 \value{
 The object, or TRUE if successfully saved to disk.

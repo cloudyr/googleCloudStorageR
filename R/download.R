@@ -69,7 +69,9 @@ gcs_parse_download <- function(object, encoding = "UTF-8"){
 #' 
 #' \code{gcs_parse_rds} will parse .rds files created via \link{saveRDS} without saving to disk 
 gcs_parse_rds <- function(object){
-  readRDS(gzcon(rawConnection(httr::content(object))))
+  con <- gzcon(rawConnection(httr::content(object)))
+  on.exit(close(con))
+  readRDS(con)
 }
 
 #' Create signature

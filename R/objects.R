@@ -134,6 +134,7 @@ gcs_parse_gsurls <- function(gsurl){
 #' @param saveToDisk Specify a filename to save directly to disk
 #' @param overwrite If saving to a file, whether to overwrite it
 #' @param parseObject If saveToDisk is NULL, whether to parse with \code{parseFunction}
+#' @param generation The generation number for the noncurrent version, if you have object versioning enabled in your bucket e.g. \code{"1560468815691234"}
 #' @param parseFunction If saveToDisk is NULL, the function that will parse the download.  Defaults to \link{gcs_parse_download}
 #'
 #' @details
@@ -204,7 +205,8 @@ gcs_get_object <- function(object_name,
                            saveToDisk = NULL,
                            overwrite = FALSE,
                            parseObject = TRUE,
-                           parseFunction = gcs_parse_download){
+                           parseFunction = gcs_parse_download,
+                           generation = NULL){
 
   assert_that(
     is.string(object_name),
@@ -216,6 +218,10 @@ gcs_get_object <- function(object_name,
   if(!is.null(parse_gsurl)){
     object_name <- parse_gsurl$obj
     bucket <- parse_gsurl$bucket
+  }
+  
+  if(!is.null(generation)){
+    assert_that(is.string(generation))
   }
 
   bucket <- as.bucket_name(bucket)
@@ -245,7 +251,8 @@ gcs_get_object <- function(object_name,
   ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
                           path_args = list(b = bucket,
                                            o = object_name),
-                          pars_args = list(alt = alt),
+                          pars_args = list(alt = alt,
+                                           generation = generation),
                           customConfig = customConfig)
   req <- ob()
   
