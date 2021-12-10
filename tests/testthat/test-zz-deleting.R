@@ -35,7 +35,7 @@ test_that("We can create and delete a versioned bucket",{
   skip_on_cran()
   skip_if_no_token()
   proj <- Sys.getenv("GCS_DEFAULT_PROJECT")
-  bucket <- "googlecloudstorager-test-bucket-versionzzzzzzz"
+  bucket <- "gcsr-test-bucket-versionzzzzzzz"
   bbs <- gcs_create_bucket(bucket, projectId = proj, versioning = TRUE)
   
   tmp <- tempfile()
