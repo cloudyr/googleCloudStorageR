@@ -247,12 +247,15 @@ gcs_get_object <- function(object_name,
   }
   
   cli::cli_process_start(paste("Downloading", URLdecode(object_name)))
+  
+  pars_args <- list(alt = alt,
+                    generation = generation)
+  pars_args <- rmNullObs(pars_args)
 
   ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
                           path_args = list(b = bucket,
                                            o = object_name),
-                          pars_args = list(alt = alt,
-                                           generation = generation),
+                          pars_args = pars_args,
                           customConfig = customConfig)
   req <- ob()
   
