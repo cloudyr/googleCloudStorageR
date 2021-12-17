@@ -1,6 +1,6 @@
 Package: googleCloudStorageR
 Type: Package
-Version: 0.7.0
+Version: 0.7.0.9000
 Title: Interface with Google Cloud Storage API
 Description: Interact with Google Cloud Storage <https://cloud.google.com/storage/> 
   API in R. Part of the 'cloudyr' <https://cloudyr.github.io/> project.

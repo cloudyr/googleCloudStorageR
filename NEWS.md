@@ -1,3 +1,7 @@
+# googleCloudStorage 0.7.0.9000
+
+* ...
+
 # googleCloudStorage 0.7.0
 
 * Fix url encoding issue for multipart uploads (#139 - thanks @jomatt)
