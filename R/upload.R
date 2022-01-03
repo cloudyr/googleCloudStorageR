@@ -544,7 +544,7 @@ do_resumable_upload <- function(name,
 gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type = NULL){
 
   if(is.null(retry_object)){
-    if(any(is.null(upload_url), is.null(file), is.null(type))){
+    if(all(is.null(upload_url), is.null(file), is.null(type))){
       stop("Must supply either retry_object or all of upload_url, file and type", 
            call. = FALSE)
     }

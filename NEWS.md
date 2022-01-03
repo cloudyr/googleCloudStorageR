@@ -1,6 +1,6 @@
 # googleCloudStorage 0.7.0.9000
 
-* ...
+* Fix bug where retry was not attempted on `gcs_upload()`
 
 # googleCloudStorage 0.7.0
 
