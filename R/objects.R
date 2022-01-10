@@ -260,28 +260,8 @@ gcs_get_object <- function(object_name,
                                            o = object_name),
                           pars_args = pars_args,
                           customConfig = customConfig)
-  req <- ob()
 
-  if(req$status_code == 404){
-    api_err <- httr::content(req, as = "text")
-    msg <- paste(api_err, "Check object_name and/or if you have read permissions")
-    abort_http(404, msg)
-    cli::cli_process_failed(msg_failed = msg)
-  }
-  
-  if(req$status_code == 400){
-    api_err <- httr::content(req, as = "text")
-    msg <- paste(api_err, "(Authentication error?)  Problem requesting ", object_name)
-    abort_http(400, msg)
-    cli::cli_process_failed(msg_failed = msg)
-  }
-  
-  if(req$status_code >= 500){
-    api_err <- httr::content(req, as = "text")
-    msg <- paste(api_err, "(Google server error?)  Problem requesting ", object_name)
-    abort_http(req$status_code, msg)
-    cli::cli_process_failed(msg_failed = msg)
-  }
+  req <- ob()
 
   if(meta){
     cli::cli_process_done(

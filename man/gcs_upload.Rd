@@ -76,8 +76,8 @@ Use \code{name} to override this.
 \section{scopes}{
 
 
-Requires scopes \code{https://www.googleapis.com/auth/devstorage.read_write}
-  or \code{https://www.googleapis.com/auth/devstorage.full_control}
+Requires scopes \code{https://storage.googleapis.com/auth/devstorage.read_write}
+  or \code{https://storage.googleapis.com/auth/devstorage.full_control}
 }
 
 \examples{
