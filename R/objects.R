@@ -45,7 +45,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                versions = versions)
   pars <- rmNullObs(pars)
 
-  lo <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+  lo <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
                           path_args = list(b = bucket,
                                            o = ""),
                           pars_args = pars,
@@ -255,7 +255,7 @@ gcs_get_object <- function(object_name,
                     generation = generation)
   pars_args <- rmNullObs(pars_args)
 
-  ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+  ob <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
                           path_args = list(b = bucket,
                                            o = object_name),
                           pars_args = pars_args,
@@ -399,7 +399,7 @@ gcs_delete_object <- function(object_name,
   pars <- list(generation = generation)
   pars <- rmNullObs(pars)
 
-  ob <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+  ob <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
                           "DELETE",
                           path_args = list(b = bucket,
                                            o = object_name),

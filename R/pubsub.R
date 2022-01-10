@@ -58,7 +58,7 @@ gcs_create_pubsub <- function(topic,
 
   the_body <- rmNullObs(the_body)
 
-  the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/notificationConfigs",
+  the_url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/notificationConfigs",
                      bucket)
 
   api <- gar_api_generator(the_url, "POST", data_parse_function = function(x) x)
@@ -85,7 +85,7 @@ gcs_get_service_email <- function(project){
 
   assert_that(is.string(project))
 
-  the_url <- sprintf("https://www.googleapis.com/storage/v1/projects/%s/serviceAccount",
+  the_url <- sprintf("https://storage.googleapis.com/storage/v1/projects/%s/serviceAccount",
                     project)
 
   api <- gar_api_generator(the_url, "GET",
@@ -120,7 +120,7 @@ gcs_list_pubsub <- function(bucket = gcs_get_global_bucket()){
   bucket <- as.bucket_name(bucket)
 
 
-  the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/notificationConfigs",
+  the_url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/notificationConfigs",
                      bucket)
 
   api <- gar_api_generator(the_url, "GET", 
@@ -159,7 +159,7 @@ gcs_delete_pubsub <- function(config_name,
 
   assert_that(is.string(config_name))
 
-  the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/notificationConfigs/%s",
+  the_url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/notificationConfigs/%s",
                      bucket, config_name)
   
   

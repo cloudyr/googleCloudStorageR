@@ -49,7 +49,7 @@ gcs_compose_objects <- function(objects,
     )
   )
   
-  ob <- gar_api_generator("https://www.googleapis.com/storage/v1",
+  ob <- gar_api_generator("https://storage.googleapis.com/storage/v1",
                          "POST",
                          path_args = list(b = bucket,
                                           o = destination,

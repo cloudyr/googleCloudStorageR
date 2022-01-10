@@ -42,8 +42,8 @@
 #'
 #' @section scopes:
 #'
-#' Requires scopes \code{https://www.googleapis.com/auth/devstorage.read_write}
-#'   or \code{https://www.googleapis.com/auth/devstorage.full_control}
+#' Requires scopes \code{https://storage.googleapis.com/auth/devstorage.read_write}
+#'   or \code{https://storage.googleapis.com/auth/devstorage.full_control}
 #'
 #' @return If successful, a metadata object
 #'
@@ -383,7 +383,7 @@ do_simple_upload <- function(name,
   }
   
   up <-
-    gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+    gar_api_generator("https://storage.googleapis.com/upload/storage/v1",
                       "POST",
                       path_args = list(b = bucket,
                                        o = ""),
@@ -459,7 +459,7 @@ do_resumable_upload <- function(name,
   }
   
   up <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/upload/storage/v1",
+    googleAuthR::gar_api_generator("https://storage.googleapis.com/upload/storage/v1",
                                    "POST",
                                    path_args = list(b = bucket,
                                                     o = ""),

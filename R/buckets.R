@@ -137,7 +137,7 @@ gcs_list_buckets <- function(projectId,
   }
 
   lb <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/b",
+    googleAuthR::gar_api_generator("https://storage.googleapis.com/storage/v1/b",
                                    "GET",
                                    pars_args = list(project=projectId,
                                                     prefix=prefix,
@@ -197,7 +197,7 @@ gcs_get_bucket <- function(bucket = gcs_get_global_bucket(),
   pars_args <- rmNullObs(pars_args)
 
   bb <-
-    googleAuthR::gar_api_generator("https://www.googleapis.com/storage/v1/",
+    googleAuthR::gar_api_generator("https://storage.googleapis.com/storage/v1/",
                                    "GET",
                                    path_args = list(b = bucket),
                                    pars_args = pars_args)
@@ -270,7 +270,7 @@ gcs_create_bucket <-
                     projection = projection)
   pars_args <- rmNullObs(pars_args)
 
-  bb <- gar_api_generator("https://www.googleapis.com/storage/v1/b",
+  bb <- gar_api_generator("https://storage.googleapis.com/storage/v1/b",
                           "POST",
                           pars_args = pars_args)
 
@@ -328,7 +328,7 @@ gcs_delete_bucket <- function(bucket,
                     ifMetagenerationNotMatch=ifMetagenerationNotMatch)
   pars_args <- rmNullObs(pars_args)
 
-  bb <- gar_api_generator("https://www.googleapis.com/storage/v1/",
+  bb <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
                           "DELETE",
                           path_args = list(b = bucket),
                           pars_args = pars_args)
