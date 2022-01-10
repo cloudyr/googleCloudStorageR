@@ -31,6 +31,8 @@ Suggests:
     sodium,
     testthat,
     usethis
+Remotes:
+  MarkEdmondson1234/googleAuthR
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
