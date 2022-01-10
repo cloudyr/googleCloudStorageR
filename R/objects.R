@@ -458,7 +458,7 @@ gcs_copy_object <- function(source_object,
   source_object <- URLencode(source_object, reserved = TRUE)
   destination_object <- URLencode(destination_object, reserved = TRUE)
   
-  the_url <- sprintf("https://www.googleapis.com/storage/v1/b/%s/o/%s/rewriteTo/b/%s/o/%s", 
+  the_url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/o/%s/copyTo/b/%s/o/%s", 
                      source_bucket, source_object, destination_bucket, destination_object)
   pars <- NULL
   if(!is.null(rewriteToken)){
@@ -471,6 +471,7 @@ gcs_copy_object <- function(source_object,
   ob <- gar_api_generator(the_url,
                           "POST",
                           pars_args = pars,
+                          checkTrailingSlash = FALSE,
                           data_parse_function = function(x) x)
   ob()
 }
