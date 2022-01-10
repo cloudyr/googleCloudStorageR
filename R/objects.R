@@ -242,7 +242,7 @@ gcs_get_object <- function(object_name,
   ## download directly to disk
   if(!is.null(saveToDisk)){
 
-    assert_that(is.logical(overwrite))
+    assertthat::assert_that(is.logical(overwrite))
 
     customConfig <- list(write_disk(saveToDisk, overwrite = overwrite))
   } else {
@@ -261,21 +261,26 @@ gcs_get_object <- function(object_name,
                           pars_args = pars_args,
                           customConfig = customConfig)
   req <- ob()
-  
+
   if(req$status_code == 404){
-    msg <- paste("File not found. Check object_name and if you have read permissions.
-           Looked for", object_name)
+    api_err <- httr::content(req, as = "text")
+    msg <- paste(api_err, "Check object_name and/or if you have read permissions")
     abort_http(404, msg)
+    cli::cli_process_failed(msg_failed = msg)
   }
   
   if(req$status_code == 400){
-    msg <- paste("(Authentication error?)  Problem requesting ", object_name)
+    api_err <- httr::content(req, as = "text")
+    msg <- paste(api_err, "(Authentication error?)  Problem requesting ", object_name)
     abort_http(400, msg)
+    cli::cli_process_failed(msg_failed = msg)
   }
   
   if(req$status_code >= 500){
-    msg <- paste("(Google server error?)  Problem requesting ", object_name)
+    api_err <- httr::content(req, as = "text")
+    msg <- paste(api_err, "(Google server error?)  Problem requesting ", object_name)
     abort_http(req$status_code, msg)
+    cli::cli_process_failed(msg_failed = msg)
   }
 
   if(meta){
