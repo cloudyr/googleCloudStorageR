@@ -68,4 +68,7 @@ test_that("Custom error class [online]", {
   err <- tryCatch(gcs_get_object("sdd"), http_404 = function(cc) "404")
   expect_equal(err, "404")
   
+  err2 <- tryCatch(gcs_get_object("blah", meta = TRUE), http_404 = function(x) FALSE)
+  expect_false(err2)
+  
 })
