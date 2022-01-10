@@ -1,3 +1,11 @@
+# https://adv-r.hadley.nz/conditions.html
+abort_http <- function(status_code, msg = NULL){
+  rlang::abort(paste0("http_",status_code), 
+        message = paste(status_code, "error when attempting HTTP -", msg)
+  )
+}
+
+
 #' base R safe rbind
 #' 
 #' Send in a list of data.fames with different column names

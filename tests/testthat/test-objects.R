@@ -60,3 +60,13 @@ test_that("Compose objects", {
   expect_equal(comp$componentCount, 2)
   
 })
+
+
+test_that("Custom error class [online]", {
+  skip_on_cran()
+  skip_if_no_token()
+  
+  err <- tryCatch(gcs_get_object("sdd"), http_404 = function(cc) "404")
+  expect_equal(err, "404")
+  
+})

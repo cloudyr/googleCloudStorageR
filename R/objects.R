@@ -263,8 +263,19 @@ gcs_get_object <- function(object_name,
   req <- ob()
   
   if(req$status_code == 404){
-    stop("File not found. Check object_name and if you have read permissions.
-           Looked for ", object_name, call. = FALSE)
+    msg <- paste("File not found. Check object_name and if you have read permissions.
+           Looked for", object_name, call. = FALSE)
+    abort_http(404, msg)
+  }
+  
+  if(req$status_code == 400){
+    msg <- paste("(Authentication error?)  Problem requesting ", object_name, call. = FALSE)
+    abort_http(400, msg)
+  }
+  
+  if(req$status_code >= 500){
+    msg <- paste("(Google server error?)  Problem requesting ", object_name, call. = FALSE)
+    abort_http(req$status_code, msg)
   }
 
   if(meta){

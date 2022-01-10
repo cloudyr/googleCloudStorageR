@@ -1,6 +1,7 @@
 # googleCloudStorage 0.7.0.9000
 
 * Fix bug where retry was not attempted on `gcs_upload()`
+* Add some custom error classes `http_400`, `http_404` etc.
 
 # googleCloudStorage 0.7.0
 

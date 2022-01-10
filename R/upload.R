@@ -333,7 +333,7 @@ do_upload <- function(name,
                       type,
                       upload_type){
   
-  myMessage("File size detected as ",
+  myMessage("File size detected as",
             format_object_size(file.size(temp), "auto"), level = 3)
   
   # default is 5MB simple upload limit
