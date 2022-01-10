@@ -43,9 +43,8 @@ test_that("Object Operations", {
   copy <-  gcs_copy_object("mtcars.csv","mtcars2.csv", 
                            source_bucket = buck,
                            destination_bucket = buck)
-  expect_equal(copy$kind, "storage#rewriteResponse")
-  expect_equal(copy$resource$kind, "storage#object")
-  expect_equal(copy$resource$name, "mtcars2.csv")
+  expect_equal(copy$kind, "storage#object")
+  expect_equal(copy$name, "mtcars2.csv")
 
 })
 
