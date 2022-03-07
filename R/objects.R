@@ -91,7 +91,10 @@ parse_lo <- function(x){
   x$timeCreated <- timestamp_to_r(x$timeCreated)
   x$updated <- timestamp_to_r(x$updated)
   x$kind <- NULL
-  x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
+  format_unit = getOption("googleCloudStorageR.format_unit", default = "auto")
+  x$size <- vapply(as.numeric(x$size), function(x) {
+    format_object_size(x, unit = format_unit)
+    }, character(1))
 
   ## extra columns for composite objects (#73)
   x$componentCount  <- if(is.null(x$componentCount)) NA else x$componentCount
