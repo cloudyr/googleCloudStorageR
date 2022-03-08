@@ -1,6 +1,6 @@
 # https://adv-r.hadley.nz/conditions.html
 abort_http <- function(status_code, msg = NULL){
-  rlang::abort(paste0("http_",status_code), 
+  cli::cli_abort(paste0("http_",status_code), 
         message = paste0("http_", status_code, " ", msg)
   )
 }
