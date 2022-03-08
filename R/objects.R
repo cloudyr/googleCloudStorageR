@@ -91,6 +91,7 @@ parse_lo <- function(x){
   x$timeCreated <- timestamp_to_r(x$timeCreated)
   x$updated <- timestamp_to_r(x$updated)
   x$kind <- NULL
+  x$size_bytes <- as.numeric(x$size)
   x$size <- vapply(as.numeric(x$size), function(x) format_object_size(x, "auto"), character(1))
 
   ## extra columns for composite objects (#73)
