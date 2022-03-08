@@ -66,9 +66,10 @@ limit_columns <- function(req, detail){
   }
   
   out_names <- switch(detail,
-                      summary = c("name", "size", "updated"),
+                      summary = c("name", "size", "updated", "size_bytes"),
                       more = c("name", "size", "bucket", "contentType",
-                               "timeCreated", "updated", "storageClass"),
+                               "timeCreated", "updated", "storageClass",
+                               "size_bytes"),
                       full = TRUE)
   
   req[,out_names]
