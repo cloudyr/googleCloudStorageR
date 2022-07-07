@@ -144,7 +144,10 @@ gcs_list_buckets <- function(projectId,
                                                     projection=projection),
                                    data_parse_function = parse_lb)
 
-  out <- lb()
+  out <- gar_api_page(lb, 
+                      page_f = function(x) attr(x, "nextPageToken"),
+                      page_method = "param", 
+                      page_arg = "pageToken")
   
   if(nrow(out) < 1) return(NULL)
 
