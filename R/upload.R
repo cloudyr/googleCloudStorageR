@@ -611,7 +611,7 @@ gcs_retry_upload <- function(retry_object=NULL, upload_url=NULL, file=NULL, type
       )
     }
   } else if (httr::http_error(upload_status)) {
-    stop(httr::content(upload_status)$error)
+    stop(httr::content(upload_status)$error$message)
   } else {
     stop("Couldn't get upload status")
   }
