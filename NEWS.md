@@ -2,6 +2,7 @@
 
 * Fix bug where retry was not attempted on `gcs_upload()`
 * Add some custom error classes `http_400`, `http_404` etc.
+* Allow listing of more than 1000 buckets (#163 - thanks @hidekoji)
 
 # googleCloudStorage 0.7.0
 
