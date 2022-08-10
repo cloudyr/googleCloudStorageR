@@ -145,7 +145,9 @@ gcs_list_buckets <- function(projectId,
                                    data_parse_function = parse_lb)
 
   out <- lb()
-  
+  if (is.list(out) && length(out) == 1) {
+    out = out[[1]]
+  }
   if(nrow(out) < 1) return(NULL)
 
   out_names <- switch(detail,
