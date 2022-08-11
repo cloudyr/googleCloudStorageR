@@ -149,6 +149,8 @@ gcs_list_buckets <- function(projectId,
                       page_method = "param", 
                       page_arg = "pageToken")
   
+  out <- Reduce(rbind, out)
+  
   if(nrow(out) < 1) return(NULL)
 
   out_names <- switch(detail,
