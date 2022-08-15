@@ -1,6 +1,6 @@
 # https://adv-r.hadley.nz/conditions.html
 abort_http <- function(status_code, msg = NULL){
-  rlang::abort(paste0("http_",status_code), 
+  cli::cli_abort(paste0("http_",status_code), 
         message = paste0("http_", status_code, " ", msg)
   )
 }
@@ -62,7 +62,7 @@ js_to_posix <- function(x){
 #' @noRd
 format_object_size <- function (x, units = "b", ...){
   
-  if(is.na(x)){
+  if(length(x) == 0 || is.na(x)){
     return("File had no filesize")
   }
   
