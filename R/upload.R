@@ -316,10 +316,9 @@ gcs_upload_s3.default <- function(file,
 #' @param upload_limit Upload limit in bytes
 #' @rdname gcs_upload
 #' @export
-gcs_upload_set_limit <- function(upload_limit = 5000000L){
+gcs_upload_set_limit <- function(upload_limit = 5000000){
   assert_that(
-    is.scalar(upload_limit),
-    is.integer(upload_limit)
+    is.scalar(upload_limit)
   )
   myMessage("Setting upload limit for simple uploads to ", upload_limit)
   options(googleCloudStorageR.upload_limit = upload_limit)
