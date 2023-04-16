@@ -64,8 +64,20 @@ gcs_save_image <- function(file = ".RData",
 gcs_save <- function(...,
                      file,
                      bucket = gcs_get_global_bucket(),
-                     envir = parent.frame()){
+                     envir = parent.frame(),
+                     predefinedAcl = c(
+                       "private",
+                       "bucketLevel",
+                       "authenticatedRead",
+                       "bucketOwnerFullControl",
+                       "bucketOwnerRead",
+                       "projectPrivate",
+                       "publicRead",
+                       "default"
+                     )){
 
+  predefinedAcl <- match.arg(predefinedAcl)
+  
   tmp <- tempfile()
   on.exit(unlink(tmp))
 
@@ -73,7 +85,7 @@ gcs_save <- function(...,
 
   save(..., file = tmp, envir = envir)
 
-  gcs_upload(tmp, bucket = bucket, name = file)
+  gcs_upload(tmp, bucket = bucket, name = file, predefinedAcl = predefinedAcl)
 
 }
 
