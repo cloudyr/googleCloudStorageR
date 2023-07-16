@@ -8,6 +8,10 @@
   toset <- !(names(op.googleCloudStorageR) %in% names(op))
   
   if(any(toset)) options(op.googleCloudStorageR[toset])
+
+  if(is.storage_emulated()){
+    options(googleAuthR.skip_token_checks = TRUE)
+  }
   
   invisible()
 

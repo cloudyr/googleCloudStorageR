@@ -138,6 +138,43 @@ gcs_get_global_bucket()
 [1] "my-default-bucket-2"
 ```
 
+## Using a GCS emulator
+
+You can also use a GCS emulator instead of the real Google Cloud Storage. By
+providing a `STORAGE_EMULATOR_HOST` environment variable, the library will
+direct all API request to the emulator server. The variable's value should
+include scheme, host and port (e.g.: `http://localhost:8080`).
+
+When using an emulator, you don't have to provide authentication credentials.
+
+This is generally useful in the context of automated tests. And depending on the
+emulator implementation, it can even give local filesystem support to
+applications that were previously hardwired to use GCS.
+
+```r
+## start a GCS emulator outside R listening at 127.0.0.1:1234, for example
+
+## set emulator host via environment
+Sys.setenv("STORAGE_EMULATOR_HOST" = "http://127.0.0.1:1234")
+
+library(googleCloudStorageR)
+
+proj <- "my-dummy-project-id"
+
+# perform GCS operations normally, like:
+gcs_create_bucket("my-bucket", proj)
+==Google Cloud Storage Bucket==
+Bucket:          my-bucket
+Location:        US-CENTRAL1
+Class:           STANDARD
+Created:         2023-07-22 07:31:28
+Updated:         2023-07-22 07:31:28
+
+gcs_list_buckets(proj)
+       name storageClass    location             updated
+1 my-bucket     STANDARD US-CENTRAL1 2023-07-22 07:31:28
+```
+
 ## Downloading objects from Google Cloud storage
 
 Once you have a Google project and created a bucket with an object in it, you can download it as below:

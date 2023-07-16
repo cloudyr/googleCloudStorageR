@@ -40,8 +40,8 @@ gcs_download_url <- function(object_name,
   }
   
   domain <- "https://storage.cloud.google.com"
-  if(public){
-    domain <- "https://storage.googleapis.com"
+  if(public || is.storage_emulated()){
+    domain <- get_storage_host()
   }
 
   file.path(domain, bucket, object_name, fsep = "/")

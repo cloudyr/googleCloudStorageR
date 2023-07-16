@@ -45,7 +45,7 @@ gcs_get_bucket_acl <- function(bucket = gcs_get_global_bucket(),
   entity <- build_entity(entity, entity_type)
 
   ge <-
-    gar_api_generator("https://storage.googleapis.com/storage/v1",
+    gar_api_generator(sprintf("%s/storage/v1", get_storage_host()),
                       "GET",
                       path_args = list(b = bucket,
                                        acl = entity),
@@ -99,7 +99,7 @@ gcs_create_bucket_acl <- function(bucket = gcs_get_global_bucket(),
   )
 
   insert <-
-    gar_api_generator("https://storage.googleapis.com/storage/v1",
+    gar_api_generator(sprintf("%s/storage/v1", get_storage_host()),
                       "POST",
                       path_args = list(b = bucket,
                                        acl = ""),
@@ -182,7 +182,7 @@ gcs_update_object_acl <- function(object_name,
   )
 
   insert <-
-    gar_api_generator("https://storage.googleapis.com/storage/v1",
+    gar_api_generator(sprintf("%s/storage/v1", get_storage_host()),
                        "POST",
                        path_args = list(b = bucket,
                                         o = object_name,
@@ -261,8 +261,8 @@ gcs_get_object_acl <- function(object_name,
     pa <- list(generation = generation)
   }
 
-  url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/o/%s/acl/%s",
-                 bucket, object_name, entity)
+  url <- sprintf("%s/storage/v1/b/%s/o/%s/acl/%s",
+                 get_storage_host(), bucket, object_name, entity)
   # storage.objectAccessControls.get
   f <- gar_api_generator(url, "GET",
                          pars_args = pa,

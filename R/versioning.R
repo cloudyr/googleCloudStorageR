@@ -49,7 +49,8 @@ gcs_version_bucket <- function(bucket,
 
   # will only be different for list
   url <- sprintf(
-    "https://storage.googleapis.com/storage/v1/b/%s",
+    "%s/storage/v1/b/%s",
+    get_storage_host(),
     bucket
   )
   pars_args <- list(fields = "versioning")
@@ -102,7 +103,8 @@ gcs_version_bucket <- function(bucket,
     # Archived versions of objects have a `timeDeleted` property.
 
     url <- sprintf(
-      "https://storage.googleapis.com/storage/v1/b/%s/o",
+      "%s/storage/v1/b/%s/o",
+      get_storage_host(),
       bucket
     )
     pars_args <- list(versions = "true")
