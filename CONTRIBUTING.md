@@ -12,7 +12,7 @@ Contributions to **googleCloudStorageR** are welcome from anyone and are best se
  
  6. The cloudyr project use royxgen code and documentation markup, so changes should be made to roxygen comments in the source code `.R` files. If changes are made, roxygen needs to be run. The easiest way to do this is a command line call to: `Rscript -e devtools::document()`. Please resolve any roxygen errors before submitting a pull request.
  
- 7. Please run `R CMD BUILD googleCloudStorageR` and `R CMD CHECK googleCloudStorageR_VERSION.tar.gz` before submitting the pull request to check for any errors.
+ 7. Please run `R CMD build googleCloudStorageR` and `R CMD check googleCloudStorageR_VERSION.tar.gz` before submitting the pull request to check for any errors.
  
 Some specific types of changes that you might make are:
 
