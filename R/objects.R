@@ -45,11 +45,12 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                versions = versions)
   pars <- rmNullObs(pars)
 
-  lo <- gar_api_generator(sprintf("%s/storage/v1/", get_storage_host()),
-                          path_args = list(b = bucket,
-                                           o = ""),
+  lo <- gar_api_generator(sprintf("%s/storage/v1/b/%s/o",
+                                  get_storage_host(),
+                                  bucket),
                           pars_args = pars,
-                          data_parse_function = parse_lo)
+                          data_parse_function = parse_lo,
+                          checkTrailingSlash = FALSE)
   
   req <- gar_api_page(lo, 
                       page_f = function(x) attr(x, "nextPageToken"),
