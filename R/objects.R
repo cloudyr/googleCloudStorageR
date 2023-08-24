@@ -45,7 +45,7 @@ gcs_list_objects <- function(bucket = gcs_get_global_bucket(),
                versions = versions)
   pars <- rmNullObs(pars)
 
-  lo <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
+  lo <- gar_api_generator(sprintf("%s/storage/v1/", get_storage_host()),
                           path_args = list(b = bucket,
                                            o = ""),
                           pars_args = pars,
@@ -263,7 +263,7 @@ gcs_get_object <- function(object_name,
                     fields = fields)
   pars_args <- rmNullObs(pars_args)
 
-  ob <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
+  ob <- gar_api_generator(sprintf("%s/storage/v1/", get_storage_host()),
                           path_args = list(b = bucket,
                                            o = object_name),
                           pars_args = pars_args,
@@ -387,7 +387,7 @@ gcs_delete_object <- function(object_name,
   pars <- list(generation = generation)
   pars <- rmNullObs(pars)
 
-  ob <- gar_api_generator("https://storage.googleapis.com/storage/v1/",
+  ob <- gar_api_generator(sprintf("%s/storage/v1/", get_storage_host()),
                           "DELETE",
                           path_args = list(b = bucket,
                                            o = object_name),
@@ -446,8 +446,8 @@ gcs_copy_object <- function(source_object,
   source_object <- URLencode(source_object, reserved = TRUE)
   destination_object <- URLencode(destination_object, reserved = TRUE)
   
-  the_url <- sprintf("https://storage.googleapis.com/storage/v1/b/%s/o/%s/copyTo/b/%s/o/%s", 
-                     source_bucket, source_object, destination_bucket, destination_object)
+  the_url <- sprintf("%s/storage/v1/b/%s/o/%s/copyTo/b/%s/o/%s",
+                     get_storage_host(), source_bucket, source_object, destination_bucket, destination_object)
   pars <- NULL
   if(!is.null(rewriteToken)){
     pars <- list(rewriteToken = rewriteToken)

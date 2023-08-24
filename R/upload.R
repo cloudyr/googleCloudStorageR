@@ -382,7 +382,7 @@ do_simple_upload <- function(name,
   }
 
   up <-
-    gar_api_generator("https://storage.googleapis.com/upload/storage/v1",
+    gar_api_generator(sprintf("%s/upload/storage/v1", get_storage_host()),
                       "POST",
                       path_args = list(b = bucket,
                                        o = ""),
@@ -425,8 +425,8 @@ do_multipart_upload <- function(name,
     pars_args[["predefinedAcl"]] <- predefinedAcl
   }
 
-  the_url <- sprintf("https://storage.googleapis.com/upload/storage/v1/b/%s/o",
-                     bucket)
+  the_url <- sprintf("%s/upload/storage/v1/b/%s/o",
+                     get_storage_host(), bucket)
   up <-
     gar_api_generator(the_url,
                       "POST",
@@ -458,7 +458,7 @@ do_resumable_upload <- function(name,
   }
 
   up <-
-    googleAuthR::gar_api_generator("https://storage.googleapis.com/upload/storage/v1",
+    googleAuthR::gar_api_generator(sprintf("%s/upload/storage/v1", get_storage_host()),
                                    "POST",
                                    path_args = list(b = bucket,
                                                     o = ""),

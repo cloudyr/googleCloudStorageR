@@ -3,6 +3,8 @@
 * Fix bug where retry was not attempted on `gcs_upload()`
 * Add some custom error classes `http_400`, `http_404` etc.
 * Allow listing of more than 1000 buckets (#163 - thanks @hidekoji)
+* Support GCS emulators and the `STORAGE_EMULATOR_HOST` environment variable
+  (#176 - thanks @manuteleco)
 
 # googleCloudStorage 0.7.0
 

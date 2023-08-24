@@ -18,7 +18,7 @@ gcs_upload(
   upload_type = c("simple", "resumable")
 )
 
-gcs_upload_set_limit(upload_limit = 5000000L)
+gcs_upload_set_limit(upload_limit = 5e+06)
 }
 \arguments{
 \item{file}{data.frame, list, R object or filepath (character) to upload file}
