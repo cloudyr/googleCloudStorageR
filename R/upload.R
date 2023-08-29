@@ -382,11 +382,12 @@ do_simple_upload <- function(name,
   }
 
   up <-
-    gar_api_generator(sprintf("%s/upload/storage/v1", get_storage_host()),
+    gar_api_generator(sprintf("%s/upload/storage/v1/b/%s/o",
+                              get_storage_host(),
+                              bucket),
                       "POST",
-                      path_args = list(b = bucket,
-                                       o = ""),
-                      pars_args = pars_args)
+                      pars_args = pars_args,
+                      checkTrailingSlash = FALSE)
 
   req <- up(the_body = bb)
 
@@ -458,16 +459,17 @@ do_resumable_upload <- function(name,
   }
 
   up <-
-    googleAuthR::gar_api_generator(sprintf("%s/upload/storage/v1", get_storage_host()),
+    googleAuthR::gar_api_generator(sprintf("%s/upload/storage/v1/b/%s/o",
+                                           get_storage_host(),
+                                           bucket),
                                    "POST",
-                                   path_args = list(b = bucket,
-                                                    o = ""),
                                    pars_args = pars_args,
                                    customConfig = list(
                                      add_headers("X-Upload-Content-Type" = type),
                                      add_headers("X-Upload-Content-Length" = file.size(temp))
 
-                                   ))
+                                   ),
+                                   checkTrailingSlash = FALSE)
 
   # suppress empty JSON content warning (#120)
   req <- suppressWarnings(up(the_body = object_metadata))

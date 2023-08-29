@@ -142,7 +142,8 @@ gcs_list_buckets <- function(projectId,
                                    pars_args = list(project=projectId,
                                                     prefix=prefix,
                                                     projection=projection),
-                                   data_parse_function = parse_lb)
+                                   data_parse_function = parse_lb,
+                                   checkTrailingSlash = FALSE)
 
   out <- gar_api_page(lb, 
                       page_f = function(x) attr(x, "nextPageToken"),
@@ -277,7 +278,8 @@ gcs_create_bucket <-
 
   bb <- gar_api_generator(sprintf("%s/storage/v1/b", get_storage_host()),
                           "POST",
-                          pars_args = pars_args)
+                          pars_args = pars_args,
+                          checkTrailingSlash = FALSE)
 
   body <- list(
     name = name,

@@ -5,6 +5,9 @@
 * Allow listing of more than 1000 buckets (#163 - thanks @hidekoji)
 * Support GCS emulators and the `STORAGE_EMULATOR_HOST` environment variable
   (#176 - thanks @manuteleco)
+* Adjust request URLs for `list` and `insert` operations on buckets and objects,
+  removing a trailing slash to match the officially documented routes (#178 -
+  thanks @manuteleco)
 
 # googleCloudStorage 0.7.0
 
