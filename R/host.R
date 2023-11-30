@@ -15,5 +15,5 @@ get_storage_host <- function() {
 #'
 #' @return TRUE if the Google Cloud Storage API is emulated, FALSE otherwise
 is.storage_emulated <- function() {
-  !is.null(Sys.getenv("STORAGE_EMULATOR_HOST"))
+  !is.na(Sys.getenv("STORAGE_EMULATOR_HOST", unset = NA))
 }
