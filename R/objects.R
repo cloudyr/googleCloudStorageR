@@ -104,8 +104,6 @@ parse_lo <- function(x){
   attr(x, "prefixes") <- prefixes
   attr(x, "metadata") <- x$metadata
   
-  x$metadata <- NULL
-  
   x
 }
 
