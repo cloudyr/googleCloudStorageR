@@ -1,6 +1,6 @@
 Package: googleCloudStorageR
 Type: Package
-Version: 0.7.0.9000
+Version: 0.7.0.9001
 Title: Interface with Google Cloud Storage API
 Description: Interact with Google Cloud Storage <https://cloud.google.com/storage/> 
   API in R. Part of the 'cloudyr' <https://cloudyr.github.io/> project.
@@ -40,7 +40,7 @@ Remotes:
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8

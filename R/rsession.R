@@ -98,6 +98,7 @@ gcs_save <- function(...,
 #' @param bucket Bucket the stored objects are in
 #' @param envir Environment to load objects into
 #' @param saveToDisk Where to save the loaded file.  Default same file name
+#' @param generation The generation number for the noncurrent version, if you have object versioning enabled in your bucket e.g. \code{"1560468815691234"}
 #' @param overwrite If file exists, overwrite. Default TRUE.
 #'
 #' @details
@@ -115,12 +116,13 @@ gcs_load <- function(file = ".RData",
                      bucket = gcs_get_global_bucket(),
                      envir = .GlobalEnv,
                      saveToDisk = file,
+                     generation = NULL,
                      overwrite = TRUE){
 
   bucket <- as.bucket_name(bucket)
 
   gcs_get_object(file, bucket = bucket,
-                 saveToDisk = saveToDisk, overwrite = overwrite)
+                 saveToDisk = saveToDisk, overwrite = overwrite, generation = generation)
   load(saveToDisk, envir = envir)
 
   TRUE
