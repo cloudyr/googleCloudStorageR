@@ -23,6 +23,7 @@ Imports:
     httr (>= 1.2.1),
     jsonlite (>= 1.0),
     openssl,
+    tools,
     utils,
     yaml,
     zip (>= 2.0.3)
