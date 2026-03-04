@@ -6,8 +6,10 @@
 #' @param bucket Name of the bucket
 #' @param read_fun Function to convert the given file to an R object.
 #' The first argument of this function must be the file name.
-#' @param tempdir Temporary directory where the file will be downloaded to 
-#' before it is read by import_function()
+#' @param temp_file Whether to first download the file to a temporary location,
+#' followed by reading and then deleting the temporary file. If \code{gcs_read}
+#' errors for unknown reason, try setting \code{temp_file = TRUE}. See details for more
+#' information.
 #' @param ... Other arguments passed on to import_function()
 #'
 #' @details
